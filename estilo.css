@@ -1,0 +1,111 @@
+/* div {
+    border: 1px solid;
+} */
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Open Sans', sans-serif;
+    background-image: url(img/fundo.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.container {
+    display: flex;
+    margin-top: 3%;
+    margin-left: 7%;
+    align-items: center;
+}
+
+.conteudo {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    width: 556px;
+    height: 614px;
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow:
+        -5px 0 10px rgba(0, 0, 0, 0.15),
+        /* esquerda */
+        7px 0 10px rgba(0, 0, 0, 0.15),
+        /* direita */
+        0 -5px 10px rgba(0, 0, 0, 0.15),
+        /* cima */
+        0 7px 10px rgba(0, 0, 0, 0.15);
+    /* baixo */
+    flex-direction: column;
+}
+
+.titleConteudo,
+.titleConteudoColor {
+    text-align: center;
+    font-weight: bold;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.titleConteudoColor {
+    color: #ff6200;
+}
+
+.textGray {
+    text-align: center;
+    color: #a6a6a6;
+    font-size: 15px;
+}
+
+.msgLado {
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    margin-left: 24%;
+    font-size: 43px
+}
+
+
+.button {
+    width: 250px;
+    height: 60px;
+    background-color: #ff9500;
+    border: none;
+    font-weight: bold;
+    border-radius: 20px;
+    font-size: 22.2px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    display: block;
+}
+
+.cadastro {
+    margin-bottom: 15%;
+    margin-top: 3%;
+}
+
+.user,
+.senha {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.senha{
+    
+}
+
+input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid;
+    outline: none;
+
+}

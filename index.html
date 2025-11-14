@@ -6,18 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="icon" href="img/Logo png.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="estilo.css">
 </head>
 
 <body>
     <form method="post">
-        <h1>Bem vindo ao login</h1>
-        <p>Preencha os dados de login para acessar</p>
-        Usuário: <br><input type="text" name="user" id="user" placeholder="Digite seu nome de usuário"><br>
-        Senha: <br><input type="password" name="senha" id="senha" placeholder="Digite sua senha"><br>
-        <input type="submit" name="logar" value="Entrar" href="inicio.html">
-        <p>Não possui cadastro? <a href="cadastro.html">Clique aqui</a></p>
+        <div class="container">
+            <div class="conteudo">
+                <h1 class="titleConteudo">Bem vindo ao <span class="titleConteudoColor">login</span></h1>
+                <p class="textGray">Preencha os dados de login para acessar</p>
+
+                <div class="input-group">
+                    <label class="user">Usuário</label>
+                    <input type="text" name="user" id="user" placeholder="Digite seu nome de usuário">
+                </div>
+
+                <div class="input-group">
+                    <label class="senha">Senha</label>
+                    <input type="password" name="senha" id="senha" placeholder="Digite sua senha">
+                </div>
+
+                <input class="button" type="submit" name="logar" value="Entrar">
+                <p class="textGray cadastro">Não possui cadastro? <a href="cadastro.html">Clique aqui</a></p>
+            </div>
+
+            <h1 class="msgLado">Faça login e compre <br>sem fila</h1>
+        </div>
     </form>
-    <h1>Faça login e compre sem fila</h1>
+
 </body>
 
 </html>
