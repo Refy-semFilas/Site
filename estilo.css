@@ -89,7 +89,8 @@ html {
 }
 
 .user,
-.senha {
+.senha,
+.email {
     font-weight: bold;
     font-size: 16px;
     margin-top: 10%;
@@ -131,11 +132,10 @@ input {
     stroke: #a6a6a6;
 }
 
-.boxUser, .boxSenha{
+.boxUser, .boxSenha, .boxEmail{
     width: 70%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 3%;
 }
 
 /*RESPONSIVIDADE APRIMORADA*/
