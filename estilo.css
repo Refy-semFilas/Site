@@ -1,6 +1,6 @@
-/* div {
-    border: 1px solid;
-} */
+div{
+    border:1px solid;
+}
 
 body,
 html {
@@ -9,7 +9,7 @@ html {
     height: 100%;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
     font-family: 'Open Sans', sans-serif;
     background-image: url(img/fundo.png);
     background-repeat: no-repeat;
@@ -29,18 +29,14 @@ html {
     justify-content: space-between;
     background-color: white;
     width: 556px;
-    height: 614px;
+    height: 580px;
     border-radius: 20px;
-    padding: 10px;
+    padding: 20px;
     box-shadow:
         -5px 0 10px rgba(0, 0, 0, 0.15),
-        /* esquerda */
         7px 0 10px rgba(0, 0, 0, 0.15),
-        /* direita */
         0 -5px 10px rgba(0, 0, 0, 0.15),
-        /* cima */
         0 7px 10px rgba(0, 0, 0, 0.15);
-    /* baixo */
     flex-direction: column;
 }
 
@@ -69,9 +65,8 @@ html {
     font-weight: bold;
     color: white;
     margin-left: 24%;
-    font-size: 43px
+    font-size: 43px;
 }
-
 
 .button {
     width: 250px;
@@ -104,5 +99,152 @@ input {
     border: none;
     border-bottom: 1px solid;
     outline: none;
+}
 
+.inputBox {
+    position: relative;
+    width: 100%;
+}
+
+.inputBox input {
+    width: 100%;
+    padding-right: 35px; /* espaço para o ícone */
+}
+
+.inputBox .icon {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.icon {
+    width: 25px !important;
+    height: 25px !important;
+}
+
+.icon-eye line,
+.icon-eye path,
+.icon-eye circle {
+    stroke: #a6a6a6;
+}
+
+.boxUser, .boxSenha{
+    width: 70%;
+    justify-content: center;
+}
+
+/*RESPONSIVIDADE APRIMORADA*/
+
+/* Telas entre 1200px e 900px */
+@media (max-width: 1200px) {
+    html, body {
+        overflow-y: auto;
+    }
+
+    .container {
+        margin-left: 3%;
+        gap: 40px;
+    }
+
+    .msgLado {
+        font-size: 38px;
+        margin-left: 10%;
+    }
+}
+
+/* Tablets grandes */
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        margin-left: 0;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .msgLado {
+        margin-left: 0;
+        font-size: 36px;
+    }
+
+    .conteudo {
+        width: 75%;
+        height: auto;
+    }
+}
+
+/* Tablets / celulares grandes */
+@media (max-width: 700px) {
+    .conteudo {
+        width: 85%;
+        padding: 25px;
+    }
+
+    .titleConteudo,
+    .titleConteudoColor {
+        font-size: 32px;
+    }
+
+    .msgLado {
+        font-size: 32px;
+    }
+}
+
+/* Celulares comuns */
+@media (max-width: 500px) {
+
+    body {
+        background-size: cover;
+        background-position: center;
+    }
+
+    .conteudo {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .titleConteudo,
+    .titleConteudoColor {
+        font-size: 28px;
+    }
+
+    .msgLado {
+        font-size: 28px;
+        margin-top: 25px;
+    }
+
+    input {
+        font-size: 16px;
+    }
+
+    .button {
+        width: 85%;
+        height: 55px;
+        font-size: 20px;
+    }
+}
+
+/* Celulares muito pequenos */
+@media (max-width: 380px) {
+
+    .conteudo {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .titleConteudo,
+    .titleConteudoColor {
+        font-size: 24px;
+    }
+
+    .msgLado {
+        font-size: 24px;
+    }
+
+    .button {
+        width: 90%;
+        height: 50px;
+        font-size: 18px;
+    }
 }
