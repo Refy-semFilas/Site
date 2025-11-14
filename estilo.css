@@ -96,10 +96,7 @@ html {
 .senha {
     font-weight: bold;
     font-size: 16px;
-}
-
-.senha{
-    
+    margin-top: 10%;
 }
 
 input {
