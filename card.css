@@ -1,0 +1,36 @@
+div{
+    border: 1px solid;
+}
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.card{
+    width: 30%;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.imagem {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.imagem img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
