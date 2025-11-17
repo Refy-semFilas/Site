@@ -1,7 +1,8 @@
-div{
+/* div{
     border: 1px solid;
-}
-body,html{
+} */
+body,
+html {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -11,21 +12,24 @@ body,html{
     font-family: 'Open Sans', sans-serif;
 }
 
-.imgEpesquisa{
+.imgEpesquisa {
     display: flex;
-    
+
 }
 
-.imagemLogo{
+.imagemLogo {
     width: 10%;
+}
+
+.pesquisaOpcoes {
+    width: 80%;
 }
 
 .opcoes {
     display: flex;
     justify-content: center;
-    gap: 25px;
-    padding: 10px 0;
-    background-color: #ff6200; /* mesma cor do header */
+    gap: 130px;
+    padding: 20px 0;
 }
 
 .opcoes a {
@@ -33,20 +37,27 @@ body,html{
     font-weight: bold;
     color: white;
     font-size: 16px;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.opcoes a:hover {
+    border-bottom: 1px solid #073c05;
 }
 
 
-.barraPesquisa{
-    width: 80%;
+.barraPesquisa {
+    width: 100%;
     display: flex;
     align-items: center;
     background-color: white;
     border-radius: 20px;
     padding: 5px 12px;
     gap: 8px;
+    margin-top: 3%;
 }
 
-.barraPesquisa input{
+.barraPesquisa input {
     width: 100%;
     border: none;
     outline: none;
@@ -55,14 +66,14 @@ body,html{
 }
 
 
-.imgEpesquisa{
+.imgEpesquisa {
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
 
-input{
+input {
     width: 80%;
     height: 20%;
     border-radius: 20px;
@@ -70,10 +81,10 @@ input{
     padding: 7px;
 }
 
-.logo{
+.logo {
     width: 130px;
 }
 
-header{
+header {
     background-color: #ff6200;
 }
