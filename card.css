@@ -1,6 +1,6 @@
-div{
+/* div{
     border: 1px solid;
-}
+} */
 body,
 html {
     margin: 0;
@@ -11,15 +11,22 @@ html {
     overflow-x: hidden;
     font-family: 'Open Sans', sans-serif;
 }
+.containerCard{
+    display: flex;
+    gap: 100px;
+    justify-content: center;
+    margin-top: 30px;
+}
 
 .card{
-    width: 30%;
+    width: 20%;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
+    border: 1px solid;
 }
 
 .imagem {
@@ -30,7 +37,34 @@ html {
 }
 
 .imagem img {
-    width: 100%;
+    width: 215px;
     height: auto;
     border-radius: 10px;
+}
+
+.descricao{
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    font-size: 20px;
+    height: 40px;
+}
+
+.preco{
+    font-weight: bold;
+    color: #ff6200;
+    font-size: 17px;
+    width: 100%;
+    text-align: center;
+}
+
+.button button{
+    width: 150px;
+    height: 40px;
+    background-color: #ff6200;
+    color: white;
+    border: none;
+    font-weight: bold;
+    border-radius: 10px;
+    font-size: 18px;
 }
