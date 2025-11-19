@@ -88,3 +88,87 @@ input {
 header {
     background-color: #ff6200;
 }
+
+
+/* Tela até 1200px */
+@media (max-width: 1200px) {
+    .opcoes {
+        gap: 60px;
+    }
+}
+
+/* Tela até 992px (tablet) */
+@media (max-width: 992px) {
+
+    .imgEpesquisa {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .imagemLogo {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .logo {
+        width: 110px;
+    }
+
+    .pesquisaOpcoes {
+        width: 100%;
+    }
+
+    .opcoes {
+        gap: 40px;
+        padding: 10px 0;
+        flex-wrap: wrap;
+    }
+}
+
+/* Tela até 768px (tablet pequeno / celular grande) */
+@media (max-width: 768px) {
+
+    .barraPesquisa {
+        margin-top: 0;
+        padding: 8px 10px;
+    }
+
+    .opcoes {
+        gap: 25px;
+        font-size: 14px;
+    }
+
+    .opcoes a {
+        font-size: 14px;
+    }
+}
+
+/* Tela até 576px (celular) */
+@media (max-width: 576px) {
+
+    .imgEpesquisa {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .logo {
+        width: 90px;
+    }
+
+    .barraPesquisa {
+        width: 90%;
+        border-radius: 15px;
+    }
+
+    .opcoes {
+        flex-direction: column;
+        gap: 12px;
+        padding-bottom: 15px;
+    }
+
+    .opcoes a {
+        font-size: 15px;
+    }
+}
