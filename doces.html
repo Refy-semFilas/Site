@@ -4,47 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doces</title>
+    <title>Inicio</title>
     <link rel="icon" href="img/Logo png.png">
+    <link rel="stylesheet" href="card.css">
+    <link rel="stylesheet" href="header.css">
 </head>
 
 <body>
-    <img src="img/Logo png.png" alt="logo">
-    <input type="text" placeholder="Pesquise aqui...">
-    <a href="inicio.html">Inicio</a>
-    <a href="doces.html">Doces</a>
-    <a href="salgados.html">Salgados</a>
-    <a href="bebidas.html">Bebidas</a>
-    <a href="cadCartao.html">Cadastro cartão</a>
-    <a href="carrinho.html">carrinho</a>
+    <header>
+        <div class="imgEpesquisa">
+            <div class="imagemLogo">
+                <img class="logo" src="img/Logo png.png" alt="logo">
+            </div>
+            <div class="pesquisaOpcoes">
+                <div class="barraPesquisa">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="6"></circle>
+                        <line x1="15.7" y1="15.7" x2="20.2" y2="20.2"></line>
+                    </svg>
+                    <input type="text" placeholder="Pesquise aqui...">
+                </div>
+                <div class="opcoes">
+                    <a href="inicio.html">Inicio</a>
+                    <a href="doces.html">Doces</a>
+                    <a href="salgados.html">Salgados</a>
+                    <a href="bebidas.html">Bebidas</a>
+                    <a href="cadCartao.html">Cadastro cartão</a>
+                    <a href="carrinho.html">carrinho</a>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <div class="conteudo">
-        <div class="imagem">
-            <img src="img/BolodePote.webp" alt="Bolo de pote">
+    <div class="containerCard">
+        <div class="card">
+            <div class="imagem">
+                <img src="img/BolodePote.webp" alt="Bolo de pote">
+            </div>
+            <div class="descricao">
+                <p>Bolo de pote de morango</p>
+            </div>
+            <div class="preco">
+                <p>R$ 10,00</p>
+            </div>
+            <div class="button">
+                <button id="comprar" name="comprar" value="comprar">Comprar</button>
+            </div>
         </div>
-        <div class="descricao">
-            <p>Bolo de pote de morango</p>
-        </div>
-        <div class="preco">
-            <p>R$ 10,00</p>
-        </div>
-        <div class="button">
-            <button id="comprar" name="comprar" value="comprar">Comprar</button>
-        </div>
-    </div>
 
-    <div class="conteudo">
-        <div class="imagem">
-            <img src="img/ConeTrufado.webp" alt="Cone trufado de leite ninho">
-        </div>
-        <div class="descricao">
-            <p>Cone trufado de leite ninho</p>
-        </div>
-        <div class="preco">
-            <p>R$ 9,00</p>
-        </div>
-        <div class="button">
-            <button id="comprar" name="comprar" value="comprar">Comprar</button>
+        <div class="card">
+            <div class="imagem">
+                <img src="img/ConeTrufado.webp" alt="Cone trufado de leite ninho">
+            </div>
+            <div class="descricao">
+                <p>Cone trufado de leite ninho</p>
+            </div>
+            <div class="preco">
+                <p>R$ 9,00</p>
+            </div>
+            <div class="button">
+                <button id="comprar" name="comprar" value="comprar">Comprar</button>
+            </div>
         </div>
     </div>
 </body>
