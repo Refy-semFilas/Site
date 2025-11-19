@@ -11,7 +11,7 @@ html {
     align-items: center;
     overflow-x: hidden;
     font-family: 'Open Sans', sans-serif;
-    background-image: url(img/fundo.png);
+    background-image: url(../img/fundo.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
