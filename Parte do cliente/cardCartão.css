@@ -1,6 +1,6 @@
-div{
+/* div{
     border: 1px solid;
-}
+} */
 body,
 html {
     margin: 0;
@@ -12,10 +12,10 @@ html {
     font-family: 'Open Sans', sans-serif;
 }
 
-.iconCard{
+.iconCard {
     width: 300px;
-    border: 1px solid;
     height: 200px;
+    border: 1px solid;
 }
 
 .card {
@@ -26,17 +26,26 @@ html {
     justify-content: center;
     border: 1px solid;
     height: 450px;
-    margin-top: 30px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 30px auto;
 }
 
-.conteudo{
+.conteudo {
     display: flex;
     flex-direction: column;
     align-items: center;
-    display: flex;
     justify-content: center;
     width: 100%;
     height: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 500px) {
+    .card {
+        width: 90%;
+    }
+
+    .iconCard {
+        width: 80%;
+        height: auto;
+    }
 }

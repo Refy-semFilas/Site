@@ -9,11 +9,10 @@ html {
     font-family: 'Open Sans', sans-serif;
 }
 
-h1{
+h1 {
     text-align: center;
     margin-top: 20px;
 }
-
 
 .button {
     width: 200px;
@@ -23,9 +22,15 @@ h1{
     font-weight: bold;
     border-radius: 20px;
     font-size: 16px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
+    margin: 20px auto;
     display: block;
     box-shadow: 5px 5px 2px #ff6200;
+}
+
+/* Responsivo */
+@media (max-width: 500px) {
+    .button {
+        width: 80%;
+        font-size: 18px;
+    }
 }

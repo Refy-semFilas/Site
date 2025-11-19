@@ -17,6 +17,7 @@ html {
     gap: 100px;
     justify-content: center;
     margin-top: 30px;
+    flex-wrap: wrap;
 }
 
 .card {
@@ -75,23 +76,14 @@ html {
 /* Telas até 1200px */
 @media (max-width: 1200px) {
     .containerCard {
-        gap: 50px;
-    }
-
-    .card {
-        width: 25%;
+        gap: 60px;
     }
 }
 
-/* Telas até 992px (tablet) */
+/* Telas até 992px */
 @media (max-width: 992px) {
-    .containerCard {
-        gap: 40px;
-        flex-wrap: wrap;
-    }
-
     .card {
-        width: 35%;
+        width: 40%;
     }
 
     .imagem img {
@@ -99,61 +91,28 @@ html {
     }
 }
 
-/* Telas até 768px (tablet pequeno / celular grande) */
+/* Telas até 768px */
 @media (max-width: 768px) {
-    .containerCard {
-        gap: 30px;
-        flex-wrap: wrap;
-    }
-
     .card {
         width: 45%;
     }
 
     .imagem img {
-        width: 160px;
+        width: 165px;
     }
 
     .descricao {
         font-size: 18px;
     }
-
-    .button button {
-        width: 130px;
-        height: 38px;
-        font-size: 16px;
-    }
 }
 
-/* Telas até 576px (celular) */
+/* Celulares */
 @media (max-width: 576px) {
-
-    .containerCard {
-        flex-direction: column;
-        align-items: center;
-        gap: 25px;
-    }
-
     .card {
-        width: 80%;
+        width: 85%;
     }
 
     .imagem img {
         width: 70%;
-        max-width: 180px;
-    }
-
-    .descricao {
-        font-size: 17px;
-    }
-
-    .preco {
-        font-size: 16px;
-    }
-
-    .button button {
-        width: 140px;
-        height: 38px;
-        font-size: 16px;
     }
 }
