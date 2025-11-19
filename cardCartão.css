@@ -1,0 +1,41 @@
+div{
+    border: 1px solid;
+}
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    font-family: 'Open Sans', sans-serif;
+}
+
+img{
+    width: 150px;
+    border: 1px solid;
+}
+
+.card {
+    width: 400px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid;
+    height: 450px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.conteudo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
