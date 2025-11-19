@@ -1,6 +1,6 @@
-div{
+/* div{
     border: 1px solid;
-}
+} */
 body,
 html {
     margin: 0;
@@ -11,18 +11,19 @@ html {
     overflow-x: hidden;
     font-family: 'Open Sans', sans-serif;
 }
-.containerCard{
+
+.containerCard {
     display: flex;
     gap: 100px;
     justify-content: center;
     margin-top: 30px;
 }
 
-.card{
+.card {
     width: 275px;
     padding: 15px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,10 +42,9 @@ html {
     width: 215px;
     height: 215px;
     border-radius: 10px;
-    border: 1px solid;
 }
 
-.descricao{
+.descricao {
     text-align: center;
     width: 100%;
     font-weight: bold;
@@ -52,7 +52,7 @@ html {
     height: 40px;
 }
 
-.preco{
+.preco {
     font-weight: bold;
     color: #ff6200;
     font-size: 17px;
@@ -60,7 +60,7 @@ html {
     text-align: center;
 }
 
-.button button{
+.button button {
     width: 150px;
     height: 40px;
     background-color: #ff6200;
