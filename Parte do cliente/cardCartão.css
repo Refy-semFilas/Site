@@ -12,9 +12,10 @@ html {
     font-family: 'Open Sans', sans-serif;
 }
 
-img{
-    width: 150px;
+.iconCard{
+    width: 300px;
     border: 1px solid;
+    height: 200px;
 }
 
 .card {
