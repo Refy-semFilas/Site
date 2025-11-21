@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar item</title>
+    <link rel="icon" href="../img/Logo png.png">
+    <link rel="stylesheet" href="../Parte do cliente/header.css">
+    <link rel="stylesheet" href="newProduto.css">
+</head>
+
+<body>
+    <header>
+        <div class="imgEpesquisa">
+            <div class="imagemLogo">
+                <img class="logo" src="../img/Logo png.png" alt="logo">
+            </div>
+            <div class="pesquisaOpcoes">
+                <div class="barraPesquisa">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="6"></circle>
+                        <line x1="15.7" y1="15.7" x2="20.2" y2="20.2"></line>
+                    </svg>
+                    <input type="text" placeholder="Pesquise aqui...">
+                </div>
+                <div class="opcoes">
+                    <a href="inicio.html">Inicio</a>
+                    <a href="addItem.html">Adicionar item</a>
+                    <a href="excluiItem.html">Excluir item</a>
+                    <a href="alteraItem">alterar item</a>
+                    <a href="relatorio.html">Relatório de venda</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <form method="post" action="adicionarProduto">
+        <h1 class="titleConteudo">Adicione seu&nbsp;<span class="titleConteudoColor">produto</span></h1>
+        <label>Nome do produto</label>
+        <input type="text" name="nome" id="nome" value="nome" placeholder="Digite o nome do produto">
+
+        <label>Descricao</label>
+        <input type="text" name="descricao" id="descricao" value="descricao"
+            placeholder="Digite a descrição do produto">
+
+        <label>Valor do produto</label>
+        <input type="text" name="valor" id="valor" value="valor" placeholder="00,00">
+
+        <label>Código de barras do produto</label>
+        <input type="text" name="codigoBarras" id="codigoBarras" value="codigoBarras"
+            placeholder="Digite o código de barras do produto">
+
+        <label>Add imagem</label>
+        <input type="file" id="foto" accept="image/*">
+        <img id="preview" style="width:150px; margin-top:10px; display:none;">
+
+        <button>Cancelar</button>
+        <button>Adicionar</button>
+    </form>
+
+    <script>
+        const input = document.getElementById('foto');
+        const preview = document.getElementById('preview');
+
+        input.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+
+</html>
