@@ -1,41 +1,122 @@
-/* div{
-    border: 1px solid;
-} */
 body,
 html {
     margin: 0;
     padding: 0;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
     font-family: 'Open Sans', sans-serif;
+    background: #ffffff;
 }
 
-.iconCard {
-    width: 300px;
-    height: 200px;
-    border: 1px solid;
-}
-
+/* CARD */
 .card {
-    width: 400px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid;
-    height: 450px;
+    width: 350px;
+    height: auto;
+    border-radius: 12px;
+    padding: 25px 20px;
     margin: 30px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px #00000020;
+    background: white;
 }
 
 .conteudo {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+}
+
+.iconCard {
+    width: 170px;
+    height: auto;
+    margin-bottom: 20px;
+    display: block;
+}
+
+/* Inputs */
+form {
     width: 100%;
-    height: 100%;
+}
+
+input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    background: #f2f2f2;
+    border: none;
+    border-bottom: 2px solid #cccccc;
+    border-radius: 3px 3px 0 0;
+    outline: none;
+    font-size: 15px;
+}
+
+input:focus {
+    border-bottom: 2px solid #ff6200; /* cor padrão do login */
+}
+
+/* Div que alinha CVC + Data */
+.linha {
+    display: flex;
+    gap: 10px;
+}
+
+.cvc,
+.dataVencimento {
+    height: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.cvc {
+    width: 40%;
+}
+
+.dataVencimento {
+    width: 41%;
+}
+
+/*Essa parte do calendario peguei no chat um pre pronto e modifiquei*/
+.flatpickr-calendar {
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    font-family: "Open Sans", sans-serif;
+}
+
+.flatpickr-day.today {
+    background: #ff6200;
+    color: #fff;
+    border-radius: 8px;
+}
+
+.flatpickr-day.selected {
+    background: #c44b00 !important;
+    color: white !important;
+}
+
+.flatpickr-months .flatpickr-month {
+    background: #f2f2f2;
+    border-radius: 8px;
+}
+
+.flatpickr-weekday {
+    color: #555;
+    font-weight: bold;
+}
+
+
+#addNewCard {
+    width: 50%;
+    background-color: #ff9500;
+    border: none;
+    font-weight: bold;
+    border-radius: 20px;
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    box-shadow: 5px 5px 2px #ff6200;
+    height: 50px;
 }
 
 /* Responsividade */
@@ -45,7 +126,6 @@ html {
     }
 
     .iconCard {
-        width: 80%;
-        height: auto;
+        width: 70%;
     }
 }
