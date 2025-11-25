@@ -25,3 +25,10 @@ html {
 .titleConteudoColor {
     color: #ff6200;
 }
+
+.conteudo{
+    width: 50%;
+    margin: auto;
+    margin-top: 3%;
+    border-radius: 10;
+}
