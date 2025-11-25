@@ -16,7 +16,6 @@ if ($result->num_rows === 0) {
 
 $usuario = $result->fetch_assoc();
 
-// Verificar senha
 if (password_verify($senha, $usuario["SENHA"])) {
     session_start();
     $_SESSION["user"] = $usuario["USERNAME"];

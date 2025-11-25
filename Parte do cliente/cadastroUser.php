@@ -5,7 +5,6 @@ $user = $_POST["user"];
 $email = $_POST["email"];
 $senha = password_hash($_POST["senha"], PASSWORD_DEFAULT);
 
-// Verifica se já existe usuário
 $sql = $conn->prepare("SELECT * FROM usuarios WHERE USERNAME = ? OR EMAIL = ?");
 $sql->bind_param("ss", $user, $email);
 $sql->execute();
@@ -16,7 +15,6 @@ if ($result->num_rows > 0) {
     exit;
 }
 
-// Insere novo usuário
 $stmt = $conn->prepare("INSERT INTO usuarios (USERNAME, EMAIL, SENHA) VALUES (?, ?, ?)");
 $stmt->bind_param("sss", $user, $email, $senha);
 
