@@ -9,6 +9,13 @@ create table cliente(
     TELEFONE varchar(11) NOT NULL
 );
 
+create table usuarios (
+    ID int(11) PRIMARY KEY AUTO_INCREMENT,
+    USERNAME varchar(150) NOT NULL UNIQUE,
+    EMAIL varchar(150) NOT NULL UNIQUE,
+    SENHA varchar(255) NOT NULL
+);
+
 create table venda(
     ID int(11) PRIMARY KEY AUTO_INCREMENT, 
     CLIENTE_ID INT NOT NULL,
