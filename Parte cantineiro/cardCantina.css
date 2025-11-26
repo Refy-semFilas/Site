@@ -12,7 +12,7 @@ html {
     font-family: 'Open Sans', sans-serif;
 }
 
-.conteudo{
+.conteudo {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,7 +46,7 @@ html {
     border-radius: 10px;
 }
 
-.info{
+.info {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -64,4 +64,28 @@ html {
     color: #ff6200;
     font-size: 17px;
     text-align: left;
+}
+
+.alterar {
+    margin-left: auto;
+}
+
+.alterarItem {
+    background-color: #ff8c00;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.2s;
+    box-shadow: 5px 5px 2px #ff6200;
+}
+
+.alterarItem:hover {
+    background-color: #e67e00;
+    transform: scale(1.05);
 }
