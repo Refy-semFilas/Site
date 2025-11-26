@@ -113,3 +113,79 @@ label {
     color: #1a0dab;
     cursor: pointer;
 }
+
+/* ======================= */
+/*   RESPONSIVIDADE         */
+/* ======================= */
+
+/* Tablets e notebooks pequenos */
+@media (max-width: 1100px) {
+    .conteudo {
+        width: 60%;
+    }
+
+    .botoes {
+        gap: 150px;
+    }
+}
+
+/* Tablets médios */
+@media (max-width: 900px) {
+    .conteudo {
+        width: 75%;
+    }
+
+    .ladoAlado {
+        gap: 20px;
+    }
+
+    .botoes {
+        gap: 120px;
+    }
+}
+
+/* Celulares grandes */
+@media (max-width: 700px) {
+    .conteudo {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .ladoAlado {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .botoes {
+        gap: 40px;
+    }
+
+    .btn {
+        width: 130px;
+    }
+}
+
+/* Celulares pequenos */
+@media (max-width: 480px) {
+    .titleConteudo {
+        font-size: 26px;
+    }
+
+    .conteudo {
+        width: 95%;
+    }
+
+    .btn {
+        width: 120px;
+        font-size: 13px;
+    }
+
+    .botoes {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .ladoAlado {
+        gap: 10px;
+    }
+}
