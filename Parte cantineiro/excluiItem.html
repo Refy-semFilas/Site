@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar item</title>
+    <link rel="icon" href="../img/Logo png.png">
+    <link rel="stylesheet" href="../Parte do cliente/header.css">
+    <link rel="stylesheet" href="newProduto.css">
+</head>
+
+<body>
+    <header>
+        <div class="imgEpesquisa">
+            <div class="imagemLogo">
+                <img class="logo" src="../img/Logo png.png" alt="logo">
+            </div>
+            <div class="pesquisaOpcoes">
+                <div class="barraPesquisa">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="6"></circle>
+                        <line x1="15.7" y1="15.7" x2="20.2" y2="20.2"></line>
+                    </svg>
+                    <input type="text" placeholder="Pesquise aqui...">
+                </div>
+                <div class="opcoes">
+                    <a href="inicio.html">Inicio</a>
+                    <a href="addItem.html">Adicionar item</a>
+                    <a href="excluiItem.html" style="border-bottom: 1px solid #073c05;">Excluir item</a>
+                    <a href="alteraItem">alterar item</a>
+                    <a href="relatorio.html">Relatório de venda</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="conteudo" style="height: 50%;">
+        <form method="post" action="excluirProduto">
+            <h1 class="titleConteudo">Exclua seu&nbsp;<span class="titleConteudoColor">produto</span></h1>
+
+                <div class="coluna codigo" style="margin-top: 15%;">
+                    <label>Código de barras do produto</label>
+                    <div class="input-with-icon">
+                        <input type="text" name="codigoBarras" placeholder="Digite o código de barras do produto">
+                        <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000"
+                            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="1" />
+                            <path d="M6 8v8" />
+                            <path d="M9 6v12" />
+                            <path d="M12 8v8" />
+                            <path d="M15 6v12" />
+                            <path d="M18 8v8" />
+                        </svg>
+                    </div>
+                </div>
+
+            <div class="botoes">
+                <button class="btn cancelar" style="margin-top: 10%;">Cancelar</button>
+                <button class="btn excluir" style="margin-top: 10%;">Excluir</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
