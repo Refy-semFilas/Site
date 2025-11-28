@@ -2,13 +2,6 @@ create database cantina;
 
 use cantina;
 
-create table cliente(
-    ID int(11) PRIMARY KEY AUTO_INCREMENT,
-    NOME varchar(150) NOT NULL,
-    CPF varchar(11) NOT NULL,
-    TELEFONE varchar(11) NOT NULL
-);
-
 create table usuarios (
     ID int(11) PRIMARY KEY AUTO_INCREMENT,
     USERNAME varchar(150) NOT NULL UNIQUE,
