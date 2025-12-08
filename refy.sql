@@ -13,7 +13,7 @@ create table venda(
     ID int(11) PRIMARY KEY AUTO_INCREMENT, 
     CLIENTE_ID INT NOT NULL,
     DATA date NOT NULL,
-    FOREIGN KEY (CLIENTE_ID) REFERENCES cliente(ID)
+    FOREIGN KEY (CLIENTE_ID) REFERENCES usuarios(ID)
 );
 
 create table produto(
