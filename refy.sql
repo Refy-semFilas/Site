@@ -21,7 +21,8 @@ create table produto(
     NOME varchar(150) NOT NULL,
     DESCRICAO varchar(200),
     VALOR decimal(10,2) NOT NULL,
-    CODIGO_DE_BARRAS varchar(30) NOT NULL
+    CODIGO_DE_BARRAS varchar(30) NOT NULL,
+    IMAGEM varchar(255)
 );
 
 create table itens_venda (

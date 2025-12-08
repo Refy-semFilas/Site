@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar item</title>
     <link rel="icon" href="../img/Logo png.png">
-    <link rel="stylesheet" href="../Parte do cliente/header.css">
+    <link rel="stylesheet" href="../Partedocliente/header.css">
     <link rel="stylesheet" href="newProduto.css">
 </head>
 
@@ -26,7 +26,7 @@
                     <input type="text" placeholder="Pesquise aqui...">
                 </div>
                 <div class="opcoes">
-                    <a href="inicio.html">Inicio</a>
+                    <a href="inicio.php">Inicio</a>
                     <a href="addItem.html" style="border-bottom: 1px solid #073c05;">Adicionar item</a>
                     <a href="excluiItem.html">Excluir item</a>
                     <a href="alteraItem.html">alterar item</a>
@@ -37,7 +37,7 @@
     </header>
 
     <div class="conteudo">
-        <form method="post" action="adicionarProduto">
+        <form method="post" action="adicionarProduto.php" enctype="multipart/form-data"> <!--o ultimo serve para enviar a imagem-->
             <h1 class="titleConteudo">Adicione seu&nbsp;<span class="titleConteudoColor">produto</span></h1>
 
             <div class="ladoAlado">
@@ -110,7 +110,7 @@
                         </svg>
                     </label>
 
-                    <input type="file" id="foto" accept="image/*">
+                    <input type="file" name="foto" id="foto" accept="image/*">
 
                 </div>
                 <div class="coluna vazia"></div>
