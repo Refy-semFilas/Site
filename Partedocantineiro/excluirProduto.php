@@ -1,19 +1,16 @@
 <?php
 require "../PartedoCliente/conexao.php";
 
-// Se entrou via POST, processa a exclusão
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $codigo = $_POST["codigoBarras"];
 
     if (!empty($codigo)) {
-        // Verifica se o produto existe
         $consulta = $conn->prepare("SELECT * FROM produto WHERE CODIGO_DE_BARRAS = ?");
         $consulta->bind_param("s", $codigo);
         $consulta->execute();
         $resultado = $consulta->get_result();
 
         if ($resultado->num_rows > 0) {
-            // Excluir produto
             $delete = $conn->prepare("DELETE FROM produto WHERE CODIGO_DE_BARRAS = ?");
             $delete->bind_param("s", $codigo);
 
@@ -35,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
-<!-- FORMULÁRIO FICA AQUI (no MESMO arquivo) -->
 <!DOCTYPE html>
 <html lang="pt-br">
 
