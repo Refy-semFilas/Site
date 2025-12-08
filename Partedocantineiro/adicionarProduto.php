@@ -13,6 +13,21 @@ if (isset($_FILES["foto"]) && $_FILES["foto"]["error"] === UPLOAD_ERR_OK) {
     move_uploaded_file($_FILES["foto"]["tmp_name"], "../imgBD/" . $imagemNome);
 }
 
+// 1️⃣ Verificar se já existe produto com o mesmo código
+$check = $conn->prepare("SELECT id FROM produto WHERE CODIGO_DE_BARRAS = ?");
+$check->bind_param("s", $codigo);
+$check->execute();
+$check->store_result();
+
+if ($check->num_rows > 0) {
+    echo "<script>
+        alert('Já existe um produto com este código de barras!');
+        window.location.href = 'addItem.html';
+    </script>";
+    exit();
+}
+
+// 2️⃣ Inserir novo produto
 $sql = $conn->prepare("
     INSERT INTO produto (NOME, DESCRICAO, VALOR, CODIGO_DE_BARRAS, IMAGEM)
     VALUES (?, ?, ?, ?, ?)
