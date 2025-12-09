@@ -12,7 +12,6 @@ $result = $sql->get_result();
 
 if ($result->num_rows > 0) {
     echo "<script>
-        alert('Usuário ou email já cadastrado!');
         window.location.href = 'index.html';
         </script>";
     exit;
