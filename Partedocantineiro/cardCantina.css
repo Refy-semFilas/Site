@@ -15,119 +15,81 @@ html {
 
 .conteudo {
     display: flex;
-    align-items: center;
     justify-content: center;
-    margin-top: 3%;
     flex-wrap: wrap;
-    gap: 100px;
-}
-
-/* Tablet → diminuir gaps */
-@media (max-width: 992px) {
-    .conteudo {
-        gap: 40px;
-    }
-}
-
-/* Mobile → cards centralizados */
-@media (max-width: 600px) {
-    .conteudo {
-        gap: 20px;
-        padding: 10px;
-    }
+    gap: 40px;
+    margin-top: 3%;
 }
 
 .card {
-    width: 300px;
-    padding: 15px;
+    width: 360px;
+    min-height: 130px;
+    background: #f1f1f1;
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
     display: flex;
-    flex-direction: row;
     align-items: center;
-    border: 1px solid;
-    height: 100px;
-    background-color: #f1f1f1;
+    gap: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* Mobile → card vira coluna */
-@media (max-width: 600px) {
-    .card {
-        width: 90%;
-        height: auto;
-        flex-direction: column;
-        text-align: center;
-        padding: 20px;
-    }
+.imagem img {
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+}
 
-    .imagem img {
-        width: 120px;
-        height: 120px;
-    }
+.info {
+    flex: 1;
+}
 
-    .info {
-        margin-left: 0;
-        margin-top: 10px;
-    }
+.descricao {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
 
-    .alterar {
-        margin-left: 0;
-        margin-top: 15px;
-    }
+.preco {
+    color: #ff6200;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-card {
+    background: #ff9500;
+    border: none;
+    border-radius: 16px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 3px 3px 2px #ff6200;
+    transition: 0.2s;
+}
+
+.btn-card:hover {
+    transform: scale(1.02);
+}
+
+.excluir {
+    background: #ff6a00;
+}
+
+
+.alterar {
+    margin-left: auto;
+    text-decoration: none;
+    color: #000;
 }
 
 .imagem {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.imagem img {
-    width: 100px;
-    height: 100px;
-    border-radius: 10px;
-}
-
-.info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 10px;
-}
-
-.descricao {
-    text-align: left;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-.preco {
-    font-weight: bold;
-    color: #ff6200;
-    font-size: 17px;
-    text-align: left;
-}
-
-.alterar {
-    margin-left: auto;
-}
-
-.alterarItem {
-    background-color: #ff8c00;
-    color: #000;
-    font-weight: bold;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    text-decoration: none;
-    display: inline-block;
-    transition: 0.2s;
-    box-shadow: 5px 5px 2px #ff6200;
-}
-
-.alterarItem:hover {
-    background-color: #e67e00;
-    transform: scale(1.05);
 }

@@ -1,15 +1,12 @@
-/* div{
-    border:1px solid;
-} */
+* {
+    box-sizing: border-box;
+}
 
 body,
 html {
     margin: 0;
     padding: 0;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
+    min-height: 100%;
     font-family: 'Open Sans', sans-serif;
     background-image: url(../img/fundo.png);
     background-repeat: no-repeat;
@@ -19,17 +16,20 @@ html {
 
 .container {
     display: flex;
-    margin-top: 3%;
-    margin-left: 7%;
+    margin: 3% auto;
+    max-width: 1200px;
     align-items: center;
+    padding: 0 20px;
 }
 
 .conteudo {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     background-color: white;
     width: 556px;
-    height: 580px;
+    min-height: 580px;
+    height: auto;
     border-radius: 20px;
     padding: 20px;
     box-shadow:
@@ -37,21 +37,28 @@ html {
         7px 0 10px rgba(0, 0, 0, 0.15),
         0 -5px 10px rgba(0, 0, 0, 0.15),
         0 7px 10px rgba(0, 0, 0, 0.15);
-    flex-direction: column;
 }
 
 .titleConteudo,
 .titleConteudoColor {
     text-align: center;
     font-weight: bold;
-    font-size: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: clamp(24px, 4vw, 40px);
 }
 
 .titleConteudoColor {
     color: #ff6200;
+}
+
+.msgLado {
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    font-size: clamp(24px, 4vw, 43px);
+    margin-left: 25%;
 }
 
 .textGray {
@@ -60,32 +67,19 @@ html {
     font-size: 15px;
 }
 
-.msgLado {
-    text-align: center;
-    font-weight: bold;
-    color: white;
-    margin-left: 25%;
-    font-size: 43px;
-}
-
 .button {
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
     height: 60px;
     background-color: #ff9500;
     border: none;
     font-weight: bold;
     border-radius: 20px;
     font-size: 22.2px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
+    margin: auto;
     display: block;
     box-shadow: 5px 5px 2px #ff6200;
-}
-
-.cadastro {
-    margin-bottom: 15%;
-    margin-top: 3%;
+    cursor: pointer;
 }
 
 .user,
@@ -101,6 +95,8 @@ input {
     border: none;
     border-bottom: 1px solid;
     outline: none;
+    font-size: 16px;
+    padding: 6px 2px;
 }
 
 .inputBox {
@@ -110,7 +106,7 @@ input {
 
 .inputBox input {
     width: 100%;
-    padding-right: 35px; /* espaço para o ícone */
+    padding-right: 35px;
 }
 
 .inputBox .icon {
@@ -132,121 +128,76 @@ input {
     stroke: #a6a6a6;
 }
 
-.boxUser, .boxSenha, .boxEmail{
+.boxUser,
+.boxSenha,
+.boxEmail {
     width: 70%;
     margin-left: auto;
     margin-right: auto;
 }
 
-/*RESPONSIVIDADE APRIMORADA*/
+.cadastro {
+    margin-bottom: 15%;
+    margin-top: 3%;
+}
 
-/* Telas entre 1200px e 900px */
+.icon-eye.active line {
+    display: none;
+}
+
+
 @media (max-width: 1200px) {
-    html, body {
-        overflow-y: auto;
-    }
-
     .container {
-        margin-left: 3%;
         gap: 40px;
     }
 
     .msgLado {
-        font-size: 38px;
         margin-left: 10%;
     }
 }
 
-/* Tablets grandes */
 @media (max-width: 900px) {
     .container {
         flex-direction: column;
-        margin-left: 0;
-        text-align: center;
-        gap: 10px;
-    }
-
-    .msgLado {
-        margin-left: 0;
-        font-size: 36px;
-    }
-
-    .conteudo {
-        width: 75%;
-        height: auto;
-    }
-}
-
-/* Tablets / celulares grandes */
-@media (max-width: 700px) {
-    .conteudo {
-        width: 85%;
-        padding: 25px;
-    }
-
-    .titleConteudo,
-    .titleConteudoColor {
-        font-size: 32px;
-    }
-
-    .msgLado {
-        font-size: 32px;
-    }
-}
-
-/* Celulares comuns */
-@media (max-width: 500px) {
-
-    body {
-        background-size: cover;
-        background-position: center;
+        gap: 20px;
     }
 
     .conteudo {
         width: 90%;
-        padding: 20px;
-    }
-
-    .titleConteudo,
-    .titleConteudoColor {
-        font-size: 28px;
     }
 
     .msgLado {
-        font-size: 28px;
-        margin-top: 25px;
+        margin-left: 0;
+        text-align: center;
     }
+}
 
-    input {
-        font-size: 16px;
+@media (max-width: 700px) {
+    .conteudo {
+        width: 90%;
+        padding: 25px;
+    }
+}
+
+@media (max-width: 500px) {
+    .conteudo {
+        width: 95%;
+        padding: 20px;
     }
 
     .button {
-        width: 85%;
         height: 55px;
         font-size: 20px;
     }
 }
 
-/* Celulares muito pequenos */
 @media (max-width: 380px) {
-
     .conteudo {
-        width: 95%;
+        width: 98%;
         padding: 15px;
     }
 
-    .titleConteudo,
-    .titleConteudoColor {
-        font-size: 24px;
-    }
-
-    .msgLado {
-        font-size: 24px;
-    }
-
     .button {
-        width: 90%;
         height: 50px;
         font-size: 18px;
     }

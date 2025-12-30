@@ -1,7 +1,7 @@
 <?php
 require "../PartedoCliente/conexao.php";
 
-// Buscar todos os produtos
+// Busca todos os produtos
 $sql = $conn->query("SELECT * FROM produto");
 $produtos = $sql->fetch_all(MYSQLI_ASSOC);
 ?>
@@ -14,6 +14,7 @@ $produtos = $sql->fetch_all(MYSQLI_ASSOC);
     <link rel="icon" href="../img/Logo png.png">
     <link rel="stylesheet" href="../Partedocliente/header.css">
     <link rel="stylesheet" href="cardCantina.css">
+    <link rel="stylesheet" href="newProduto.css">
 </head>
 
 <body>
@@ -35,8 +36,6 @@ $produtos = $sql->fetch_all(MYSQLI_ASSOC);
                 <div class="opcoes">
                     <a href="inicio.php" style="border-bottom: 1px solid #073c05;">Inicio</a>
                     <a href="addItem.html">Adicionar item</a>
-                    <a href="excluiItem.html">Excluir item</a>
-                    <a href="alteraItem.html">alterar item</a>
                     <a href="relatorio.html">Relatório de venda</a>
                 </div>
             </div>
@@ -45,30 +44,35 @@ $produtos = $sql->fetch_all(MYSQLI_ASSOC);
 
     <div class="conteudo">
 
-        <!-- 🔥 LISTA DINÂMICA DE PRODUTOS -->
         <?php foreach ($produtos as $p): ?>
 
-            <div class="card">
-                <div class="imagem">
-                    <img 
-                        src="../imgBD/<?php echo htmlspecialchars($p['IMAGEM']); ?>" 
-                        alt="<?php echo htmlspecialchars($p['NOME']); ?>"
-                        onerror="this.src='../img/placeholder.png'"
-                    >
-                </div>
+    <div class="card">
+    <div class="imagem">
+        <img src="../imgBD/<?php echo $p['IMAGEM']; ?>" alt="<?php echo $p['NOME']; ?>">
+    </div>
 
-                <div class="info">
-                    <div class="descricao">
-                        <p><?php echo htmlspecialchars($p['NOME']); ?></p>
-                    </div>
+    <div class="info">
+        <p class="descricao"><?php echo $p['NOME']; ?></p>
+        <p class="preco">R$ <?php echo number_format($p['VALOR'], 2, ',', '.'); ?></p>
+    </div>
 
-                    <div class="preco">
-                        <p>R$ <?php echo number_format($p['VALOR'], 2, ',', '.'); ?></p>
-                    </div>
-                </div>
-            </div>
+    <div class="acoes">
+        <a class="btn-card alterar" href="alterarProduto.php?id=<?= $p['ID'] ?>">
+            Alterar
+        </a>
 
-        <?php endforeach; ?>
+
+        <form method="post" action="excluirProduto.php"
+              onsubmit="return confirm('Deseja excluir este produto?');">
+            <input type="hidden" name="id" value="<?php echo $p['ID']; ?>">
+            <button type="submit" class="btn-card excluir">Excluir</button>
+        </form>
+    </div>
+</div>
+
+
+<?php endforeach; ?>
+
 
     </div>
 </body>

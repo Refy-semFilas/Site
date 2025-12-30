@@ -13,7 +13,6 @@ if (isset($_FILES["foto"]) && $_FILES["foto"]["error"] === UPLOAD_ERR_OK) {
     move_uploaded_file($_FILES["foto"]["tmp_name"], "../imgBD/" . $imagemNome);
 }
 
-// 1️⃣ Verificar se já existe produto com o mesmo código
 $check = $conn->prepare("SELECT id FROM produto WHERE CODIGO_DE_BARRAS = ?");
 $check->bind_param("s", $codigo);
 $check->execute();
@@ -27,7 +26,6 @@ if ($check->num_rows > 0) {
     exit();
 }
 
-// 2️⃣ Inserir novo produto
 $sql = $conn->prepare("
     INSERT INTO produto (NOME, DESCRICAO, VALOR, CODIGO_DE_BARRAS, IMAGEM)
     VALUES (?, ?, ?, ?, ?)
@@ -38,7 +36,7 @@ $sql->bind_param("ssdss", $nome, $descricao, $valor, $codigo, $imagemNome);
 if ($sql->execute()) {
     echo "<script>
         alert('Produto cadastrado com sucesso!');
-        window.location.href = 'addItem.html';
+        window.location.href = 'inicio.php';
     </script>";
 } else {
     echo "Erro ao cadastrar produto: " . $conn->error;

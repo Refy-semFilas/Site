@@ -11,11 +11,12 @@ body {
 .conteudo {
     width: 40%;
     margin: 3% auto;
-    background: #fff;
+    background: #f5f5f5;
     border-radius: 20px;
-    border: 1px solid;
     padding: 30px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15%;
 }
 
 .titleConteudo {
@@ -114,11 +115,6 @@ label {
     cursor: pointer;
 }
 
-/* ======================= */
-/*   RESPONSIVIDADE         */
-/* ======================= */
-
-/* Tablets e notebooks pequenos */
 @media (max-width: 1100px) {
     .conteudo {
         width: 60%;
@@ -129,7 +125,6 @@ label {
     }
 }
 
-/* Tablets médios */
 @media (max-width: 900px) {
     .conteudo {
         width: 75%;
@@ -144,7 +139,6 @@ label {
     }
 }
 
-/* Celulares grandes */
 @media (max-width: 700px) {
     .conteudo {
         width: 90%;
@@ -165,7 +159,6 @@ label {
     }
 }
 
-/* Celulares pequenos */
 @media (max-width: 480px) {
     .titleConteudo {
         font-size: 26px;

@@ -1,36 +1,34 @@
 <?php
 require "../PartedoCliente/conexao.php";
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $codigo = $_POST["codigoBarras"];
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["CODIGO_DE_BARRAS"])) {
 
-    if (!empty($codigo)) {
-        $consulta = $conn->prepare("SELECT * FROM produto WHERE CODIGO_DE_BARRAS = ?");
-        $consulta->bind_param("s", $codigo);
-        $consulta->execute();
-        $resultado = $consulta->get_result();
+    $CODIGO_DE_BARRAS = trim($_POST["CODIGO_DE_BARRAS"]);
 
-        if ($resultado->num_rows > 0) {
-            $delete = $conn->prepare("DELETE FROM produto WHERE CODIGO_DE_BARRAS = ?");
-            $delete->bind_param("s", $codigo);
+    if ($CODIGO_DE_BARRAS !== "") {
 
-            if ($delete->execute()) {
-                echo "<script>
-                        alert('Produto excluído com sucesso!');
-                        window.location.href = 'excluirProduto.php';
-                      </script>";
-                exit;
-            } else {
-                echo "<script>alert('Erro ao excluir.');</script>";
-            }
+        $delete = $conn->prepare(
+            "DELETE FROM produto WHERE CODIGO_DE_BARRAS = ?"
+        );
+        $delete->bind_param("s", $CODIGO_DE_BARRAS);
+        $delete->execute();
+
+        if ($delete->affected_rows > 0) {
+            echo "<script>
+                    alert('Produto excluído com sucesso!');
+                    window.location.href = 'inicio.php';
+                  </script>";
+            exit;
         } else {
             echo "<script>alert('Produto não encontrado!');</script>";
         }
+
     } else {
-        echo "<script>alert('Digite um código.');</script>";
+        echo "<script>alert('Digite um código de barras.');</script>";
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -56,8 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="opcoes">
                     <a href="inicio.php">Inicio</a>
                     <a href="addItem.html">Adicionar item</a>
-                    <a href="excluirProduto.php" style="border-bottom: 1px solid #073c05;">Excluir item</a>
-                    <a href="alteraItem.html">alterar item</a>
                     <a href="relatorio.html">Relatório de venda</a>
                 </div>
             </div>
@@ -71,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="coluna codigo" style="margin-top: 15%;">
                 <label>Código de barras do produto</label>
                 <div class="input-with-icon">
-                    <input type="text" name="codigoBarras" placeholder="Digite o código de barras do produto">
+                    <input type="text" name="CODIGO_DE_BARRAS" placeholder="Digite o código de barras do produto">
                     <svg class="icon" width="22" height="22" ...></svg>
                 </div>
             </div>
