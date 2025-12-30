@@ -57,40 +57,44 @@
                 <p>R$ 10,00</p>
             </div>
             <div class="button">
-                <button id="comprar" name="comprar" value="comprar">Comprar</button>
-            </div>
-        </div>
+                <button class="comprar" data-nome="Torta de frango" data-preco="10.00"
+                    data-imagem="../img/TortadeFrango.webp">
+                    Comprar
+                </button>
 
-        <div class="card">
-            <div class="imagem">
-                <img src="../img/BolodePote.webp" alt="Bolo de pote">
-            </div>
-            <div class="descricao">
-                <p>Bolo de pote de morango</p>
-            </div>
-            <div class="preco">
-                <p>R$ 10,00</p>
-            </div>
-            <div class="button">
-                <button id="comprar" name="comprar" value="comprar">Comprar</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="imagem">
-                <img src="../img/ConeTrufado.webp" alt="Cone trufado de leite ninho">
-            </div>
-            <div class="descricao">
-                <p>Cone trufado de leite ninho</p>
-            </div>
-            <div class="preco">
-                <p>R$ 9,00</p>
-            </div>
-            <div class="button">
-                <button id="comprar" name="comprar" value="comprar">Comprar</button>
             </div>
         </div>
     </div>
+
+    <script>
+    const botoesComprar = document.querySelectorAll('.comprar');
+
+    botoesComprar.forEach(botao => {
+        botao.addEventListener('click', () => {
+            const produto = {
+                nome: botao.dataset.nome,
+                preco: botao.dataset.preco,
+                imagem: botao.dataset.imagem,
+                quantidade: 1
+            };
+
+            let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+            const existente = carrinho.find(p => p.nome === produto.nome);
+
+            if (existente) {
+                existente.quantidade += 1;
+            } else {
+                carrinho.push(produto);
+            }
+
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+            window.location.href = "carrinho.html";
+        });
+    });
+</script>
+
 </body>
 
 </html>

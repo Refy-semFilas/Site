@@ -44,7 +44,34 @@
             </div>
         </div>
     </header>
-    <input class="selecionar" type="radio" name="selecionar" value="Tudo">
+    <div class="listaCarrinho"></div>
+
+    <script>
+    const lista = document.querySelector('.listaCarrinho');
+    const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+    if (carrinho.length === 0) {
+        lista.innerHTML = "<p>Seu carrinho está vazio</p>";
+    } else {
+        carrinho.forEach(produto => {
+            lista.innerHTML += `
+                <div class="global">    
+                    <div class="itemCarrinho">
+                        <img src="${produto.imagem}">
+                        <div class="nomePreco">
+                            <p class="nome">${produto.nome}</p>
+                            <p class="preco">R$ ${produto.preco}</p>
+                        </div>
+                        <div class="quantidade">
+                            <p>Qtd: ${produto.quantidade}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+</script>
+
 </body>
 
 </html>
