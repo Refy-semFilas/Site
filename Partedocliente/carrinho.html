@@ -47,30 +47,93 @@
     <div class="listaCarrinho"></div>
 
     <script>
-    const lista = document.querySelector('.listaCarrinho');
-    const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        const lista = document.querySelector('.listaCarrinho');
+        let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
 
-    if (carrinho.length === 0) {
-        lista.innerHTML = "<p>Seu carrinho está vazio</p>";
-    } else {
-        carrinho.forEach(produto => {
-            lista.innerHTML += `
-                <div class="global">    
-                    <div class="itemCarrinho">
-                        <img src="${produto.imagem}">
-                        <div class="nomePreco">
-                            <p class="nome">${produto.nome}</p>
-                            <p class="preco">R$ ${produto.preco}</p>
-                        </div>
-                        <div class="quantidade">
-                            <p>Qtd: ${produto.quantidade}</p>
-                        </div>
+        function renderCarrinho() {
+            lista.innerHTML = "";
+
+            if (carrinho.length === 0) {
+                lista.innerHTML = "<p>Seu carrinho está vazio</p>";
+                return;
+            }
+
+            carrinho.forEach(produto => {
+                lista.innerHTML += `
+            <div class="global">    
+                <div class="itemCarrinho">
+                    <img src="${produto.imagem}">
+                    <div class="nomePreco">
+                        <p class="nome">${produto.nome}</p>
+                        <p class="preco">R$ ${produto.preco}</p>
+                    </div>
+
+                    <div class="quantidade" data-nome="${produto.nome}">
+                        <button class="btn remover" aria-label="Remover item">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="27"
+                                height="27"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#a6a6a6"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <polyline points="3 6 5 6 21 6" />
+                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                <path d="M10 11v6" />
+                                <path d="M14 11v6" />
+                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                            </svg>
+                        </button>
+
+
+                        <span class="qtd">${produto.quantidade}</span>
+                        <button style="color: #a6a6a6;" class="btn adicionar">+</button>
                     </div>
                 </div>
-            `;
-        });
-    }
-</script>
+            </div>
+        `;
+            });
+
+            ativarBotoes();
+        }
+
+        function ativarBotoes() {
+            document.querySelectorAll('.adicionar').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const nome = btn.parentElement.dataset.nome;
+                    const produto = carrinho.find(p => p.nome === nome);
+                    produto.quantidade++;
+                    salvar();
+                });
+            });
+
+            document.querySelectorAll('.remover').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const nome = btn.parentElement.dataset.nome;
+                    const index = carrinho.findIndex(p => p.nome === nome);
+
+                    if (carrinho[index].quantidade > 1) {
+                        carrinho[index].quantidade--;
+                    } else {
+                        carrinho.splice(index, 1);
+                    }
+                    salvar();
+                });
+            });
+        }
+
+        function salvar() {
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+            renderCarrinho();
+        }
+
+        renderCarrinho();
+    </script>
+
 
 </body>
 

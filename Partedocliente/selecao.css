@@ -8,7 +8,6 @@ html {
 }
 
 .global{
-    border: 1px solid;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -37,4 +36,43 @@ img{
 
 .preco{
     color: #ff6200;
+}
+
+.quantidade {
+    display: flex;
+    align-items: center;
+    border: 1px solid #000;
+    border-radius: 10px;
+    height: 30px;
+    width: 30%;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.quantidade .btn {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 40px;
+}
+
+.quantidade .remover {
+    border-right: 1px solid #000;
+}
+
+.quantidade .adicionar {
+    border-left: 1px solid #000;
+}
+
+.quantidade .qtd {
+    width: 30px;
+    text-align: center;
+    font-weight: bold;
+    padding: 40px;
+    font-size: 20px;
 }
