@@ -45,55 +45,43 @@
         </div>
     </header>
 
-    <div class="containerCard">
-        <div class="card">
-            <div class="imagem">
-                <img src="../img/TortadeFrango.webp" alt="Torta de frango">
-            </div>
-            <div class="descricao">
-                <p>Torta de frango</p>
-            </div>
-            <div class="preco">
-                <p>R$ 10,00</p>
-            </div>
-            <div class="button">
-                <button class="comprar" data-nome="Torta de frango" data-preco="10.00"
-                    data-imagem="../img/TortadeFrango.webp">
-                    Comprar
-                </button>
-
-            </div>
-        </div>
-    </div>
+    <div class="containerCard" id="produtos"></div>
 
     <script>
-    const botoesComprar = document.querySelectorAll('.comprar');
+        fetch("../api.php")
+            .then(res => res.json())
+            .then(produtos => {
+                const container = document.getElementById("produtos");
 
-    botoesComprar.forEach(botao => {
-        botao.addEventListener('click', () => {
-            const produto = {
-                nome: botao.dataset.nome,
-                preco: botao.dataset.preco,
-                imagem: botao.dataset.imagem,
-                quantidade: 1
-            };
+                produtos.forEach(p => {
+                    container.innerHTML += `
+                        <div class="card">
+                            <div class="imagem">
+                                <img src="../imgBD/${p.IMAGEM}">
+                            </div>
+                            <div class="descricao">
+                                <p>${p.NOME}</p>
+                            </div>
+                            <div class="preco">
+                                <p>R$ ${p.VALOR}</p>
+                            </div>
+                            <div class="button">
+                                <button 
+                                    class="comprar"
+                                    data-nome="${p.NOME}"
+                                    data-preco="${p.VALOR}"
+                                    data-imagem="../imgBD/${p.IMAGEM}">
+                                    Comprar
+                                </button>
+                            </div>
+                        </div>
+                    `;
 
-            let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+                });
+            });
+    </script>
 
-            const existente = carrinho.find(p => p.nome === produto.nome);
-
-            if (existente) {
-                existente.quantidade += 1;
-            } else {
-                carrinho.push(produto);
-            }
-
-            localStorage.setItem('carrinho', JSON.stringify(carrinho));
-
-            window.location.href = "carrinho.html";
-        });
-    });
-</script>
+    <script src="buttonComprar.js"></script>
 
 </body>
 
