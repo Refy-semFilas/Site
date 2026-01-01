@@ -37,7 +37,7 @@
 
 
 <?php
-require "../PartedoCliente/conexao.php";
+require "../conexao.php";
 
 $id = $_GET['id'] ?? null;
 if (!$id) {

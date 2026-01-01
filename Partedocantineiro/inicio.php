@@ -1,5 +1,5 @@
 <?php
-require "../PartedoCliente/conexao.php";
+require "../conexao.php";
 
 // Busca todos os produtos
 $sql = $conn->query("SELECT * FROM produto");

@@ -1,13 +1,5 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "cantina";
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Falha na conexão: " . $conn->connect_error);
-}
+require "../conexao.php";
 
 // pega os dados do forms
 $user = $_POST['user'];

@@ -76,3 +76,31 @@ img{
     padding: 40px;
     font-size: 20px;
 }
+
+.footerCarrinho {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+}
+
+.footerCarrinho .total {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ff6200;
+}
+
+.button {
+    width: 250px;
+    height: 60px;
+    background-color: #ff9500;
+    border: none;
+    font-weight: bold;
+    border-radius: 20px;
+    font-size: 22px;
+    box-shadow: 5px 5px 2px #ff6200;
+    cursor: pointer;
+}

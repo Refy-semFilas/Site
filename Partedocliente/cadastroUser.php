@@ -1,5 +1,5 @@
 <?php
-require "conexao.php";
+require "../conexao.php";
 
 $username = $_POST["user"];
 $email = $_POST["email"];

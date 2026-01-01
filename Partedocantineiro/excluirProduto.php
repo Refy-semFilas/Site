@@ -1,5 +1,5 @@
 <?php
-require "../PartedoCliente/conexao.php";
+require "../conexao.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["CODIGO_DE_BARRAS"])) {
 

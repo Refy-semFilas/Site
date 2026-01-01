@@ -1,5 +1,5 @@
 <?php
-require "../PartedoCliente/conexao.php";
+require "../conexao.php";
 
 $nome = $_POST["nome"];
 $descricao = $_POST["descricao"];

@@ -8,6 +8,7 @@
     <link rel="icon" href="../img/Logo png.png">
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="selecao.css">
+
 </head>
 
 <body>
@@ -45,10 +46,28 @@
         </div>
     </header>
     <div class="listaCarrinho"></div>
+    <div class="footerCarrinho">
+        <p class="total">Total: R$ 0,00</p>
+        <button class="button">Finalizar</button>
+    </div>
+
 
     <script>
         const lista = document.querySelector('.listaCarrinho');
         let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+        const totalElement = document.querySelector('.total');
+
+        function calcularTotal() {
+            let total = 0;
+
+            carrinho.forEach(produto => {
+                total += produto.preco * produto.quantidade;
+            });
+
+            totalElement.innerText = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+
 
         function renderCarrinho() {
             lista.innerHTML = "";
@@ -99,6 +118,7 @@
             });
 
             ativarBotoes();
+            calcularTotal();
         }
 
         function ativarBotoes() {
