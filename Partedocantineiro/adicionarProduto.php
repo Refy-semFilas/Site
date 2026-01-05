@@ -33,7 +33,7 @@ $sql = $conn->prepare("
 ");
 
 $sql->bind_param(
-    "ssdsss", $nome, $descricao, $valor, $codigo, $imagem, $categoria
+    "ssdsss", $nome, $descricao, $valor, $codigo, $imagemNome, $categoria
 );
 
 if ($sql->execute()) {

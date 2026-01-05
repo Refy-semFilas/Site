@@ -44,32 +44,48 @@
             </div>
         </div>
     </header>
+    <div class="containerCard" id="produtos"></div>
+
 
     <script src="buttonComprar.js"></script>
     <script>
-fetch("../api.php?categoria=bebidas")
-    .then(res => res.json())
-    .then(produtos => {
-        const container = document.getElementById("produtos");
-        container.innerHTML = "";
+        fetch("../api.php?categoria=bebidas")
+            .then(res => res.json())
+            .then(produtos => {
+                const container = document.getElementById("produtos");
+                container.innerHTML = "";
 
-        if (produtos.length === 0) {
-            container.innerHTML = "<p>Nenhuma bebida cadastrada</p>";
-            return;
-        }
+                if (produtos.length === 0) {
+                    container.innerHTML = "<p>Nenhuma bebida cadastrada</p>";
+                    return;
+                }
 
-        produtos.forEach(p => {
-            container.innerHTML += `
+                produtos.forEach(p => {
+                    container.innerHTML += `
                 <div class="card">
-                    <img src="../imgBD/${p.IMAGEM}">
-                    <p>${p.NOME}</p>
-                    <p>R$ ${p.VALOR}</p>
-                    <button class="comprar">Comprar</button>
-                </div>
+                            <div class="imagem">
+                                <img src="../imgBD/${p.IMAGEM}">
+                            </div>
+                            <div class="descricao">
+                                <p>${p.NOME}</p>
+                            </div>
+                            <div class="preco">
+                                <p>R$ ${p.VALOR}</p>
+                            </div>
+                            <div class="button">
+                                <button 
+                                    class="comprar"
+                                    data-nome="${p.NOME}"
+                                    data-preco="${p.VALOR}"
+                                    data-imagem="../imgBD/${p.IMAGEM}">
+                                    Comprar
+                                </button>
+                            </div>
+                        </div>
             `;
-        });
-    });
-</script>
+                });
+            });
+    </script>
 
 
 </body>

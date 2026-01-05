@@ -45,23 +45,48 @@
         </div>
     </header>
 
-    <div class="containerCard">
-        <div class="card">
-            <div class="imagem">
-                <img src="../img/TortadeFrango.webp" alt="Torta de frango">
-            </div>
-            <div class="descricao">
-                <p>Torta de frango</p>
-            </div>
-            <div class="preco">
-                <p>R$ 10,00</p>
-            </div>
-            <div class="button">
-                <button id="comprar" name="comprar" value="comprar">Comprar</button>
-            </div>
-        </div>
-    </div>
+    <div class="containerCard" id="produtos"></div>
+
+
     <script src="buttonComprar.js"></script>
+    <script>
+        fetch("../api.php?categoria=salgados")
+            .then(res => res.json())
+            .then(produtos => {
+                const container = document.getElementById("produtos");
+                container.innerHTML = "";
+
+                if (produtos.length === 0) {
+                    container.innerHTML = "<p>Nenhum salgado cadastrado</p>";
+                    return;
+                }
+
+                produtos.forEach(p => {
+                    container.innerHTML += `
+                <div class="card">
+                            <div class="imagem">
+                                <img src="../imgBD/${p.IMAGEM}">
+                            </div>
+                            <div class="descricao">
+                                <p>${p.NOME}</p>
+                            </div>
+                            <div class="preco">
+                                <p>R$ ${p.VALOR}</p>
+                            </div>
+                            <div class="button">
+                                <button 
+                                    class="comprar"
+                                    data-nome="${p.NOME}"
+                                    data-preco="${p.VALOR}"
+                                    data-imagem="../imgBD/${p.IMAGEM}">
+                                    Comprar
+                                </button>
+                            </div>
+                        </div>
+            `;
+                });
+            });
+    </script>
 </body>
 
 </html>
