@@ -115,6 +115,23 @@ label {
     cursor: pointer;
 }
 
+.selection{
+    border: none;
+    border-bottom: 1px solid;
+    width: 25rem;
+    height: 2rem;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    cursor: pointer;
+}
+
+.selection:hover{
+    border: 1px solid;
+    border-radius: 1rem;
+}
+
 @media (max-width: 1100px) {
     .conteudo {
         width: 60%;

@@ -1,12 +1,20 @@
 <?php
-include "conexao.php";
+require "conexao.php";
 
-$sql = "SELECT * FROM produto";
-$result = mysqli_query($conn, $sql);
+$categoria = $_GET['categoria'] ?? null;
+
+if ($categoria) {
+    $sql = $conn->prepare("SELECT * FROM produto WHERE CATEGORIA = ?");
+    $sql->bind_param("s", $categoria);
+} else {
+    $sql = $conn->prepare("SELECT * FROM produto");
+}
+
+$sql->execute();
+$result = $sql->get_result();
 
 $produtos = [];
-
-while ($row = mysqli_fetch_assoc($result)) {
+while ($row = $result->fetch_assoc()) {
     $produtos[] = $row;
 }
 

@@ -45,23 +45,33 @@
         </div>
     </header>
 
-    <div class="containerCard">
-        <div class="card">
-            <div class="imagem">
-                <img src="../img/CocaCola.webp" alt="Coca cola em lata">
-            </div>
-            <div class="descricao">
-                <p>Coca cola Star Wars</p>
-            </div>
-            <div class="preco">
-                <p>R$ 6,00</p>
-            </div>
-            <div class="button">
-                <button id="comprar" name="comprar" value="comprar">Comprar</button>
-            </div>
-        </div>
-    </div>
     <script src="buttonComprar.js"></script>
+    <script>
+fetch("../api.php?categoria=bebidas")
+    .then(res => res.json())
+    .then(produtos => {
+        const container = document.getElementById("produtos");
+        container.innerHTML = "";
+
+        if (produtos.length === 0) {
+            container.innerHTML = "<p>Nenhuma bebida cadastrada</p>";
+            return;
+        }
+
+        produtos.forEach(p => {
+            container.innerHTML += `
+                <div class="card">
+                    <img src="../imgBD/${p.IMAGEM}">
+                    <p>${p.NOME}</p>
+                    <p>R$ ${p.VALOR}</p>
+                    <button class="comprar">Comprar</button>
+                </div>
+            `;
+        });
+    });
+</script>
+
+
 </body>
 
 </html>

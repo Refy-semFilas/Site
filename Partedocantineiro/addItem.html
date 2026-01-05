@@ -113,7 +113,15 @@
                     <input type="file" name="foto" id="foto" accept="image/*">
 
                 </div>
-                <div class="coluna vazia"></div>
+                <div class="coluna vazia">
+                    <select class="selection" name="categoria" id="categoria" required>
+                        <option value="" disabled selected>Categoria</option>
+                        <option value="bebidas">Bebidas</option>
+                        <option value="doces">Doces</option>
+                        <option value="salgados">Salgados</option>
+                    </select>
+
+                </div>
             </div>
 
             <img id="preview" style="display:none; max-width:180px; margin-top:10px; border-radius:8px;">

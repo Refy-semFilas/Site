@@ -5,6 +5,7 @@ $nome = $_POST["nome"];
 $descricao = $_POST["descricao"];
 $valor = $_POST["valor"];
 $codigo = $_POST["codigoBarras"];
+$categoria = $_POST['categoria'];
 
 $imagemNome = null;
 
@@ -27,11 +28,13 @@ if ($check->num_rows > 0) {
 }
 
 $sql = $conn->prepare("
-    INSERT INTO produto (NOME, DESCRICAO, VALOR, CODIGO_DE_BARRAS, IMAGEM)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO produto (NOME, DESCRICAO, VALOR, CODIGO_DE_BARRAS, IMAGEM, CATEGORIA)
+    VALUES (?, ?, ?, ?, ?, ?)
 ");
 
-$sql->bind_param("ssdss", $nome, $descricao, $valor, $codigo, $imagemNome);
+$sql->bind_param(
+    "ssdsss", $nome, $descricao, $valor, $codigo, $imagem, $categoria
+);
 
 if ($sql->execute()) {
     echo "<script>
