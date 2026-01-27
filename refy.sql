@@ -6,7 +6,8 @@ create table usuarios (
     ID int(11) PRIMARY KEY AUTO_INCREMENT,
     USERNAME varchar(150) NOT NULL UNIQUE,
     EMAIL varchar(150) NOT NULL UNIQUE,
-    SENHA varchar(255) NOT NULL
+    SENHA varchar(255) NOT NULL,
+    TIPO ENUM('cliente', 'admin') DEFAULT 'cliente'
 );
 
 create table venda(
@@ -35,3 +36,4 @@ create table itens_venda (
     FOREIGN KEY (VENDA_ID) REFERENCES venda(ID),
     FOREIGN KEY (PRODUTO_ID) REFERENCES produto(ID)
 );
+

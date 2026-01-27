@@ -16,7 +16,17 @@ if ($result->num_rows === 1) {
 
     // para criptografia
     if (password_verify($senha, $dados['SENHA'])) {
-        header("Location: inicio.html");
+        session_start();
+        $_SESSION['user_id'] = $dados['ID'];
+        $_SESSION['username'] = $dados['USERNAME'];
+        $_SESSION['tipo'] = $dados['TIPO'] ?? 'cliente';
+        
+        if ($_SESSION['tipo'] === 'admin') {
+            header("Location: ../Partedocantineiro/inicio.php");
+        } 
+        else {
+            header("Location: inicio.html");
+        }
         exit;
 
     }

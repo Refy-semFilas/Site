@@ -93,7 +93,8 @@ form {
 
 .user,
 .senha,
-.email {
+.email,
+.tipo {
     font-weight: bold;
     font-size: 16px;
     margin-top: 10%;
@@ -106,6 +107,15 @@ input {
     outline: none;
     font-size: 16px;
     padding: 6px 2px;
+}
+
+.seletor{
+    border: none;
+    margin-bottom: 4%;
+    margin-top: 2%;
+    color: #818181;
+    border-bottom: 1px solid #000;
+    width: 100%;
 }
 
 .inputBox {
@@ -139,7 +149,8 @@ input {
 
 .boxUser,
 .boxSenha,
-.boxEmail {
+.boxEmail,
+.boxTipo {
     width: 70%;
     margin-left: auto;
     margin-right: auto;

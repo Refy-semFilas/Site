@@ -1,5 +1,13 @@
 <?php
+session_start();
+
 require "../conexao.php";
+require "../funcoes_usuario.php";
+
+if (!isAdmin()) {
+    header("Location: ../Partedocliente/index.html");
+    exit;
+}
 
 // Busca todos os produtos
 $sql = $conn->query("SELECT * FROM produto");
