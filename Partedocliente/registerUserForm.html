@@ -83,14 +83,104 @@
     <script>
         const senhaInput = document.getElementById('senha');
         const olho = document.getElementById('svgOlho');
+        const emailInput = document.getElementById('email');
+        const userInput = document.getElementById('user');
         
+        // Função para validar email em tempo real
+        function validarEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+        
+        // Verificar email quando o usuário sair do campo
+        emailInput.addEventListener('blur', async function() {
+            const email = this.value.trim();
+            
+            if (email && validarEmail(email)) {
+                try {
+                    const response = await fetch('checkEmail.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email: email })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.exists) {
+                        this.setCustomValidity('Este email já está em uso!');
+                        this.classList.add('error');
+                        // Mostrar mensagem de erro
+                        showEmailError('Este email já está cadastrado no sistema!');
+                    } else {
+                        this.setCustomValidity('');
+                        this.classList.remove('error');
+                        hideEmailError();
+                    }
+                } catch (error) {
+                    console.error('Erro ao verificar email:', error);
+                }
+            }
+        });
+        
+        // Funções para mostrar/esconder mensagens de erro
+        function showEmailError(message) {
+            let errorDiv = document.getElementById('email-error');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.id = 'email-error';
+                errorDiv.style.color = '#ff6200';
+                errorDiv.style.fontSize = '12px';
+                errorDiv.style.marginTop = '5px';
+                emailInput.parentNode.parentNode.appendChild(errorDiv);
+            }
+            errorDiv.textContent = message;
+        }
+        
+        function hideEmailError() {
+            const errorDiv = document.getElementById('email-error');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+        }
+        
+        // Validação do formulário no envio
         document.querySelector('form').addEventListener('submit', function(e) {
             const tipoSelect = document.getElementById('tipo');
+            const email = emailInput.value.trim();
+            const username = userInput.value.trim();
+            
+            // Validar tipo de conta
             if (!tipoSelect.value) {
                 e.preventDefault();
                 alert('Por favor, selecione o tipo de conta!');
                 tipoSelect.focus();
+                return;
             }
+            
+            // Validar formato do email
+            if (!validarEmail(email)) {
+                e.preventDefault();
+                alert('Por favor, digite um email válido!');
+                emailInput.focus();
+                return;
+            }
+            
+            // Validar se o campo de email tem erro
+            if (emailInput.setCustomValidity && emailInput.setCustomValidity.toString().includes('em uso')) {
+                e.preventDefault();
+                alert('Por favor, use outro email! Este já está cadastrado.');
+                emailInput.focus();
+                return;
+            }
+        });
+        
+        // Limpar erro quando o usuário começar a digitar novamente
+        emailInput.addEventListener('input', function() {
+            this.setCustomValidity('');
+            this.classList.remove('error');
+            hideEmailError();
         });
         
         olho.addEventListener('click', () => {
@@ -102,6 +192,13 @@
             olho.classList.toggle('active');
         });
     </script>
+    
+    <style>
+        input.error {
+            border-color: #ff6200 !important;
+            box-shadow: 0 0 5px rgba(255, 98, 0, 0.3) !important;
+        }
+    </style>
 </body>
 
 </html>
