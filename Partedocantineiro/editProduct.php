@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alterar Produto</title>
     <link rel="icon" href="../img/Logo png.png">
-    <link rel="stylesheet" href="../Partedocliente/header.css">
-    <link rel="stylesheet" href="./alterarProduto.css">
-    <link rel="stylesheet" href="newProduto.css">
+    <link rel="stylesheet" href="../css/mainHeader.css">
+    <link rel="stylesheet" href="../css/editProduct.css">
+    <link rel="stylesheet" href="../css/addProduct.css">
 
 </head>
 <body>
@@ -27,8 +27,8 @@
                     <input type="text" placeholder="Pesquise aqui...">
                 </div>
                 <div class="opcoes">
-                    <a href="inicio.php" style="border-bottom: 1px solid #073c05;">Inicio</a>
-                    <a href="addItem.html">Adicionar item</a>
+                    <a href="dashboard.php" style="border-bottom: 1px solid #073c05;">Inicio</a>
+                    <a href="addProductForm.html">Adicionar item</a>
                     <a href="relatorio.html">Relatório de venda</a>
                 </div>
             </div>
@@ -37,11 +37,11 @@
 
 
 <?php
-require "../conexao.php";
+require "../databaseConnection.php";
 
 $id = $_GET['id'] ?? null;
 if (!$id) {
-    header("Location: inicio.php");
+    header("Location: dashboard.php");
     exit;
 }
 
@@ -51,7 +51,7 @@ $sql->execute();
 $produto = $sql->get_result()->fetch_assoc();
 
 if (!$produto) {
-    header("Location: inicio.php");
+    header("Location: dashboard.php");
     exit;
 }
 
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $update->bind_param("ssdssi", $nome, $descricao, $valor, $CODIGO_DE_BARRAS, $imagem, $id);
     $update->execute();
 
-    header("Location: inicio.php");
+    header("Location: dashboard.php");
     exit;
 }
 ?>
@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         <div class="botoes">
-            <a href="inicio.php" class="btn cancelar">Cancelar</a>
+            <a href="dashboard.php" class="btn cancelar">Cancelar</a>
             <button type="submit" class="btn adicionar">Salvar alterações</button>
         </div>
 

@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-require "../conexao.php";
-require "../funcoes_usuario.php";
+require "../databaseConnection.php";
+require "../userFunctions.php";
 
 if (!isAdmin()) {
-    header("Location: ../Partedocliente/index.html");
+    header("Location: ../Partedocliente/loginForm.html");
     exit;
 }
 
@@ -20,9 +20,9 @@ $produtos = $sql->fetch_all(MYSQLI_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
     <link rel="icon" href="../img/Logo png.png">
-    <link rel="stylesheet" href="../Partedocliente/header.css">
-    <link rel="stylesheet" href="cardCantina.css">
-    <link rel="stylesheet" href="newProduto.css">
+    <link rel="stylesheet" href="../css/mainHeader.css">
+    <link rel="stylesheet" href="../css/adminProductCard.css">
+    <link rel="stylesheet" href="../css/addProduct.css">
 </head>
 
 <body>
@@ -42,8 +42,8 @@ $produtos = $sql->fetch_all(MYSQLI_ASSOC);
                     <input type="text" placeholder="Pesquise aqui...">
                 </div>
                 <div class="opcoes">
-                    <a href="inicio.php" style="border-bottom: 1px solid #073c05;">Inicio</a>
-                    <a href="addItem.html">Adicionar item</a>
+                    <a href="dashboard.php" style="border-bottom: 1px solid #073c05;">Inicio</a>
+                    <a href="addProductForm.html">Adicionar item</a>
                     <a href="relatorio.html">Relatório de venda</a>
                 </div>
             </div>
@@ -65,12 +65,12 @@ $produtos = $sql->fetch_all(MYSQLI_ASSOC);
     </div>
 
     <div class="acoes">
-        <a class="btn-card alterar" href="alterarProduto.php?id=<?= $p['ID'] ?>">
+        <a class="btn-card alterar" href="editProduct.php?id=<?= $p['ID'] ?>">
             Alterar
         </a>
 
 
-        <form method="post" action="excluirProduto.php"
+        <form method="post" action="deleteProduct.php"
               onsubmit="return confirm('Deseja excluir este produto?');">
             <input type="hidden" name="id" value="<?php echo $p['ID']; ?>">
             <button type="submit" class="btn-card excluir">Excluir</button>

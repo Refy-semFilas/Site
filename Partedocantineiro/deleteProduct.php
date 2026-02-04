@@ -1,5 +1,5 @@
 <?php
-require "../conexao.php";
+require "../databaseConnection.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["CODIGO_DE_BARRAS"])) {
 
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["CODIGO_DE_BARRAS"])) 
         if ($delete->affected_rows > 0) {
             echo "<script>
                     alert('Produto excluído com sucesso!');
-                    window.location.href = 'inicio.php';
+                    window.location.href = 'dashboard.php';
                   </script>";
             exit;
         } else {
@@ -36,8 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["CODIGO_DE_BARRAS"])) 
 <head>
     <meta charset="UTF-8">
     <title>Excluir Produto</title>
-    <link rel="stylesheet" href="../Partedocliente/header.css">
-    <link rel="stylesheet" href="newProduto.css">
+    <link rel="stylesheet" href="../css/mainHeader.css">
+    <link rel="stylesheet" href="../css/addProduct.css">
 </head>
 
 <body>
@@ -52,8 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["CODIGO_DE_BARRAS"])) 
                     <input type="text" placeholder="Pesquise aqui...">
                 </div>
                 <div class="opcoes">
-                    <a href="inicio.php">Inicio</a>
-                    <a href="addItem.html">Adicionar item</a>
+                    <a href="dashboard.php">Inicio</a>
+                    <a href="addProductForm.html">Adicionar item</a>
                     <a href="relatorio.html">Relatório de venda</a>
                 </div>
             </div>
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["CODIGO_DE_BARRAS"])) 
     </header>
 
     <div class="conteudo" style="height: 50%;">
-        <form method="post" action="excluirProduto.php">
+        <form method="post" action="deleteProduct.php">
             <h1 class="titleConteudo">Exclua seu&nbsp;<span class="titleConteudoColor">produto</span></h1>
 
             <div class="coluna codigo" style="margin-top: 15%;">

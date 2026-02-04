@@ -1,5 +1,5 @@
 <?php
-require "../conexao.php";
+require "../databaseConnection.php";
 
 $username = $_POST["user"];
 $email = $_POST["email"];
@@ -17,7 +17,7 @@ $result = $sql->get_result();
 
 if ($result->num_rows > 0) {
     echo "<script>
-        window.location.href = 'index.html';
+        window.location.href = 'loginForm.html';
         </script>";
     exit;
 }
@@ -26,7 +26,7 @@ $stmt = $conn->prepare("INSERT INTO usuarios (USERNAME, EMAIL, SENHA, TIPO) VALU
 $stmt->bind_param("ssss", $username, $email, $senha, $tipo);
 
 if ($stmt->execute()) {
-    header("Location: index.html");
+    header("Location: loginForm.html");
 } else {
     echo "Erro ao cadastrar usuário.";
 }

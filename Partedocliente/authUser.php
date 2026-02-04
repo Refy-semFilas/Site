@@ -1,5 +1,5 @@
 <?php
-require "../conexao.php";
+require "../databaseConnection.php";
 
 // pega os dados do forms
 $user = $_POST['user'];
@@ -22,10 +22,10 @@ if ($result->num_rows === 1) {
         $_SESSION['tipo'] = $dados['TIPO'] ?? 'cliente';
         
         if ($_SESSION['tipo'] === 'admin') {
-            header("Location: ../Partedocantineiro/inicio.php");
+            header("Location: ../Partedocantineiro/dashboard.php");
         } 
         else {
-            header("Location: inicio.html");
+            header("Location: home.html");
         }
         exit;
 
@@ -35,7 +35,7 @@ if ($result->num_rows === 1) {
     else {
         echo "<script>
             alert('Senha incorreta!');
-            window.location.href = 'index.html';
+            window.location.href = 'loginForm.html';
         </script>";
         exit;
     }
@@ -44,7 +44,7 @@ if ($result->num_rows === 1) {
     else {
         echo "<script>
             alert('Usuário não encontrado. Crie um cadastro.');
-            window.location.href = 'cadastroUser.html';
+            window.location.href = 'registerUserForm.html';
         </script>";
         exit;
     }

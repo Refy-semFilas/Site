@@ -1,5 +1,5 @@
 <?php
-require "../conexao.php";
+require "../databaseConnection.php";
 
 $nome = $_POST["nome"];
 $descricao = $_POST["descricao"];
@@ -22,7 +22,7 @@ $check->store_result();
 if ($check->num_rows > 0) {
     echo "<script>
         alert('Já existe um produto com este código de barras!');
-        window.location.href = 'addItem.html';
+        window.location.href = 'addProductForm.html';
     </script>";
     exit();
 }
@@ -39,7 +39,7 @@ $sql->bind_param(
 if ($sql->execute()) {
     echo "<script>
         alert('Produto cadastrado com sucesso!');
-        window.location.href = 'inicio.php';
+        window.location.href = 'dashboard.php';
     </script>";
 } else {
     echo "Erro ao cadastrar produto: " . $conn->error;

@@ -4,21 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro novo usuário</title>
+    <title>Login</title>
     <link rel="icon" href="../img/Logo png.png">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../css/loginForms.css">
+    <link rel="stylesheet" href="../css/generalStyles.css">
 </head>
 
 <body>
-    <form action="cadastroUser.php" method="POST">
-
+    <form method="post" action="authUser.php">
         <div class="container">
             <div class="conteudo">
-                <h1 class="titleConteudo">Cadastre-se&nbsp;<span class="titleConteudoColor">aqui</span></h1>
+                <h1 class="titleConteudo">Bem vindo ao&nbsp;<span class="titleConteudoColor">login</span></h1>
                 <p class="textGray">Preencha os dados de login para acessar</p>
                 <div class="boxUser">
-                    <label class="user">Nome de usuário</label>
+                    <label class="user">Usuário</label>
                     <div class="inputBox">
                         <input type="text" name="user" id="user" placeholder="Digite seu nome de usuário">
                         <svg class="icon" width="24" height="24" viewBox="0 0 24 24">
@@ -31,19 +30,6 @@
         12.1895 18.2038 13.9537 19.2622 15.8194C19.7765 16.7262 20.0216 17.6258 
         20.1393 18.2937C20.2456 19.2127 20.2503 19.404 20.25 19.453Z" fill="#a6a6a6" />
                         </svg>
-                    </div>
-                </div>
-
-                <div class="boxEmail">
-                    <label class="email">E-mail</label>
-                    <div class="inputBox">
-                        <input type="email" name="email" id="email" placeholder="Digite seu e-mail">
-                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a6a6a6"
-                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="5" width="18" height="14" rx="3" ry="3"></rect>
-                            <path d="M3 7l9 7 9-7"></path>
-                        </svg>
-
                     </div>
                 </div>
 
@@ -61,19 +47,11 @@
                     </div>
                 </div>
 
-                <div class="boxTipo">
-                    <label class="tipo">Tipo de conta</label>
-                    <div class="inputBox">
-                        <select class="seletor" name="tipo" id="tipo" required>
-                            <option value="">Selecione o tipo</option>
-                            <option value="cliente">Cliente</option>
-                            <option value="admin">Vendedor</option>
-                        </select>
-                    </div>
-                </div>
 
-
-                <input class="button" style="margin-bottom: 7%;" type="submit" name="logar" value="Cadastrar">
+                <button class="button" type="submit">
+                    Entrar
+                </button>                                             
+                <p class="textGray cadastro">Não possui cadastro? <a href="registerUserForm.html">Clique aqui</a></p>
             </div>
 
             <h1 class="msgLado">Faça login e compre <br>sem fila</h1>
@@ -83,16 +61,6 @@
     <script>
         const senhaInput = document.getElementById('senha');
         const olho = document.getElementById('svgOlho');
-        
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const tipoSelect = document.getElementById('tipo');
-            if (!tipoSelect.value) {
-                e.preventDefault();
-                alert('Por favor, selecione o tipo de conta!');
-                tipoSelect.focus();
-            }
-        });
-        
         olho.addEventListener('click', () => {
             if (senhaInput.type === 'password') {
                 senhaInput.type = 'text';
