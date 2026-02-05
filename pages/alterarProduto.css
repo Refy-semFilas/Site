@@ -1,0 +1,140 @@
+.conteudo-form {
+    width: 45%;
+    margin: 4% auto;
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.12);
+    border: 1px solid #ddd;
+}
+
+.titulo {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.titulo span {
+    color: #ff6200;
+}
+
+.form-produto {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.linha {
+    display: flex;
+    gap: 30px;
+}
+
+.campo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.campo label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.campo input {
+    border: none;
+    border-bottom: 1px solid #999;
+    padding: 8px;
+    font-size: 14px;
+    outline: none;
+}
+
+.campo input:focus {
+    border-bottom: 2px solid #ff6200;
+}
+
+.imagem-produto {
+    margin-top: 10px;
+}
+
+.imagem-produto p {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.imagem-produto img {
+    width: 120px;
+    border-radius: 12px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.add-img {
+    color: #1a0dab;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.botoes {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.btn {
+    width: 160px;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+
+.cancelar {
+    background: #ff9500;
+    color: #000;
+    box-shadow: 5px 5px 2px #ff6200;
+    text-decoration: none;
+}
+
+.adicionar {
+    background: #ff9500;
+    color: #000;
+    box-shadow: 5px 5px 2px #ff6200;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+    .conteudo-form {
+        width: 70%;
+    }
+
+    .linha {
+        flex-direction: column;
+    }
+
+    .botoes {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+}
+
+@media (max-width: 500px) {
+    .conteudo-form {
+        width: 90%;
+        padding: 25px;
+    }
+
+    .titulo {
+        font-size: 26px;
+    }
+}

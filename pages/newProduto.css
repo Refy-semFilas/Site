@@ -1,0 +1,201 @@
+/* div{
+    border: 1px solid;
+} */
+
+body {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    background: #f5f5f5;
+}
+
+.conteudo {
+    width: 40%;
+    margin: 3% auto;
+    background: #f5f5f5;
+    border-radius: 20px;
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15%;
+}
+
+.titleConteudo {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.titleConteudoColor {
+    color: #ff6200;
+}
+
+.ladoAlado {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.coluna.nome {
+    flex: 0.7;
+}
+
+.coluna.descricao{
+    flex: 1;
+}
+
+.coluna.valor,
+.coluna.img{
+    flex: 1;
+}
+
+.coluna.codigo,
+.coluna.vazia{
+    flex: 3;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+}
+
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #707070;
+    padding: 5px 0;
+    gap: 8px;
+}
+
+.input-with-icon input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.icon {
+    opacity: 0.7;
+}
+
+.botoes {
+    display: flex;
+    justify-content: center;
+    gap: 300px;
+    margin-top: 30px;
+}
+
+.btn {
+    width: 140px;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.cancelar, .adicionar, .excluir {
+    background: #ff9500;
+    color: #000;
+    box-shadow: 5px 5px 2px #ff6200;
+}
+
+#foto {
+    display: none;
+}
+
+.add-img-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #1a0dab;
+    cursor: pointer;
+}
+
+.selection{
+    border: none;
+    border-bottom: 1px solid;
+    width: 25rem;
+    height: 2rem;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    cursor: pointer;
+}
+
+.selection:hover{
+    border: 1px solid;
+    border-radius: 1rem;
+}
+
+@media (max-width: 1100px) {
+    .conteudo {
+        width: 60%;
+    }
+
+    .botoes {
+        gap: 150px;
+    }
+}
+
+@media (max-width: 900px) {
+    .conteudo {
+        width: 75%;
+    }
+
+    .ladoAlado {
+        gap: 20px;
+    }
+
+    .botoes {
+        gap: 120px;
+    }
+}
+
+@media (max-width: 700px) {
+    .conteudo {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .ladoAlado {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .botoes {
+        gap: 40px;
+    }
+
+    .btn {
+        width: 130px;
+    }
+}
+
+@media (max-width: 480px) {
+    .titleConteudo {
+        font-size: 26px;
+    }
+
+    .conteudo {
+        width: 95%;
+    }
+
+    .btn {
+        width: 120px;
+        font-size: 13px;
+    }
+
+    .botoes {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .ladoAlado {
+        gap: 10px;
+    }
+}

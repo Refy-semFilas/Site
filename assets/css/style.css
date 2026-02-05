@@ -1,0 +1,360 @@
+/* Base */
+* {
+    box-sizing: border-box;
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Open Sans', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Botões */
+.button {
+    background-color: #ff9500;
+    border: none;
+    font-weight: bold;
+    border-radius: 20px;
+    box-shadow: 5px 5px 2px #ff6200;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.button:hover {
+    transform: scale(1.05);
+}
+
+/* Header */
+header {
+    background-color: #ff6200;
+}
+
+.imgEpesquisa {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.imagemLogo {
+    width: 10%;
+}
+
+.pesquisaOpcoes {
+    width: 80%;
+}
+
+.logo {
+    width: 130px;
+}
+
+.opcoes {
+    display: flex;
+    justify-content: center;
+    gap: 130px;
+    padding: 20px 0;
+}
+
+.opcoes a {
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    font-size: 16px;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.opcoes a:hover {
+    border-bottom: 1px solid #073c05;
+}
+
+.barraPesquisa {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 5px 12px;
+    gap: 8px;
+    margin-top: 3%;
+}
+
+.barraPesquisa input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: transparent;
+}
+
+/* Cards de Produtos */
+.containerCard {
+    display: flex;
+    gap: 100px;
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.card {
+    width: 275px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid;
+    height: 370px;
+}
+
+.card img {
+    width: 215px;
+    height: 215px;
+    border-radius: 10px;
+}
+
+.descricao {
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    font-size: 20px;
+    height: 40px;
+}
+
+.preco {
+    font-weight: bold;
+    color: #ff6200;
+    font-size: 17px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Formulários */
+.conteudo {
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.15), 7px 0 10px rgba(0, 0, 0, 0.15), 0 -5px 10px rgba(0, 0, 0, 0.15), 0 7px 10px rgba(0, 0, 0, 0.15);
+}
+
+.titleConteudo,
+.titleConteudoColor {
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(24px, 4vw, 40px);
+}
+
+.titleConteudoColor {
+    color: #ff6200;
+}
+
+input {
+    border: none;
+    border-bottom: 1px solid;
+    outline: none;
+    font-size: 16px;
+    padding: 6px 2px;
+}
+
+.inputBox {
+    position: relative;
+    width: 100%;
+}
+
+.inputBox input {
+    width: 100%;
+    padding-right: 35px;
+}
+
+/* Carrinho */
+.global {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2.5%;
+}
+
+.itemCarrinho {
+    border: 1px solid;
+    width: 60%;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.itemCarrinho img {
+    width: 10%;
+    border-radius: 30px;
+    padding: 2%;
+}
+
+.quantidade {
+    display: flex;
+    align-items: center;
+    border: 1px solid #000;
+    border-radius: 10px;
+    height: 30px;
+    width: 30%;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.quantidade .btn {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 40px;
+}
+
+.quantidade .remover {
+    border-right: 1px solid #000;
+}
+
+.quantidade .adicionar {
+    border-left: 1px solid #000;
+}
+
+.quantidade .qtd {
+    width: 30px;
+    text-align: center;
+    font-weight: bold;
+    padding: 40px;
+    font-size: 20px;
+}
+
+.footerCarrinho {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+}
+
+.footerCarrinho .total {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ff6200;
+}
+
+/* Responsivo */
+@media (max-width: 1200px) {
+    .opcoes {
+        gap: 60px;
+    }
+    
+    .containerCard {
+        gap: 60px;
+    }
+}
+
+@media (max-width: 992px) {
+    .imgEpesquisa {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .imagemLogo {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .logo {
+        width: 110px;
+    }
+
+    .pesquisaOpcoes {
+        width: 100%;
+    }
+
+    .opcoes {
+        gap: 40px;
+        padding: 10px 0;
+        flex-wrap: wrap;
+    }
+    
+    .card {
+        width: 40%;
+    }
+
+    .card img {
+        width: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    .barraPesquisa {
+        margin-top: 0;
+        padding: 8px 10px;
+    }
+
+    .opcoes {
+        gap: 25px;
+        font-size: 14px;
+    }
+
+    .opcoes a {
+        font-size: 14px;
+    }
+    
+    .card {
+        width: 45%;
+    }
+
+    .card img {
+        width: 165px;
+    }
+
+    .descricao {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 576px) {
+    .imgEpesquisa {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .logo {
+        width: 90px;
+    }
+
+    .barraPesquisa {
+        width: 90%;
+        border-radius: 15px;
+    }
+
+    .opcoes {
+        flex-direction: column;
+        gap: 12px;
+        padding-bottom: 15px;
+    }
+
+    .opcoes a {
+        font-size: 15px;
+    }
+    
+    .card {
+        width: 85%;
+    }
+
+    .card img {
+        width: 70%;
+    }
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar novo cartão</title>
+    <link rel="icon" href="../img/Logo png.png">
+    <link rel="stylesheet" href="card.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="cardCartão.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+
+<body>
+    <header style="height: 90px;">
+        <div class="imgEpesquisa">
+            <div class="imagemLogo">
+                <img style="width: 100px;" class="logo" src="../img/Logo png.png" alt="logo">
+            </div>
+            <div class="pesquisaOpcoes">
+                <div class="opcoes" style="justify-content: start; gap: 40px; padding: 0; margin-bottom: 13px;">
+                    <a href="inicio.html">Voltar</a>
+                    <a href="cadCartao.html">Cadastro cartão</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="conteudo">
+            <img class="iconCard" src="../img/icone.png" alt="imagem de icone de cartão">
+            <form method="post">
+                <input class="numberCard" type="text" placeholder="Número do cartão">
+                <div class="linha">
+                    <input class="cvc" type="text" placeholder="CVC">
+                    <input class="dataVencimento" type="date" placeholder="Vencimento">
+                </div>
+                <input class="nameCard" type="text" placeholder="Nome do cartão">
+                <button type="submit" id="addNewCard">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        flatpickr(".dataVencimento", {
+            dateFormat: "d/m/Y",
+            altInput: true,
+            altFormat: "d/m/Y",
+            allowInput: true,
+            locale: "pt"
+        });
+    </script>
+
+
+</body>
+
+</html>

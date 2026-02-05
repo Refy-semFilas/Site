@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="icon" href="../assets/img/Logo png.png">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/card.css">
+</head>
+
+<body>
+    <header>
+        <div class="imgEpesquisa">
+            <div class="imagemLogo">
+                <img class="logo" src="../assets/img/Logo png.png" alt="logo">
+            </div>
+            <div class="pesquisaOpcoes">
+                <div class="barraPesquisa">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="6"></circle>
+                        <line x1="15.7" y1="15.7" x2="20.2" y2="20.2"></line>
+                    </svg>
+                    <input type="text" placeholder="Pesquise aqui...">
+                </div>
+                <div class="opcoes">
+                    <a href="inicio.html" style="border-bottom: 1px solid #073c05;">Inicio</a>
+                    <a href="doces.html">Doces</a>
+                    <a href="salgados.html">Salgados</a>
+                    <a href="bebidas.html">Bebidas</a>
+                    <a href="cadCartao.html">Cadastro cartão</a>
+                    <a href="carrinho.html" aria-label="Ir para o carrinho">
+                        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;">
+                            <path d="M3 3h2l3.6 10.59A2 2 0 0 0 10.5 15h7.88a2 2 0 0 0 1.93-1.5L23 6H6" />
+                            <circle cx="10" cy="20" r="1.7" />
+                            <circle cx="18" cy="20" r="1.7" />
+                        </svg>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="containerCard" id="produtos"></div>
+
+    <script>
+        fetch("../api.php")
+            .then(res => res.json())
+            .then(produtos => {
+                const container = document.getElementById("produtos");
+
+                produtos.forEach(p => {
+                    container.innerHTML += `
+                        <div class="card">
+                            <div class="imagem">
+                                <img src="../imgBD/${p.IMAGEM}">
+                            </div>
+                            <div class="descricao">
+                                <p>${p.NOME}</p>
+                            </div>
+                            <div class="preco">
+                                <p>R$ ${p.VALOR}</p>
+                            </div>
+                            <div class="button">
+                                <button 
+                                    class="comprar"
+                                    data-nome="${p.NOME}"
+                                    data-preco="${p.VALOR}"
+                                    data-imagem="../imgBD/${p.IMAGEM}">
+                                    Comprar
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                });
+            });
+    </script>
+
+    <script src="buttonComprar.js"></script>
+
+</body>
+
+</html>
