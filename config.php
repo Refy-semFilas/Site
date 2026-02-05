@@ -1,13 +1,13 @@
 <?php
-// Configurações de Email
+
 define('EMAIL_FROM_NAME', 'Cantina System');
 define('EMAIL_FROM_ADDRESS', 'noreply@cantina.com');
 
-// Configurações da Aplicação
-define('SITE_URL', 'http://localhost/Site'); // URL do seu site
-define('TOKEN_EXPIRY_HOURS', 1); // Tempo de expiração do token em horas
 
-// Função para enviar email usando mail() do PHP
+define('SITE_URL', 'http://localhost/Site');
+define('TOKEN_EXPIRY_HOURS', 1);
+
+
 function sendEmail($to, $subject, $body, $isHTML = true) {
     $headers = "MIME-Version: 1.0\r\n";
     

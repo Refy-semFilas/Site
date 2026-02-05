@@ -1,5 +1,5 @@
 <?php
-// Script de teste para configuração de email
+
 require_once "config.php";
 require_once "databaseConnection.php";
 
@@ -7,7 +7,7 @@ echo "<!DOCTYPE html>
 <html lang='pt-br'>
 <head>
     <meta charset='UTF-8'>
-    <title>Teste de Configuração de Email</title>
+    <title>Teste de Email</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
         .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
@@ -24,12 +24,11 @@ echo "<!DOCTYPE html>
 </head>
 <body>
     <div class='container'>
-        <h1>🔧 Teste de Configuração de Email</h1>
+        <h1>Teste de Email</h1>
         
         <div class='status info'>
             <h3>📊 Status da Configuração:</h3>";
         
-        // Verificar configurações
         $configErrors = [];
         $configWarnings = [];
 
@@ -41,7 +40,7 @@ echo "<!DOCTYPE html>
             $configWarnings[] = "Executando em modo desenvolvimento - emails serão salvos em arquivos";
         }
 
-        // Verificar se tabela de usuários existe
+//tabela user
         try {
             $result = $conn->query("SHOW TABLES LIKE 'usuarios'");
             if ($result->num_rows === 0) {
@@ -51,12 +50,12 @@ echo "<!DOCTYPE html>
             $configErrors[] = "Erro ao conectar ao banco de dados: " . $e->getMessage();
         }
 
-        // Exibir status
+//status
         if (empty($configErrors)) {
-            echo "<p class='success'>✅ Configuração básica está OK!</p>";
+            echo "<p class='success'>Configuração básica está OK!</p>";
         } else {
             foreach ($configErrors as $error) {
-                echo "<p class='error'>❌ " . htmlspecialchars($error) . "</p>";
+                echo "<p class='error'>" . htmlspecialchars($error) . "</p>";
             }
         }
 
@@ -80,41 +79,7 @@ Função mail(): " . (function_exists('mail') ? 'Disponível' : 'Não disponíve
             </pre>
         </div>";
 
-        // Testar envio de email se solicitado
-        if (isset($_POST['test_email'])) {
-            $testEmail = $_POST['test_email'] ?? '';
-            $testUsername = $_POST['test_username'] ?? 'UsuarioTeste';
-            
-            if (!empty($testEmail)) {
-                $testToken = bin2hex(random_bytes(16));
-                $testLink = generateResetLink($testToken);
-                $testBody = createRecoveryEmailBody($testUsername, $testLink);
-                $testSubject = "🧪 Teste de Email - Cantina System";
-                
-                $emailSent = sendEmail($testEmail, $testSubject, $testBody, true);
-                logEmail($testEmail, $testSubject, $emailSent);
-                
-                if ($emailSent) {
-                    echo "<div class='status success'>
-                        <h3>✅ Email de teste enviado com sucesso!</h3>
-                        <p>Para: " . htmlspecialchars($testEmail) . "</p>
-                        <p>Verifique sua caixa de entrada (e pasta de spam).</p>";
-                    
-                    if (strpos(SITE_URL, 'localhost') !== false) {
-                        echo "<p><strong>Modo desenvolvimento:</strong> Email salvo em <code>email_log.html</code></p>";
-                    }
-                    
-                    echo "</div>";
-                } else {
-                    echo "<div class='status error'>
-                        <h3>❌ Falha ao enviar email de teste</h3>
-                        <p>Verifique a configuração do seu servidor SMTP.</p>
-                    </div>";
-                }
-            }
-        }
-
-        // Verificar logs
+//teste logs
         if (file_exists(__DIR__ . '/email_log.txt')) {
             $logContent = file_get_contents(__DIR__ . '/email_log.txt');
             $logLines = array_filter(explode("\n", trim($logContent)));
@@ -122,7 +87,7 @@ Função mail(): " . (function_exists('mail') ? 'Disponível' : 'Não disponíve
             $recentEmails = array_slice($logLines, -5);
             
             echo "<div class='status info'>
-                <h3>📊 Estatísticas de Email:</h3>
+                <h3>Estatísticas de Email:</h3>
                 <p><strong>Total de emails processados:</strong> " . $totalEmails . "</p>
                 <p><strong>Envios recentes:</strong></p>
                 <pre>";
@@ -136,7 +101,7 @@ Função mail(): " . (function_exists('mail') ? 'Disponível' : 'Não disponíve
 
         echo "
         <div class='status info'>
-            <h3>🧪 Testar Envio de Email:</h3>
+            <h3>Testar Envio de Email:</h3>
             <form method='post'>
                 <div style='margin-bottom: 15px;'>
                     <label for='test_email'>Email para teste:</label><br>
@@ -152,13 +117,13 @@ Função mail(): " . (function_exists('mail') ? 'Disponível' : 'Não disponíve
                            value='UsuarioTeste'>
                 </div>
                 <button type='submit' name='test_email' class='test-btn'>
-                    📧 Enviar Email de Teste
+                    Enviar Email de Teste
                 </button>
             </form>
         </div>
 
         <div class='status warning'>
-            <h3>📖 Próximos Passos:</h3>
+            <h3>Próximos Passos:</h3>
             <ol>
                 <li>Configure seu servidor SMTP no php.ini ou use um serviço de email</li>
                 <li>Teste o envio usando o formulário acima</li>
@@ -170,7 +135,7 @@ Função mail(): " . (function_exists('mail') ? 'Disponível' : 'Não disponíve
 
         <div style='text-align: center; margin-top: 30px;'>
             <a href='Partedocliente/forgotPassword.html' class='test-btn'>
-                🔄 Ir para página de recuperação
+                Ir para página de recuperação
             </a>
         </div>
     </div>
