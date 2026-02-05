@@ -156,9 +156,33 @@ input {
     margin-right: auto;
 }
 
+.forgot {
+    margin-bottom: 5%;
+    margin-top: 2%;
+    text-align: center;
+}
+
+.forgot a {
+    transition: color 0.3s ease;
+}
+
+.forgot a:hover {
+    color: #ff9500;
+    text-decoration: underline;
+}
+
 .cadastro {
-    margin-bottom: 15%;
-    margin-top: 3%;
+    margin-bottom: 1%;
+    margin-top: 0.1px;
+}
+
+.cadastro a{
+    transition: color 0.3s ease;
+}
+
+.cadastro a:hover {
+    color: #ff9500;
+    text-decoration: underline;
 }
 
 .icon-eye.active line {
