@@ -6,8 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salgados</title>
     <link rel="icon" href="../img/Logo png.png">
-    <link rel="stylesheet" href="../css/productCard.css">
+<link rel="stylesheet" href="../css/productCard.css">
     <link rel="stylesheet" href="../css/mainHeader.css">
+    <style>
+        .card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -49,43 +63,69 @@
 
 
     <script src="shoppingCart.js"></script>
-    <script>
+<script>
+        let todosProdutos = [];
+        
         fetch("../api.php?categoria=salgados")
             .then(res => res.json())
             .then(produtos => {
-                const container = document.getElementById("produtos");
-                container.innerHTML = "";
-
-                if (produtos.length === 0) {
-                    container.innerHTML = "<p>Nenhum salgado cadastrado</p>";
-                    return;
-                }
-
-                produtos.forEach(p => {
-                    container.innerHTML += `
-                <div class="card">
-                            <div class="imagem">
-                                <img src="../imgBD/${p.IMAGEM}">
-                            </div>
-                            <div class="descricao">
-                                <p>${p.NOME}</p>
-                            </div>
-                            <div class="preco">
-                                <p>R$ ${p.VALOR}</p>
-                            </div>
-                            <div class="button">
-                                <button 
-                                    class="comprar"
-                                    data-nome="${p.NOME}"
-                                    data-preco="${p.VALOR}"
-                                    data-imagem="../imgBD/${p.IMAGEM}">
-                                    Comprar
-                                </button>
-                            </div>
-                        </div>
-            `;
-                });
+                todosProdutos = produtos;
+                renderProdutos(produtos);
+                
+                // Adicionar evento de pesquisa
+                const searchInput = document.querySelector('.barraPesquisa input');
+                searchInput.addEventListener('input', pesquisarProdutos);
             });
+            
+        function renderProdutos(produtos) {
+            const container = document.getElementById("produtos");
+            container.innerHTML = "";
+
+            if (produtos.length === 0) {
+                container.innerHTML = "<p>Nenhum salgado cadastrado</p>";
+                return;
+            }
+
+            produtos.forEach((p, index) => {
+                container.innerHTML += `
+                    <div class="card" style="animation-delay: ${index * 0.1}s">
+                        <div class="imagem">
+                            <img src="../imgBD/${p.IMAGEM}">
+                        </div>
+                        <div class="descricao">
+                            <p>${p.NOME}</p>
+                        </div>
+                        <div class="preco">
+                            <p>R$ ${p.VALOR}</p>
+                        </div>
+                        <div class="button">
+                            <button 
+                                class="comprar"
+                                data-nome="${p.NOME}"
+                                data-preco="${p.VALOR}"
+                                data-imagem="../imgBD/${p.IMAGEM}">
+                                Comprar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        function pesquisarProdutos(event) {
+            const termo = event.target.value.toLowerCase().trim();
+            
+            if (termo === '') {
+                renderProdutos(todosProdutos);
+                return;
+            }
+            
+            const produtosFiltrados = todosProdutos.filter(produto => 
+                produto.NOME.toLowerCase().includes(termo)
+            );
+            
+            renderProdutos(produtosFiltrados);
+        }
     </script>
 </body>
 
