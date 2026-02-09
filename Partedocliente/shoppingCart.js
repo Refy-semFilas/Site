@@ -21,6 +21,6 @@ document.addEventListener('click', function (e) {
 
         localStorage.setItem('carrinho', JSON.stringify(carrinho));
 
-        window.location.href = "carrinho.html";
+        window.location.href = "shoppingCart.html";
     }
 });
