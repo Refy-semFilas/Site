@@ -6,8 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho</title>
     <link rel="icon" href="../img/Logo png.png">
-    <link rel="stylesheet" href="../css/mainHeader.css">
+<link rel="stylesheet" href="../css/mainHeader.css">
     <link rel="stylesheet" href="../css/categoryFilter.css">
+    <style>
+        .carrinho-vazio {
+            text-align: center;
+            padding: 60px 20px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .icone-vazio {
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+        
+        .carrinho-vazio h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .carrinho-vazio p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .btn-voltar {
+            display: inline-block;
+            background-color: #ff6200;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-voltar:hover {
+            background-color: #e55500;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 576px) {
+            .carrinho-vazio {
+                padding: 40px 15px;
+            }
+            
+            .carrinho-vazio h2 {
+                font-size: 20px;
+            }
+            
+            .carrinho-vazio p {
+                font-size: 14px;
+            }
+            
+            .btn-voltar {
+                padding: 10px 25px;
+                font-size: 14px;
+            }
+        }
+    </style>
 
 </head>
 
@@ -72,8 +134,21 @@
         function renderCarrinho() {
             lista.innerHTML = "";
 
-            if (carrinho.length === 0) {
-                lista.innerHTML = "<p>Seu carrinho está vazio</p>";
+if (carrinho.length === 0) {
+                lista.innerHTML = `
+                    <div class="carrinho-vazio">
+                        <div class="icone-vazio">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ff6200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 3h2l3.6 10.59A2 2 0 0 0 10.5 15h7.88a2 2 0 0 0 1.93-1.5L23 6H6" />
+                                <circle cx="10" cy="20" r="1.7" />
+                                <circle cx="18" cy="20" r="1.7" />
+                            </svg>
+                        </div>
+                        <h2>Seu carrinho está vazio</h2>
+                        <p>Adicione produtos deliciosos ao seu carrinho!</p>
+                        <a href="home.html" class="btn-voltar">Continuar Comprando</a>
+                    </div>
+                `;
                 return;
             }
 
