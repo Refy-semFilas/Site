@@ -1,10 +1,10 @@
-# 📧 Configuração de Email - Cantina System
+# Configuração de Email - Cantina System
 
-## 🚀 Como Configurar o Envio de Email
+## Como Configurar o Envio de Email
 
 O sistema de recuperação de senha está funcionando, mas para receber emails reais, você precisa configurar seu ambiente.
 
-### 🔧 Opção 1: Configuração Local (Desenvolvimento)
+### Opção 1: Configuração Local (Desenvolvimento)
 
 Para testar localmente com XAMPP:
 
@@ -32,7 +32,7 @@ Para testar localmente com XAMPP:
    auth_password=sua-senha-de-app
    ```
 
-### 🔧 Opção 2: Usar Serviço de Email (Recomendado)
+### Opção 2: Usar Serviço de Email (Recomendado)
 
 #### **Mailtrap (para testes):**
 1. Crie conta gratuita em [mailtrap.io](https://mailtrap.io)
@@ -47,7 +47,7 @@ Para testar localmente com XAMPP:
    ```
 3. Configure as credenciais no `config.php`
 
-### 📝 Configuração Gmail (Mais Comum)
+### Configuração Gmail (Mais Comum)
 
 1. **Ative 2FA na sua conta Google**
 2. **Crie uma Senha de App:**
@@ -62,7 +62,7 @@ Para testar localmente com XAMPP:
    define('EMAIL_FROM_ADDRESS', 'seu-email-real@gmail.com');
    ```
 
-### 🗂️ Estrutura de Arquivos
+### Estrutura de Arquivos
 
 ```
 ├── config.php              # Configurações de email
@@ -75,7 +75,7 @@ Para testar localmente com XAMPP:
 └── email_log.html          # Cópias dos emails (debug)
 ```
 
-### 🐛 Debug e Testes
+### Debug e Testes
 
 O sistema salva automaticamente:
 - **`email_log.txt`** - Registro de todos os envios
@@ -83,7 +83,7 @@ O sistema salva automaticamente:
 
 Em modo desenvolvimento (localhost), os emails são salvos em arquivo em vez de serem enviados.
 
-### ⚡ Testes Rápidos
+### Testes Rápidos
 
 1. **Acesse:** `http://localhost/Site/Partedocliente/forgotPassword.html`
 2. **Digite:** Email e usuário cadastrados
@@ -92,24 +92,24 @@ Em modo desenvolvimento (localhost), os emails são salvos em arquivo em vez de 
    - Arquivo `email_log.html` para ver o email
    - Redirecionamento automático para página de reset
 
-### 🔒 Segurança
+### Segurança
 
-- ✅ Tokens com expiração (1 hora)
-- ✅ Tokens únicos e aleatórios
-- ✅ Hash seguro de senhas
-- ✅ Validação de inputs
-- ✅ Proteção contra SQL Injection
+-  Tokens com expiração (1 hora)
+-  Tokens únicos e aleatórios
+-  Hash seguro de senhas
+-  Validação de inputs
+-  Proteção contra SQL Injection
 
-### 📱 Features Implementadas
+### Features Implementadas
 
-- ✅ Email HTML responsivo e profissional
-- ✅ Redirecionamento automático após envio
-- ✅ Indicador visual de força de senha
-- ✅ Validação em tempo real
-- ✅ Interface moderna e intuitiva
-- ✅ Suporte a dispositivos móveis
+-  Email HTML responsivo e profissional
+-  Redirecionamento automático após envio
+-  Indicador visual de força de senha
+-  Validação em tempo real
+-  Interface moderna e intuitiva
+-  Suporte a dispositivos móveis
 
-### 🚨 Importante
+### Importante
 
 - Em produção, remova os arquivos de log de debug
 - Configure HTTPS no servidor
