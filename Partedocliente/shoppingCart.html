@@ -162,7 +162,7 @@ if (carrinho.length === 0) {
                         <p class="preco">R$ ${produto.preco}</p>
                     </div>
 
-                    <div class="quantidade" data-nome="${produto.nome}">
+                    <div class="quantidade" data-id="${produto.id}">
                         <button class="btn remover" aria-label="Remover item">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -199,8 +199,12 @@ if (carrinho.length === 0) {
         function ativarBotoes() {
             document.querySelectorAll('.adicionar').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const nome = btn.parentElement.dataset.nome;
-                    const produto = carrinho.find(p => p.nome === nome);
+                    const id = btn.parentElement.dataset.id;
+                    const produto = carrinho.find(p => p.id == id);
+                    if (produto.quantidade >= produto.estoque) {
+                        alert('Quantidade máxima em estoque atingida!');
+                        return;
+                    }
                     produto.quantidade++;
                     salvar();
                 });
@@ -208,8 +212,8 @@ if (carrinho.length === 0) {
 
             document.querySelectorAll('.remover').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const nome = btn.parentElement.dataset.nome;
-                    const index = carrinho.findIndex(p => p.nome === nome);
+                    const id = btn.parentElement.dataset.id;
+                    const index = carrinho.findIndex(p => p.id == id);
 
                     if (carrinho[index].quantidade > 1) {
                         carrinho[index].quantidade--;
@@ -227,6 +231,35 @@ if (carrinho.length === 0) {
         }
 
         renderCarrinho();
+
+        document.querySelector('.button').addEventListener('click', async function() {
+            if (carrinho.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+
+            try {
+                const response = await fetch('finalizarCompra.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ itens: carrinho })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    localStorage.removeItem('carrinho');
+                    window.location.href = 'home.html';
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert('Erro ao processar compra. Tente novamente.');
+            }
+        });
     </script>
 
 
