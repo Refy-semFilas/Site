@@ -4,6 +4,7 @@ require "../databaseConnection.php";
 $nome = $_POST["nome"];
 $descricao = $_POST["descricao"];
 $valor = $_POST["valor"];
+$estoque = $_POST["estoque"];
 $codigo = $_POST["codigoBarras"];
 $categoria = $_POST['categoria'];
 
@@ -28,12 +29,12 @@ if ($check->num_rows > 0) {
 }
 
 $sql = $conn->prepare("
-    INSERT INTO produto (NOME, DESCRICAO, VALOR, CODIGO_DE_BARRAS, IMAGEM, CATEGORIA)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO produto (NOME, DESCRICAO, VALOR, CODIGO_DE_BARRAS, IMAGEM, CATEGORIA, ESTOQUE)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
 ");
 
 $sql->bind_param(
-    "ssdsss", $nome, $descricao, $valor, $codigo, $imagemNome, $categoria
+    "ssdsssi", $nome, $descricao, $valor, $codigo, $imagemNome, $categoria, $estoque
 );
 
 if ($sql->execute()) {

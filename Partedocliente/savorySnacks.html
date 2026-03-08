@@ -94,6 +94,7 @@
             }
 
             produtos.forEach((p, index) => {
+                const estoque = p.ESTOQUE || 0;
                 container.innerHTML += `
                     <div class="card" style="animation-delay: ${index * 0.1}s">
                         <div class="imagem">
@@ -108,10 +109,13 @@
                         <div class="button">
                             <button 
                                 class="comprar"
+                                data-id="${p.id}"
                                 data-nome="${p.NOME}"
                                 data-preco="${p.VALOR}"
-                                data-imagem="../imgBD/${p.IMAGEM}">
-                                Comprar
+                                data-estoque="${estoque}"
+                                data-imagem="../imgBD/${p.IMAGEM}"
+                                ${estoque <= 0 ? 'disabled' : ''}>
+                                ${estoque <= 0 ? 'Indisponível' : 'Comprar'}
                             </button>
                         </div>
                     </div>

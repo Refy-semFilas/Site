@@ -4,10 +4,10 @@ require "databaseConnection.php";
 $categoria = $_GET['categoria'] ?? null;
 
 if ($categoria) {
-    $sql = $conn->prepare("SELECT * FROM produto WHERE CATEGORIA = ?");
+    $sql = $conn->prepare("SELECT id, NOME, DESCRICAO, VALOR, IMAGEM, CATEGORIA, ESTOQUE FROM produto WHERE CATEGORIA = ?");
     $sql->bind_param("s", $categoria);
 } else {
-    $sql = $conn->prepare("SELECT * FROM produto");
+    $sql = $conn->prepare("SELECT id, NOME, DESCRICAO, VALOR, IMAGEM, CATEGORIA, ESTOQUE FROM produto");
 }
 
 $sql->execute();
