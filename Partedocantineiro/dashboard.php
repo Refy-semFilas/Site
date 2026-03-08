@@ -45,6 +45,13 @@ $produtos = $sql->fetch_all(MYSQLI_ASSOC);
                     <a href="dashboard.php" style="border-bottom: 1px solid #073c05;">Inicio</a>
                     <a href="addProductForm.html">Adicionar item</a>
                     <a href="relatorio.html">Relatório de venda</a>
+                    <a href="conta.php" aria-label="Minha conta">
+                        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
