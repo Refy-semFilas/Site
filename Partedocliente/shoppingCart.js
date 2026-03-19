@@ -5,7 +5,7 @@ document.addEventListener('click', function (e) {
         const produtoId = botao.dataset.id;
 
         if (estoque <= 0) {
-            alert('Produto indisponível no momento!');
+            showAlert('Produto indisponível no momento!', 'error');
             return;
         }
 
@@ -24,7 +24,7 @@ document.addEventListener('click', function (e) {
 
         if (existente) {
             if (existente.quantidade >= estoque) {
-                alert('Quantidade máxima em estoque atingida!');
+                showAlert('Quantidade máxima em estoque atingida!', 'warning');
                 return;
             }
             existente.quantidade += 1;

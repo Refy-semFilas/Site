@@ -1,0 +1,40 @@
+<div id="customAlert" class="custom-alert">
+    <div class="alert-content">
+        <h3 id="alertTitle">Aviso</h3>
+        <p id="alertMessage"></p>
+        <button class="alert-btn" onclick="closeAlert()">OK</button>
+    </div>
+</div>
+
+<script>
+function showAlert(message, type = 'info') {
+    const alert = document.getElementById('customAlert');
+    const content = alert.querySelector('.alert-content');
+    
+    content.className = 'alert-content alert-' + type;
+    
+    const title = document.getElementById('alertTitle');
+    if (type === 'success') {
+        title.textContent = 'Sucesso!';
+    } else if (type === 'error') {
+        title.textContent = 'Erro';
+    } else if (type === 'warning') {
+        title.textContent = 'Atenção';
+    } else {
+        title.textContent = 'Aviso';
+    }
+    
+    document.getElementById('alertMessage').textContent = message;
+    alert.classList.add('show');
+}
+
+function closeAlert() {
+    document.getElementById('customAlert').classList.remove('show');
+}
+
+document.getElementById('customAlert').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeAlert();
+    }
+});
+</script>

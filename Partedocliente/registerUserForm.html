@@ -154,7 +154,7 @@
             // Validar tipo de conta
             if (!tipoSelect.value) {
                 e.preventDefault();
-                alert('Por favor, selecione o tipo de conta!');
+                showAlert('Por favor, selecione o tipo de conta!', 'warning');
                 tipoSelect.focus();
                 return;
             }
@@ -162,7 +162,7 @@
             // Validar formato do email
             if (!validarEmail(email)) {
                 e.preventDefault();
-                alert('Por favor, digite um email válido!');
+                showAlert('Por favor, digite um email válido!', 'error');
                 emailInput.focus();
                 return;
             }
@@ -170,7 +170,7 @@
             // Validar se o campo de email tem erro
             if (emailInput.setCustomValidity && emailInput.setCustomValidity.toString().includes('em uso')) {
                 e.preventDefault();
-                alert('Por favor, use outro email! Este já está cadastrado.');
+                showAlert('Por favor, use outro email! Este já está cadastrado.', 'error');
                 emailInput.focus();
                 return;
             }
@@ -192,6 +192,8 @@
             olho.classList.toggle('active');
         });
     </script>
+    
+    <?php include_once "../customAlert.html"; ?>
     
     <style>
         input.error {

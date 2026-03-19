@@ -67,7 +67,11 @@
     </header>
 
 
-    <div class="containerCard" id="produtos"></div>
+    <div class="containerCard" id="produtos">
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner"></div>
+        </div>
+    </div>
 
 
     <script src="shoppingCart.js"></script>
@@ -77,6 +81,7 @@
         fetch("../api.php?categoria=doces")
             .then(res => res.json())
             .then(produtos => {
+                document.getElementById('loadingSpinner').style.display = 'none';
                 todosProdutos = produtos;
                 renderProdutos(produtos);
                 
@@ -139,6 +144,7 @@
             renderProdutos(produtosFiltrados);
         }
     </script>
+    <?php include_once "../customAlert.html"; ?>
 </body>
 
 </html>
