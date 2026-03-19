@@ -93,26 +93,26 @@
             }
 
             produtos.forEach((p, index) => {
-                const estoque = p.ESTOQUE || 0;
+                const estoque = p.estoque || 0;
                 container.innerHTML += `
                     <div class="card" style="animation-delay: ${index * 0.1}s">
                         <div class="imagem">
-                            <img src="../imgBD/${p.IMAGEM}">
+                            <img src="../imgBD/${p.imagem}">
                         </div>
                         <div class="descricao">
-                            <p>${p.NOME}</p>
+                            <p>${p.nome}</p>
                         </div>
                         <div class="preco">
-                            <p>R$ ${p.VALOR}</p>
+                            <p>R$ ${parseFloat(p.valor).toFixed(2).replace('.', ',')}</p>
                         </div>
                         <div class="button">
                             <button 
                                 class="comprar"
                                 data-id="${p.id}"
-                                data-nome="${p.NOME}"
-                                data-preco="${p.VALOR}"
+                                data-nome="${p.nome}"
+                                data-preco="${p.valor}"
                                 data-estoque="${estoque}"
-                                data-imagem="../imgBD/${p.IMAGEM}"
+                                data-imagem="../imgBD/${p.imagem}"
                                 ${estoque <= 0 ? 'disabled' : ''}>
                                 ${estoque <= 0 ? 'Indisponível' : 'Comprar'}
                             </button>
@@ -131,7 +131,7 @@
             }
             
             const produtosFiltrados = todosProdutos.filter(produto => 
-                produto.NOME.toLowerCase().includes(termo)
+                produto.nome.toLowerCase().includes(termo)
             );
             
             renderProdutos(produtosFiltrados);

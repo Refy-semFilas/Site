@@ -3,7 +3,7 @@ require "../supabaseConnection.php";
 
 $nome = $_POST["nome"];
 $descricao = $_POST["descricao"];
-$valor = $_POST["valor"];
+$valor = str_replace(',', '.', str_replace('.', '', $_POST["valor"]));
 $estoque = $_POST["estoque"];
 $codigo = $_POST["codigoBarras"];
 $categoria = $_POST['categoria'];

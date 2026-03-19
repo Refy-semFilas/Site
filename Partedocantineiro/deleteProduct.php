@@ -5,7 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["CODIGO_DE_BARRAS"])) 
     $CODIGO_DE_BARRAS = trim($_POST["CODIGO_DE_BARRAS"]);
 
     if ($CODIGO_DE_BARRAS !== "") {
-        $delete = supabaseRequest("/rest/v1/produto?CODIGO_DE_BARRAS=eq.$CODIGO_DE_BARRAS", 'DELETE');
+        $delete = supabaseRequest("/rest/v1/produto?codigo_de_barras=eq.$CODIGO_DE_BARRAS", 'DELETE');
 
         if ($delete['code'] === 200 || $delete['code'] === 204) {
             alerta('Produto excluído com sucesso!', 'dashboard.php');

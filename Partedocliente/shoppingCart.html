@@ -166,7 +166,7 @@ if (carrinho.length === 0) {
                     <img src="${produto.imagem}">
                     <div class="nomePreco">
                         <p class="nome">${produto.nome}</p>
-                        <p class="preco">R$ ${produto.preco}</p>
+                        <p class="preco">R$ ${parseFloat(produto.preco).toFixed(2).replace('.', ',')}</p>
                     </div>
 
                     <div class="quantidade" data-id="${produto.id}">

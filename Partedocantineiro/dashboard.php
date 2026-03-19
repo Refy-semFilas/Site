@@ -76,10 +76,9 @@ $produtos = $result['data'] ?? [];
         </a>
 
 
-        <form method="post" action="deleteProduct.php"
-              onsubmit="return confirm('Deseja excluir este produto?');">
+        <form method="post" action="deleteProduct.php" class="delete-form">
             <input type="hidden" name="CODIGO_DE_BARRAS" value="<?php echo $p['codigo_de_barras']; ?>">
-            <button type="submit" class="btn-card excluir">Excluir</button>
+            <button type="button" class="btn-card excluir btn-excluir" data-nome="<?php echo htmlspecialchars($p['nome']); ?>">Excluir</button>
         </form>
     </div>
 </div>
@@ -87,7 +86,88 @@ $produtos = $result['data'] ?? [];
 
 <?php endforeach; ?>
 
+    </div>
 
+    <div id="modalConfirm" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h3>Confirmar exclusão</h3>
+            <p id="modalTexto">Deseja excluir este produto?</p>
+            <div class="modal-botoes">
+                <button type="button" class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+                <button type="button" class="btn-confirmar" id="btnConfirmar">Excluir</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>
+
+<script>
+document.querySelectorAll('.btn-excluir').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        var nome = this.getAttribute('data-nome');
+        var form = this.closest('.delete-form');
+        document.getElementById('modalTexto').textContent = 'Deseja excluir "' + nome + '"?';
+        document.getElementById('modalConfirm').style.display = 'flex';
+        document.getElementById('btnConfirmar').onclick = function() {
+            form.submit();
+        };
+    });
+});
+
+function fecharModal() {
+    document.getElementById('modalConfirm').style.display = 'none';
+}
+</script>
+
+<style>
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.modal-content h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+}
+.modal-content p {
+    color: #666;
+    margin-bottom: 25px;
+}
+.modal-botoes {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+.btn-cancelar {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #ccc;
+    color: #333;
+    font-size: 14px;
+}
+.btn-confirmar {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #e74c3c;
+    color: #fff;
+    font-size: 14px;
+}
+.btn-cancelar:hover { background: #bbb; }
+.btn-confirmar:hover { background: #c0392b; }
+</style>
