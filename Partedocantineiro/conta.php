@@ -6,20 +6,18 @@ if (!isset($_SESSION['user_id']) || $_SESSION['tipo'] !== 'admin') {
     exit;
 }
 
-require "../databaseConnection.php";
+require "../supabaseConnection.php";
 
 $user_id = $_SESSION['user_id'];
-$sql = $conn->prepare("SELECT EMAIL, USERNAME, TIPO FROM usuarios WHERE ID = ?");
-$sql->bind_param("i", $user_id);
-$sql->execute();
-$result = $sql->get_result();
-$usuario = $result->fetch_assoc();
+$result = supabaseRequest("/rest/v1/usuarios?id=eq.$user_id&select=email,username,tipo");
 
-if (!$usuario) {
+if (count($result['data']) === 0) {
     session_destroy();
     header("Location: ../Partedocliente/loginForm.html");
     exit;
 }
+
+$usuario = $result['data'][0];
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -41,10 +39,9 @@ if (!$usuario) {
                 <div class="opcoes">
                     <a href="dashboard.php">Inicio</a>
                     <a href="addProductForm.html">Adicionar item</a>
-                    <a href="relatorio.html">Relatório de venda</a>
+                    <a href="relatorio.html">Relatório</a>
                     <a href="conta.php" style="border-bottom: 1px solid #073c05;">
-                        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;">
+                        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
@@ -57,8 +54,7 @@ if (!$usuario) {
     <div class="conta-container">
         <div class="conta-card">
             <div class="conta-icon">
-                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ff6200" stroke-width="1.5"
-                    stroke-linecap="round" stroke-linejoin="round">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ff6200" stroke-width="1.5">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
@@ -67,15 +63,15 @@ if (!$usuario) {
             <div class="conta-info">
                 <div class="info-row">
                     <span class="label">Tipo de conta:</span>
-                    <span class="value"><?php echo $usuario['TIPO'] === 'admin' ? 'Cantineiro' : 'Cliente'; ?></span>
+                    <span class="value"><?php echo $usuario['tipo'] === 'admin' ? 'Cantineiro' : 'Cliente'; ?></span>
                 </div>
                 <div class="info-row">
                     <span class="label">Nome de usuário:</span>
-                    <span class="value"><?php echo htmlspecialchars($usuario['USERNAME']); ?></span>
+                    <span class="value"><?php echo htmlspecialchars($usuario['username']); ?></span>
                 </div>
                 <div class="info-row">
-                    <span class="label">Email cadastrado:</span>
-                    <span class="value"><?php echo htmlspecialchars($usuario['EMAIL']); ?></span>
+                    <span class="label">Email:</span>
+                    <span class="value"><?php echo htmlspecialchars($usuario['email']); ?></span>
                 </div>
             </div>
             <a href="logout.php" class="sair-btn">Sair da conta</a>

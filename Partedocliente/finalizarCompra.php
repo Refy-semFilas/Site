@@ -1,5 +1,5 @@
 <?php
-require "../databaseConnection.php";
+require "../supabaseConnection.php";
 
 header('Content-Type: application/json');
 
@@ -10,43 +10,34 @@ if (!isset($data['itens']) || empty($data['itens'])) {
     exit;
 }
 
-$conn->begin_transaction();
-$erro = false;
-
 foreach ($data['itens'] as $item) {
     $produtoId = $item['id'];
     $quantidade = $item['quantidade'];
     
-    $check = $conn->prepare("SELECT ESTOQUE FROM produto WHERE id = ?");
-    $check->bind_param("i", $produtoId);
-    $check->execute();
-    $result = $check->get_result();
-    $produto = $result->fetch_assoc();
+    $check = supabaseRequest("/rest/v1/produto?id=eq.$produtoId&select=id,estoque");
     
-    if (!$produto) {
-        $erro = true;
-        break;
+    if (count($check['data']) === 0) {
+        echo json_encode(['success' => false, 'message' => 'Produto não encontrado: ' . $produtoId]);
+        exit;
     }
     
-    if ($produto['ESTOQUE'] < $quantidade) {
-        $conn->rollback();
+    $produto = $check['data'][0];
+    $novoEstoque = $produto['estoque'] - $quantidade;
+    
+    if ($novoEstoque < 0) {
         echo json_encode(['success' => false, 'message' => 'Estoque insuficiente para: ' . $item['nome']]);
         exit;
     }
     
-    $update = $conn->prepare("UPDATE produto SET ESTOQUE = ESTOQUE - ? WHERE id = ?");
-    $update->bind_param("ii", $quantidade, $produtoId);
-    if (!$update->execute()) {
-        $erro = true;
-        break;
+    $update = supabaseRequest("/rest/v1/produto?id=eq.$produtoId", 'PATCH', [
+        'estoque' => $novoEstoque
+    ]);
+    
+    if ($update['code'] !== 200 && $update['code'] !== 204) {
+        echo json_encode(['success' => false, 'message' => 'Erro ao atualizar estoque']);
+        exit;
     }
 }
 
-if ($erro) {
-    $conn->rollback();
-    echo json_encode(['success' => false, 'message' => 'Erro ao processar compra']);
-} else {
-    $conn->commit();
-    echo json_encode(['success' => true, 'message' => 'Compra finalizada com sucesso']);
-}
+echo json_encode(['success' => true, 'message' => 'Compra finalizada com sucesso']);
 ?>

@@ -1,5 +1,5 @@
 <?php
-require "../databaseConnection.php";
+require "../supabaseConnection.php";
 
 $nome = $_POST["nome"];
 $descricao = $_POST["descricao"];
@@ -15,34 +15,25 @@ if (isset($_FILES["foto"]) && $_FILES["foto"]["error"] === UPLOAD_ERR_OK) {
     move_uploaded_file($_FILES["foto"]["tmp_name"], "../imgBD/" . $imagemNome);
 }
 
-$check = $conn->prepare("SELECT id FROM produto WHERE CODIGO_DE_BARRAS = ?");
-$check->bind_param("s", $codigo);
-$check->execute();
-$check->store_result();
+$check = supabaseRequest("/rest/v1/produto?codigo_de_barras=eq.$codigo&select=id");
 
-if ($check->num_rows > 0) {
-    echo "<script>
-        alert('Já existe um produto com este código de barras!');
-        window.location.href = 'addProductForm.html';
-    </script>";
-    exit();
+if (count($check['data']) > 0) {
+    alerta('Código de barras já cadastrado!', 'addProductForm.html');
 }
 
-$sql = $conn->prepare("
-    INSERT INTO produto (NOME, DESCRICAO, VALOR, CODIGO_DE_BARRAS, IMAGEM, CATEGORIA, ESTOQUE)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-");
+$insert = supabaseRequest("/rest/v1/produto", 'POST', [
+    'nome' => $nome,
+    'descricao' => $descricao,
+    'valor' => floatval($valor),
+    'codigo_de_barras' => $codigo,
+    'imagem' => $imagemNome,
+    'categoria' => $categoria,
+    'estoque' => intval($estoque)
+]);
 
-$sql->bind_param(
-    "ssdsssi", $nome, $descricao, $valor, $codigo, $imagemNome, $categoria, $estoque
-);
-
-if ($sql->execute()) {
-    echo "<script>
-        alert('Produto cadastrado com sucesso!');
-        window.location.href = 'dashboard.php';
-    </script>";
+if ($insert['code'] === 201) {
+    alerta('Produto cadastrado com sucesso!', 'dashboard.php');
 } else {
-    echo "Erro ao cadastrar produto: " . $conn->error;
+    alerta('Erro ao cadastrar produto!', 'addProductForm.html');
 }
 ?>

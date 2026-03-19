@@ -6,20 +6,19 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-require "../databaseConnection.php";
+require "../supabaseConnection.php";
 
 $user_id = $_SESSION['user_id'];
-$sql = $conn->prepare("SELECT EMAIL, USERNAME, TIPO FROM usuarios WHERE ID = ?");
-$sql->bind_param("i", $user_id);
-$sql->execute();
-$result = $sql->get_result();
-$usuario = $result->fetch_assoc();
 
-if (!$usuario) {
+$result = supabaseRequest("/rest/v1/usuarios?id=eq.$user_id&select=email,username,tipo");
+
+if (count($result['data']) === 0) {
     session_destroy();
     header("Location: loginForm.html");
     exit;
 }
+
+$usuario = $result['data'][0];
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -77,15 +76,15 @@ if (!$usuario) {
             <div class="conta-info">
                 <div class="info-row">
                     <span class="label">Tipo de conta:</span>
-                    <span class="value"><?php echo $usuario['TIPO'] === 'admin' ? 'Cantineiro' : 'Cliente'; ?></span>
+                    <span class="value"><?php echo $usuario['tipo'] === 'admin' ? 'Cantineiro' : 'Cliente'; ?></span>
                 </div>
                 <div class="info-row">
                     <span class="label">Nome de usuário:</span>
-                    <span class="value"><?php echo htmlspecialchars($usuario['USERNAME']); ?></span>
+                    <span class="value"><?php echo htmlspecialchars($usuario['username']); ?></span>
                 </div>
                 <div class="info-row">
                     <span class="label">Email cadastrado:</span>
-                    <span class="value"><?php echo htmlspecialchars($usuario['EMAIL']); ?></span>
+                    <span class="value"><?php echo htmlspecialchars($usuario['email']); ?></span>
                 </div>
             </div>
             <a href="logout.php" class="sair-btn">Sair da conta</a>

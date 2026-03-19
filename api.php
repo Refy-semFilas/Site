@@ -1,21 +1,18 @@
 <?php
-require "databaseConnection.php";
+require "supabaseConnection.php";
+
+header('Content-Type: application/json');
 
 $categoria = $_GET['categoria'] ?? null;
 
+$queryParams = ['select' => 'id,nome,descricao,valor,imagem,categoria,estoque'];
+
 if ($categoria) {
-    $sql = $conn->prepare("SELECT id, NOME, DESCRICAO, VALOR, IMAGEM, CATEGORIA, ESTOQUE FROM produto WHERE CATEGORIA = ?");
-    $sql->bind_param("s", $categoria);
-} else {
-    $sql = $conn->prepare("SELECT id, NOME, DESCRICAO, VALOR, IMAGEM, CATEGORIA, ESTOQUE FROM produto");
+    $queryParams['categoria'] = "eq.$categoria";
 }
 
-$sql->execute();
-$result = $sql->get_result();
+$result = supabaseRequest("/rest/v1/produto", 'GET', null, $queryParams);
 
-$produtos = [];
-while ($row = $result->fetch_assoc()) {
-    $produtos[] = $row;
-}
+$produtos = $result['data'] ?? [];
 
 echo json_encode($produtos);

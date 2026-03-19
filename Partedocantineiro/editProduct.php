@@ -44,7 +44,7 @@
 
 
 <?php
-require "../databaseConnection.php";
+require "../supabaseConnection.php";
 
 $id = $_GET['id'] ?? null;
 if (!$id) {
@@ -52,15 +52,15 @@ if (!$id) {
     exit;
 }
 
-$sql = $conn->prepare("SELECT * FROM produto WHERE ID = ?");
-$sql->bind_param("i", $id);
-$sql->execute();
-$produto = $sql->get_result()->fetch_assoc();
+$result = supabaseRequest("/rest/v1/produto?id=eq.$id&select=*");
+$produtos = $result['data'] ?? [];
 
-if (!$produto) {
+if (count($produtos) === 0) {
     header("Location: dashboard.php");
     exit;
 }
+
+$produto = $produtos[0];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome  = $_POST['nome'];
@@ -76,12 +76,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $imagem = $nomeImagem;
     }
 
+    $updateData = [
+        'nome' => $nome,
+        'descricao' => $descricao,
+        'valor' => floatval($valor),
+        'codigo_de_barras' => $CODIGO_DE_BARRAS,
+        'imagem' => $imagem
+    ];
 
-    $update = $conn->prepare(
-        "UPDATE produto SET NOME = ?, DESCRICAO = ?, VALOR = ?, CODIGO_DE_BARRAS = ?, IMAGEM = ? WHERE ID = ?"
-    );
-    $update->bind_param("ssdssi", $nome, $descricao, $valor, $CODIGO_DE_BARRAS, $imagem, $id);
-    $update->execute();
+    supabaseRequest("/rest/v1/produto?id=eq.$id", 'PATCH', $updateData);
 
     header("Location: dashboard.php");
     exit;
@@ -100,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label>Nome do produto</label> 
                 <div class="input-with-icon">
                     <input type="text" name="nome"
-                       value="<?= htmlspecialchars($produto['NOME']) ?>" required>
+                       value="<?= htmlspecialchars($produto['nome']) ?>" required>
                     <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000"
                         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" />
@@ -114,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label>Descrição do produto</label>
                 <div class="input-with-icon">
                     <input type="text" name="descricao"
-                       value="<?= htmlspecialchars($produto['DESCRICAO']) ?>" required>
+                       value="<?= htmlspecialchars($produto['descricao']) ?>" required>
                     <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000"
                         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -131,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label>Valor do produto</label>  
                 <div class="input-with-icon">
                     <input type="number" step="0.01" name="valor"
-                       value="<?= $produto['VALOR'] ?>" required>
+                       value="<?= $produto['valor'] ?>" required>
                     <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000"
                         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 1v22" />
@@ -144,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label>Código de barras</label>
                 <div class="input-with-icon">
                     <input type="text" name="CODIGO_DE_BARRAS"
-                       value="<?= htmlspecialchars($produto['CODIGO_DE_BARRAS']) ?>" required>
+                       value="<?= htmlspecialchars($produto['codigo_de_barras']) ?>" required>
                     <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000"
                         stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="4" width="20" height="16" rx="1" />
@@ -162,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>Imagem atual</p>
             <img 
                 id="previewImagem"
-                src="../imgBD/<?= htmlspecialchars($produto['IMAGEM']) ?>"
+                src="../imgBD/<?= htmlspecialchars($produto['imagem']) ?>"
                 alt="Imagem do produto"
             >
             <label class="add-img">
@@ -176,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 >
             </label>
             <input type="hidden" name="imagem_atual"
-            value="<?= htmlspecialchars($produto['IMAGEM']) ?>">
+            value="<?= htmlspecialchars($produto['imagem']) ?>">
         </div>
 
 

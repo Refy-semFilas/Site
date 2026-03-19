@@ -1,5 +1,5 @@
 <?php
-require "../databaseConnection.php";
+require "../supabaseConnection.php";
 require "../config.php";
 
 header('Content-Type: application/json');
@@ -27,12 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     // Verificar se o usuário existe com esse email e username
-    $sql = $conn->prepare("SELECT ID, USERNAME, EMAIL FROM usuarios WHERE EMAIL = ? AND USERNAME = ?");
-    $sql->bind_param("ss", $email, $username);
-    $sql->execute();
-    $result = $sql->get_result();
+    $result = supabaseRequest("/rest/v1/usuarios?email=eq.$email&username=eq.$username&select=id,username,email");
     
-    if ($result->num_rows === 0) {
+    if (count($result['data']) === 0) {
         echo json_encode([
             'success' => false,
             'message' => 'Usuário ou email não encontrados! Verifique os dados e tente novamente.'
@@ -40,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     
-    $user = $result->fetch_assoc();
+    $user = $result['data'][0];
     
     // Gerar token único para recuperação
     $token = bin2hex(random_bytes(32));
@@ -62,28 +59,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Para este exemplo, vamos salvar o token em uma tabela temporária
     // Se você não tiver tabela, pode salvar em arquivo ou sessão
     try {
-        // Criar tabela de reset de senha se não existir
-        $conn->query("
-            CREATE TABLE IF NOT EXISTS password_resets (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT NOT NULL,
-                token VARCHAR(255) NOT NULL,
-                expires_at DATETIME NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES usuarios(ID),
-                INDEX idx_token (token)
-            )
-        ");
-        
         // Limpar tokens antigos deste usuário
-        $stmt = $conn->prepare("DELETE FROM password_resets WHERE user_id = ?");
-        $stmt->bind_param("i", $user['ID']);
-        $stmt->execute();
+        $deleteOld = supabaseRequest("/rest/v1/password_resets?user_id=eq." . $user['id'], 'DELETE');
         
         // Inserir novo token
-        $stmt = $conn->prepare("INSERT INTO password_resets (user_id, token, expires_at) VALUES (?, ?, ?)");
-        $stmt->bind_param("iss", $user['ID'], $token, $expires);
-        $stmt->execute();
+        $insertToken = supabaseRequest("/rest/v1/password_resets", 'POST', [
+            'user_id' => $user['ID'],
+            'token' => $token,
+            'expires_at' => $expires
+        ]);
         
         if ($emailSent) {
             echo json_encode([

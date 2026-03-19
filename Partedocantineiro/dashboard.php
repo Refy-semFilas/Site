@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require "../databaseConnection.php";
+require "../supabaseConnection.php";
 require "../userFunctions.php";
 
 if (!isAdmin()) {
@@ -9,9 +9,8 @@ if (!isAdmin()) {
     exit;
 }
 
-// Busca todos os produtos
-$sql = $conn->query("SELECT * FROM produto");
-$produtos = $sql->fetch_all(MYSQLI_ASSOC);
+$result = supabaseRequest("/rest/v1/produto?select=*");
+$produtos = $result['data'] ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -63,23 +62,23 @@ $produtos = $sql->fetch_all(MYSQLI_ASSOC);
 
     <div class="card">
     <div class="imagem">
-        <img src="../imgBD/<?php echo $p['IMAGEM']; ?>" alt="<?php echo $p['NOME']; ?>">
+        <img src="../imgBD/<?php echo $p['imagem']; ?>" alt="<?php echo $p['nome']; ?>">
     </div>
 
     <div class="info">
-        <p class="descricao"><?php echo $p['NOME']; ?></p>
-        <p class="preco">R$ <?php echo number_format($p['VALOR'], 2, ',', '.'); ?></p>
+        <p class="descricao"><?php echo $p['nome']; ?></p>
+        <p class="preco">R$ <?php echo number_format($p['valor'], 2, ',', '.'); ?></p>
     </div>
 
     <div class="acoes">
-        <a class="btn-card alterar" href="editProduct.php?id=<?= $p['ID'] ?>">
+        <a class="btn-card alterar" href="editProduct.php?id=<?= $p['id'] ?>">
             Alterar
         </a>
 
 
         <form method="post" action="deleteProduct.php"
               onsubmit="return confirm('Deseja excluir este produto?');">
-            <input type="hidden" name="id" value="<?php echo $p['ID']; ?>">
+            <input type="hidden" name="CODIGO_DE_BARRAS" value="<?php echo $p['codigo_de_barras']; ?>">
             <button type="submit" class="btn-card excluir">Excluir</button>
         </form>
     </div>

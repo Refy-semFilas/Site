@@ -1,5 +1,5 @@
 <?php
-require "../databaseConnection.php";
+require "../supabaseConnection.php";
 
 header('Content-Type: application/json');
 
@@ -12,13 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     
-    // Verificar se o email já existe no banco
-    $sql = $conn->prepare("SELECT ID FROM usuarios WHERE EMAIL = ?");
-    $sql->bind_param("s", $email);
-    $sql->execute();
-    $result = $sql->get_result();
+    $result = supabaseRequest("/rest/v1/usuarios?email=eq.$email&select=id");
     
-    echo json_encode(['exists' => $result->num_rows > 0]);
+    echo json_encode(['exists' => count($result['data']) > 0]);
 } else {
     echo json_encode(['error' => 'Método não permitido']);
 }
