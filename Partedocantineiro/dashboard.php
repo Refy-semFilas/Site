@@ -38,7 +38,7 @@ $produtos = $result['data'] ?? [];
                         <circle cx="11" cy="11" r="6"></circle>
                         <line x1="15.7" y1="15.7" x2="20.2" y2="20.2"></line>
                     </svg>
-                    <input type="text" placeholder="Pesquise aqui...">
+                    <input type="text" id="searchInput" placeholder="Pesquise aqui...">
                 </div>
                 <div class="opcoes">
                     <a href="dashboard.php" style="border-bottom: 1px solid #073c05;">Inicio</a>
@@ -102,6 +102,16 @@ $produtos = $result['data'] ?? [];
 </html>
 
 <script>
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+    
+    cards.forEach(card => {
+        const nome = card.querySelector('.descricao').textContent.toLowerCase();
+        card.style.display = nome.includes(searchTerm) ? 'flex' : 'none';
+    });
+});
+
 document.querySelectorAll('.btn-excluir').forEach(function(btn) {
     btn.addEventListener('click', function() {
         var nome = this.getAttribute('data-nome');
