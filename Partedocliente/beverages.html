@@ -73,6 +73,74 @@
 
 
 <script src="shoppingCart.js"></script>
+<script>
+        let todosProdutos = [];
+        
+        fetch("../api.php?categoria=bebidas")
+            .then(res => res.json())
+            .then(produtos => {
+                document.getElementById('loadingSpinner').style.display = 'none';
+                todosProdutos = produtos;
+                renderProdutos(produtos);
+                
+                const searchInput = document.querySelector('.barraPesquisa input');
+                searchInput.addEventListener('input', pesquisarProdutos);
+            });
+            
+        function renderProdutos(produtos) {
+            const container = document.getElementById("produtos");
+            container.innerHTML = "";
+
+            if (produtos.length === 0) {
+                container.innerHTML = "<p>Nenhuma bebida cadastrada</p>";
+                return;
+            }
+
+            produtos.forEach((p, index) => {
+                const estoque = p.estoque || 0;
+                container.innerHTML += `
+                    <div class="card" style="animation-delay: ${index * 0.1}s">
+                        <div class="imagem">
+                            <img src="../imgBD/${p.imagem}">
+                        </div>
+                        <div class="descricao">
+                            <p>${p.nome}</p>
+                        </div>
+                        <div class="preco">
+                            <p>R$ ${Number(p.valor).toFixed(2).replace('.', ',')}</p>
+                        </div>
+                        <div class="button">
+                            <button 
+                                class="comprar"
+                                data-id="${p.id}"
+                                data-nome="${p.nome}"
+                                data-preco="${p.valor}"
+                                data-estoque="${estoque}"
+                                data-imagem="../imgBD/${p.imagem}"
+                                ${estoque <= 0 ? 'disabled' : ''}>
+                                ${estoque <= 0 ? 'Indisponível' : 'Comprar'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        function pesquisarProdutos(event) {
+            const termo = event.target.value.toLowerCase().trim();
+            
+            if (termo === '') {
+                renderProdutos(todosProdutos);
+                return;
+            }
+            
+            const produtosFiltrados = todosProdutos.filter(produto => 
+                produto.nome.toLowerCase().includes(termo)
+            );
+            
+            renderProdutos(produtosFiltrados);
+        }
+    </script>
 <?php include_once "../customAlert.html"; ?>
 
 

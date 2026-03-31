@@ -1,10 +1,12 @@
 <?php
 require "../supabaseConnection.php";
 
-$user = $_POST['user'];
+$user = trim($_POST['user']);
 $senha = $_POST['senha'];
+$result = supabaseRequest("/rest/v1/usuarios?username=eq." . urlencode($user) . "&select=*");
 
-$result = supabaseRequest("/rest/v1/usuarios?username=eq.$user&select=*");
+// Debug - remove in production
+file_put_contents("debug.txt", print_r($result, true));
 
 if (count($result['data']) === 1) {
     $dados = $result['data'][0];
