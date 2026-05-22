@@ -13,7 +13,7 @@ if (empty($ids)) {
 $idsArray = array_map('intval', explode(',', $ids));
 $filters = [];
 foreach ($idsArray as $id) {
-    $filters[] = "id=eq.$id";
+    $filters[] = "id.eq.$id";
 }
 $filterString = 'or=(' . implode(',', $filters) . ')';
 

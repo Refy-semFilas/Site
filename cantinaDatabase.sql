@@ -30,6 +30,7 @@ CREATE TABLE public.usuarios (
   email character varying NOT NULL UNIQUE,
   senha character varying NOT NULL,
   tipo character varying DEFAULT 'cliente'::character varying,
+  chave_pix text,
   CONSTRAINT usuarios_pkey PRIMARY KEY (id)
 );
 CREATE TABLE public.venda (

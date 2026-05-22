@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho</title>
     <link rel="icon" href="img/Logo png.png">
-<link rel="stylesheet" href="src/styles/mainHeader.css">
+    <link rel="stylesheet" href="src/styles/mainHeader.css">
     <link rel="stylesheet" href="src/styles/categoryFilter.css">
     <style>
         .carrinho-vazio {
@@ -98,6 +98,85 @@
             color: #ff6200;
             font-family: monospace;
             font-size: 14px;
+        }
+        .pix-modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .pix-modal-header h2 {
+            margin: 10px 0 5px;
+            color: #333;
+        }
+        .pix-modal-header p {
+            color: #666;
+            font-size: 14px;
+            margin: 0 0 20px;
+        }
+        .pix-qr-item {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #e0e0e0;
+        }
+        .pix-qr-vendedor {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 12px;
+        }
+        .pix-qr-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 8px;
+            background: #fff;
+            padding: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .pix-qr-valor {
+            font-size: 18px;
+            color: #28a745;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+        .pix-qr-copiaypega {
+            margin-top: 12px;
+        }
+        .pix-qr-copiaypega code {
+            display: inline-block;
+            background: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            word-break: break-all;
+            cursor: pointer;
+            border: 1px dashed #ccc;
+            color: #333;
+            max-width: 100%;
+        }
+        .pix-qr-copiaypega code:hover {
+            background: #f0f0f0;
+            border-color: #ff6200;
+        }
+        #pixModal .btn-voltar {
+            margin-top: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .pix-qr-img {
+            width: 260px;
+            height: 260px;
+            border-radius: 0;
+            background: #fff;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         @media (max-width: 576px) {
             .carrinho-vazio {
@@ -347,11 +426,10 @@ if (carrinho.length === 0) {
                 const result = await response.json();
 
                 if (result.success) {
-                    showAlert(result.message, result.success ? 'success' : 'error');
                     localStorage.removeItem('carrinho');
-                    window.location.href = 'home.html';
+                    mostrarPixQRCode(result.pix);
                 } else {
-                    showAlert(result.message, result.success ? 'success' : 'error');
+                    showAlert(result.message, 'error');
                     btn.disabled = false;
                     btn.innerHTML = 'Finalizar';
                 }
@@ -363,7 +441,142 @@ if (carrinho.length === 0) {
         });
     </script>
 
-    <?php include_once "customAlert.html"; ?>
+    <div id="customAlert" class="custom-alert">
+        <div class="alert-content">
+            <h3 id="alertTitle">Aviso</h3>
+            <p id="alertMessage"></p>
+            <button class="alert-btn" onclick="closeAlert()">OK</button>
+        </div>
+    </div>
+
+    <div id="pixModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:10000;">
+        <div class="pix-modal-content">
+            <div class="pix-modal-header">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <h2>Pedido Confirmado!</h2>
+                <p>Faça o pagamento via PIX escaneando o QR Code abaixo</p>
+            </div>
+            <div id="pixQrContainer"></div>
+            <button class="btn-voltar" onclick="fecharPixModal()">Voltar ao Início</button>
+        </div>
+    </div>
+
+    <script>
+    function showAlert(message, type = 'info') {
+        const alert = document.getElementById('customAlert');
+        const content = alert.querySelector('.alert-content');
+        
+        content.className = 'alert-content alert-' + type;
+        
+        const title = document.getElementById('alertTitle');
+        if (type === 'success') {
+            title.textContent = 'Sucesso!';
+        } else if (type === 'error') {
+            title.textContent = 'Erro';
+        } else if (type === 'warning') {
+            title.textContent = 'Atenção';
+        } else {
+            title.textContent = 'Aviso';
+        }
+        
+        document.getElementById('alertMessage').textContent = message;
+        alert.classList.add('show');
+    }
+
+    function closeAlert() {
+        document.getElementById('customAlert').classList.remove('show');
+    }
+
+    document.getElementById('customAlert').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeAlert();
+        }
+    });
+
+    function mostrarPixQRCode(pixData) {
+        const modal = document.getElementById('pixModal');
+        const container = document.getElementById('pixQrContainer');
+        container.innerHTML = '';
+
+        if (!pixData || pixData.length === 0) {
+            container.innerHTML = '<p style="text-align:center;color:#666;padding:20px;">Nenhuma chave PIX disponível para os vendedores.</p>';
+        } else {
+            pixData.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'pix-qr-item';
+
+                const vendedorDiv = document.createElement('div');
+                vendedorDiv.className = 'pix-qr-vendedor';
+                vendedorDiv.textContent = p.vendedor;
+                div.appendChild(vendedorDiv);
+
+                if (p.qr_base64) {
+                    const qrWrapper = document.createElement('div');
+                    qrWrapper.style.textAlign = 'center';
+                    const img = document.createElement('img');
+                    img.className = 'pix-qr-img';
+                    img.src = p.qr_base64;
+                    img.alt = 'QR Code PIX';
+                    qrWrapper.appendChild(img);
+                    div.appendChild(qrWrapper);
+                } else if (p.chave_pix) {
+                    const chaveP = document.createElement('p');
+                    chaveP.className = 'pix-chave';
+                    chaveP.textContent = 'Chave: ' + p.chave_pix;
+                    div.appendChild(chaveP);
+                } else {
+                    const noPix = document.createElement('p');
+                    noPix.style.cssText = 'color:#999;';
+                    noPix.textContent = 'Vendedor sem chave PIX';
+                    div.appendChild(noPix);
+                }
+
+                if (p.valor > 0) {
+                    const valorDiv = document.createElement('div');
+                    valorDiv.className = 'pix-qr-valor';
+                    valorDiv.textContent = 'Valor: R$ ' + p.valor.toFixed(2).replace('.', ',');
+                    div.appendChild(valorDiv);
+                }
+
+                if (p.brcode) {
+                    const copiaDiv = document.createElement('div');
+                    copiaDiv.className = 'pix-qr-copiaypega';
+                    copiaDiv.innerHTML = '<small>Ou copie o código:</small><br>';
+                    const codeEl = document.createElement('code');
+                    codeEl.textContent = p.brcode;
+                    codeEl.onclick = function() { copiarBrcode(this); };
+                    copiaDiv.appendChild(codeEl);
+                    div.appendChild(copiaDiv);
+                }
+
+                container.appendChild(div);
+            });
+        }
+
+        modal.style.display = 'flex';
+    }
+
+    function fecharPixModal() {
+        document.getElementById('pixModal').style.display = 'none';
+        renderCarrinho();
+    }
+
+    function copiarBrcode(el) {
+        navigator.clipboard.writeText(el.textContent).then(() => {
+            showAlert('Código copiado!', 'success');
+        }).catch(() => {
+            const range = document.createRange();
+            range.selectNode(el);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            showAlert('Código copiado!', 'success');
+        });
+    }
+    </script>
 
 </body>
 

@@ -23,6 +23,8 @@ function supabaseRequest($endpoint, $method = 'GET', $data = null, $queryParams 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
     
     if ($method !== 'GET') {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
@@ -59,6 +61,55 @@ function supabaseRequest($endpoint, $method = 'GET', $data = null, $queryParams 
         'code' => $httpCode,
         'data' => $decoded ?? []
     ];
+}
+
+function gerarPixCopiaECola($chavePix, $nome, $cidade = 'Cidade', $valor = null) {
+    $payload = '000201';
+
+    $gui = '0014BR.GOV.BCB.PIX';
+    $key = '01' . str_pad(strlen($chavePix), 2, '0', STR_PAD_LEFT) . $chavePix;
+    $merchantAccount = $gui . $key;
+    $payload .= '26' . str_pad(strlen($merchantAccount), 2, '0', STR_PAD_LEFT) . $merchantAccount;
+
+    $payload .= '52040000';
+    $payload .= '5303986';
+
+    if ($valor !== null && $valor > 0) {
+        $valorStr = number_format($valor, 2, '.', '');
+        $payload .= '54' . str_pad(strlen($valorStr), 2, '0', STR_PAD_LEFT) . $valorStr;
+    }
+
+    $payload .= '5802BR';
+
+    $nomeLimpo = substr(trim($nome), 0, 25);
+    $payload .= '59' . str_pad(strlen($nomeLimpo), 2, '0', STR_PAD_LEFT) . $nomeLimpo;
+
+    $cidadeLimpo = substr(trim($cidade), 0, 15);
+    $payload .= '60' . str_pad(strlen($cidadeLimpo), 2, '0', STR_PAD_LEFT) . $cidadeLimpo;
+
+    $txid = '***';
+    $txidBlock = '05' . str_pad(strlen($txid), 2, '0', STR_PAD_LEFT) . $txid;
+    $payload .= '62' . str_pad(strlen($txidBlock), 2, '0', STR_PAD_LEFT) . $txidBlock;
+
+    $payload .= '6304';
+    $payload .= strtoupper(dechex(crc16Checksum($payload)));
+
+    return $payload;
+}
+
+function crc16Checksum($data) {
+    $crc = 0xFFFF;
+    for ($i = 0; $i < strlen($data); $i++) {
+        $crc ^= ord($data[$i]);
+        for ($j = 0; $j < 8; $j++) {
+            if ($crc & 1) {
+                $crc = ($crc >> 1) ^ 0x8408;
+            } else {
+                $crc >>= 1;
+            }
+        }
+    }
+    return $crc ^ 0xFFFF;
 }
 
 function alerta($mensagem, $redirect = null, $voltar = false)
