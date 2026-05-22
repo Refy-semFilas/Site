@@ -31,6 +31,9 @@ foreach ($result['data'] as $pag) {
     if ($status === 'pending' || $status === 'in_process') {
         $vendedorResult = supabaseRequest("/rest/v1/usuarios?id=eq.{$pag['vendedor_id']}&select=mp_access_token");
         $token = $vendedorResult['data'][0]['mp_access_token'] ?? '';
+        if (!$token) {
+            $token = getenv('MP_ACCESS_TOKEN') ?: '';
+        }
 
         if ($token) {
             $mpCheck = consultarPagamentoMP($token, $pag['mp_payment_id']);

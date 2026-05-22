@@ -31,12 +31,13 @@ $pag = $pagResult['data'][0];
 
 $vendedorResult = supabaseRequest("/rest/v1/usuarios?id=eq.{$pag['vendedor_id']}&select=mp_access_token");
 
-if ($vendedorResult['code'] !== 200 || empty($vendedorResult['data'])) {
-    http_response_code(404);
-    exit;
+$token = '';
+if ($vendedorResult['code'] === 200 && !empty($vendedorResult['data'])) {
+    $token = $vendedorResult['data'][0]['mp_access_token'] ?? '';
 }
-
-$token = $vendedorResult['data'][0]['mp_access_token'] ?? '';
+if (!$token) {
+    $token = getenv('MP_ACCESS_TOKEN') ?: '';
+}
 if (!$token) {
     http_response_code(404);
     exit;

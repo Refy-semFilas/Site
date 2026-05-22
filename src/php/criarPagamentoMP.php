@@ -121,9 +121,11 @@ if (!empty($vendors)) {
     $result = supabaseRequest("/rest/v1/usuarios?" . $filterString . "&select=id,username,chave_pix,mp_access_token,email");
 
     if ($result['code'] === 200 && !empty($result['data'])) {
+        $defaultToken = getenv('MP_ACCESS_TOKEN') ?: '';
+
         foreach ($result['data'] as $v) {
             $total = $totalPorVendedor[$v['id']] ?? 0;
-            $accessToken = $v['mp_access_token'] ?? '';
+            $accessToken = $v['mp_access_token'] ?: $defaultToken;
 
             if (empty($accessToken)) {
                 $pixData[] = [
