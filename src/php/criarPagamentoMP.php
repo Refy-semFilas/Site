@@ -71,7 +71,11 @@ $vendaData = [
 $vendaResult = supabaseRequest("/rest/v1/venda", 'POST', $vendaData);
 
 if ($vendaResult['code'] !== 201) {
-    echo json_encode(['success' => false, 'message' => 'Erro ao criar pedido']);
+    $erroDetalhe = $vendaResult['error'] ?? json_encode($vendaResult['data'] ?? '');
+    echo json_encode([
+        'success' => false,
+        'message' => 'Erro ao criar pedido (HTTP ' . $vendaResult['code'] . '): ' . substr($erroDetalhe, 0, 200)
+    ]);
     exit;
 }
 
