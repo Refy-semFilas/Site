@@ -2,7 +2,17 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Faça login para finalizar a compra']);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Faça login para finalizar a compra',
+        'session_debug' => [
+            'session_id' => session_id(),
+            'session_status' => session_status(),
+            'cookie_params' => session_get_cookie_params(),
+            'saved_path' => session_save_path(),
+            'get_cookie' => $_COOKIE['PHPSESSID'] ?? 'no cookie'
+        ]
+    ]);
     exit;
 }
 
