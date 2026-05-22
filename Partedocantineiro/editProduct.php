@@ -1,3 +1,62 @@
+<?php
+session_start();
+require "../supabaseConnection.php";
+require "../userFunctions.php";
+
+if (!isAdmin()) {
+    header("Location: ../Partedocliente/loginForm.html");
+    exit;
+}
+
+$id = $_GET['id'] ?? null;
+if (!$id) {
+    header("Location: dashboard.php");
+    exit;
+}
+
+$result = supabaseRequest("/rest/v1/produto?id=eq.$id&select=*");
+$produtos = $result['data'] ?? [];
+
+if (count($produtos) === 0) {
+    header("Location: dashboard.php");
+    exit;
+}
+
+$produto = $produtos[0];
+
+if ((int)$produto['usuario_id'] !== (int)$_SESSION['user_id']) {
+    header("Location: dashboard.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nome  = $_POST['nome'];
+    $descricao = $_POST['descricao'];
+    $valor = str_replace(',', '.', str_replace('.', '', $_POST['valor']));
+    $CODIGO_DE_BARRAS = $_POST['CODIGO_DE_BARRAS'];
+    $imagem = $_POST['imagem_atual'];
+
+    if (!empty($_FILES['imagem']['name'])) {
+        $nomeImagem = uniqid() . "-" . $_FILES['imagem']['name'];
+        $destino = "../imgBD/" . $nomeImagem;
+        move_uploaded_file($_FILES['imagem']['tmp_name'], $destino);
+        $imagem = $nomeImagem;
+    }
+
+    $updateData = [
+        'nome' => $nome,
+        'descricao' => $descricao,
+        'valor' => floatval($valor),
+        'codigo_de_barras' => $CODIGO_DE_BARRAS,
+        'imagem' => $imagem
+    ];
+
+    supabaseRequest("/rest/v1/produto?id=eq.$id", 'PATCH', $updateData);
+
+    header("Location: dashboard.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -41,55 +100,6 @@
             </div>
         </div>
     </header>
-
-
-<?php
-require "../supabaseConnection.php";
-
-$id = $_GET['id'] ?? null;
-if (!$id) {
-    header("Location: dashboard.php");
-    exit;
-}
-
-$result = supabaseRequest("/rest/v1/produto?id=eq.$id&select=*");
-$produtos = $result['data'] ?? [];
-
-if (count($produtos) === 0) {
-    header("Location: dashboard.php");
-    exit;
-}
-
-$produto = $produtos[0];
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome  = $_POST['nome'];
-    $descricao = $_POST['descricao'];
-    $valor = str_replace(',', '.', str_replace('.', '', $_POST['valor']));
-    $CODIGO_DE_BARRAS = $_POST['CODIGO_DE_BARRAS'];
-    $imagem = $_POST['imagem_atual'];
-
-    if (!empty($_FILES['imagem']['name'])) {
-        $nomeImagem = uniqid() . "-" . $_FILES['imagem']['name'];
-        $destino = "../imgBD/" . $nomeImagem;
-        move_uploaded_file($_FILES['imagem']['tmp_name'], $destino);
-        $imagem = $nomeImagem;
-    }
-
-    $updateData = [
-        'nome' => $nome,
-        'descricao' => $descricao,
-        'valor' => floatval($valor),
-        'codigo_de_barras' => $CODIGO_DE_BARRAS,
-        'imagem' => $imagem
-    ];
-
-    supabaseRequest("/rest/v1/produto?id=eq.$id", 'PATCH', $updateData);
-
-    header("Location: dashboard.php");
-    exit;
-}
-?>
 
 <div class="conteudo-form">
     <h1 class="titulo">

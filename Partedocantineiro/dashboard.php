@@ -9,7 +9,7 @@ if (!isAdmin()) {
     exit;
 }
 
-$result = supabaseRequest("/rest/v1/produto?select=*");
+$result = supabaseRequest("/rest/v1/produto?usuario_id=eq." . $_SESSION['user_id'] . "&select=*");
 $produtos = $result['data'] ?? [];
 ?>
 <!DOCTYPE html>

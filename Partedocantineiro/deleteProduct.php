@@ -1,10 +1,24 @@
 <?php
+session_start();
 require "../supabaseConnection.php";
+require "../userFunctions.php";
+
+if (!isAdmin()) {
+    header("Location: ../Partedocliente/loginForm.html");
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["CODIGO_DE_BARRAS"])) {
     $CODIGO_DE_BARRAS = trim($_POST["CODIGO_DE_BARRAS"]);
 
     if ($CODIGO_DE_BARRAS !== "") {
+        $check = supabaseRequest("/rest/v1/produto?codigo_de_barras=eq.$CODIGO_DE_BARRAS&select=usuario_id");
+        $produto = $check['data'][0] ?? null;
+
+        if (!$produto || (int)$produto['usuario_id'] !== (int)$_SESSION['user_id']) {
+            alerta('Produto não encontrado ou sem permissão!', null, true);
+        }
+
         $delete = supabaseRequest("/rest/v1/produto?codigo_de_barras=eq.$CODIGO_DE_BARRAS", 'DELETE');
 
         if ($delete['code'] === 200 || $delete['code'] === 204) {

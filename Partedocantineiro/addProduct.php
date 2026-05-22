@@ -1,5 +1,12 @@
 <?php
+session_start();
 require "../supabaseConnection.php";
+require "../userFunctions.php";
+
+if (!isAdmin()) {
+    header("Location: ../Partedocliente/loginForm.html");
+    exit;
+}
 
 $nome = $_POST["nome"];
 $descricao = $_POST["descricao"];
@@ -28,7 +35,8 @@ $insert = supabaseRequest("/rest/v1/produto", 'POST', [
     'codigo_de_barras' => $codigo,
     'imagem' => $imagemNome,
     'categoria' => $categoria,
-    'estoque' => intval($estoque)
+    'estoque' => intval($estoque),
+    'usuario_id' => $_SESSION['user_id']
 ]);
 
 if ($insert['code'] === 201) {
