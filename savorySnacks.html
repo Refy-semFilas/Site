@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salgados</title>
+    <link rel="icon" href="img/Logo png.png">
+<link rel="stylesheet" href="src/styles/productCard.css">
+    <link rel="stylesheet" href="src/styles/mainHeader.css">
+    <style>
+        .card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="imgEpesquisa">
+            <div class="imagemLogo">
+                <img class="logo" src="img/Logo png.png" alt="logo">
+            </div>
+            <div class="pesquisaOpcoes">
+                <div class="barraPesquisa">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="6"></circle>
+                        <line x1="15.7" y1="15.7" x2="20.2" y2="20.2"></line>
+                    </svg>
+                    <input type="text" placeholder="Pesquise aqui...">
+                </div>
+                <div class="opcoes">
+                    <a href="home.html">Inicio</a>
+                    <a href="desserts.html">Doces</a>
+                    <a href="savorySnacks.html" style="border-bottom: 1px solid #073c05;">Salgados</a>
+                    <a href="beverages.html">Bebidas</a>
+                    <a href="addCreditCard.html">Cadastro cartão</a>
+                    <a href="shoppingCart.html" aria-label="Ir para o carrinho">
+                        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;">
+                            <path d="M3 3h2l3.6 10.59A2 2 0 0 0 10.5 15h7.88a2 2 0 0 0 1.93-1.5L23 6H6" />
+                            <circle cx="10" cy="20" r="1.7" />
+                            <circle cx="18" cy="20" r="1.7" />
+                        </svg>
+                    </a>
+                    <a href="src/php/cliente/conta.php" aria-label="Minha conta">
+                        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="containerCard" id="produtos">
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+
+    <script src="shoppingCart.js"></script>
+<script>
+        let todosProdutos = [];
+        
+        fetch("src/php/api.php?categoria=salgados")
+            .then(res => res.json())
+            .then(produtos => {
+                document.getElementById('loadingSpinner').style.display = 'none';
+                todosProdutos = produtos;
+                renderProdutos(produtos);
+                
+                // Adicionar evento de pesquisa
+                const searchInput = document.querySelector('.barraPesquisa input');
+                searchInput.addEventListener('input', pesquisarProdutos);
+            });
+            
+        function renderProdutos(produtos) {
+            const container = document.getElementById("produtos");
+            container.innerHTML = "";
+
+            if (produtos.length === 0) {
+                container.innerHTML = "<p>Nenhum salgado cadastrado</p>";
+                return;
+            }
+
+            produtos.forEach((p, index) => {
+                const estoque = p.estoque || 0;
+                container.innerHTML += `
+                    <div class="card" style="animation-delay: ${index * 0.1}s">
+                        <div class="imagem">
+                            <img src="imgBD/${p.imagem}">
+                        </div>
+                        <div class="descricao">
+                            <p>${p.nome}</p>
+                        </div>
+                        <div class="preco">
+                            <p>R$ ${Number(p.valor).toFixed(2).replace('.', ',')}</p>
+                        </div>
+                        <div class="button">
+                            <button 
+                                class="comprar"
+                                data-id="${p.id}"
+                                data-nome="${p.nome}"
+                                data-preco="${p.valor}"
+                                data-estoque="${estoque}"
+                                data-imagem="imgBD/${p.imagem}"
+                                data-usuario-id="${p.usuario_id}"
+                                ${estoque <= 0 ? 'disabled' : ''}>
+                                ${estoque <= 0 ? 'Indisponível' : 'Comprar'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        function pesquisarProdutos(event) {
+            const termo = event.target.value.toLowerCase().trim();
+            
+            if (termo === '') {
+                renderProdutos(todosProdutos);
+                return;
+            }
+            
+            const produtosFiltrados = todosProdutos.filter(produto => 
+                produto.nome.toLowerCase().includes(termo)
+            );
+            
+            renderProdutos(produtosFiltrados);
+        }
+    </script>
+    <?php include_once "customAlert.html"; ?>
+</body>
+
+</html>

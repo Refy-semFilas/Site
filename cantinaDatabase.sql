@@ -20,7 +20,9 @@ CREATE TABLE public.produto (
   imagem character varying,
   categoria character varying NOT NULL,
   estoque integer NOT NULL,
-  CONSTRAINT produto_pkey PRIMARY KEY (id)
+  usuario_id integer,
+  CONSTRAINT produto_pkey PRIMARY KEY (id),
+  CONSTRAINT produto_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id)
 );
 CREATE TABLE public.usuarios (
   id integer NOT NULL DEFAULT nextval('usuarios_id_seq'::regclass),

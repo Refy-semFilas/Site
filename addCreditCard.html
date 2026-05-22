@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartões disponiveis</title>
+    <link rel="icon" href="img/Logo png.png">
+    <link rel="stylesheet" href="src/styles/productCard.css">
+    <link rel="stylesheet" href="src/styles/mainHeader.css">
+    <link rel="stylesheet" href="src/styles/cards.css">
+</head>
+
+<body>
+    <header style="height: 90px;">
+        <div class="imgEpesquisa">
+            <div class="imagemLogo">
+                <img style="width: 100px;" class="logo" src="img/Logo png.png" alt="logo">
+            </div>
+            <div class="pesquisaOpcoes">
+                <div class="opcoes" style="justify-content: start; gap: 40px; padding: 0; margin-bottom: 13px;">
+                    <a href="home.html">Voltar</a>
+                    <a href="addCreditCard.html" style="border-bottom: 1px solid #073c05;">Cadastro cartão</a>
+                    <a href="src/php/cliente/conta.php" aria-label="Minha conta">
+                        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <h1>Cartões Disponíveis</h1>
+    <!-- aqui vai aparecer os cartões que o usuario tem cadastrado -->
+    <button class="button" type="button" onclick="window.location.href='addNewCreditCard.html'">
+        Adicionar novo cartão
+    </button>
+</body>
+
+</html>
