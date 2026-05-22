@@ -25,21 +25,20 @@ $usuario = $result['data'][0];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Conta</title>
-    <link rel="icon" href="../../img/Logo png.png">
-    <link rel="stylesheet" href="../../src/styles/mainHeader.css">
-    <link rel="stylesheet" href="../../src/styles/conta.css">
+    <link rel="icon" href="../../../img/Logo png.png">
+    <link rel="stylesheet" href="../../../src/styles/mainHeader.css">
+    <link rel="stylesheet" href="../../../src/styles/conta.css">
 </head>
 <body>
     <header>
         <div class="imgEpesquisa">
             <div class="imagemLogo">
-                <img class="logo" src="../../img/Logo png.png" alt="logo">
+                <img class="logo" src="../../../img/Logo png.png" alt="logo">
             </div>
             <div class="pesquisaOpcoes">
                 <div class="opcoes">
                     <a href="dashboard.php">Inicio</a>
-                    <a href="../../addProductForm.html">Adicionar item</a>
-                    <a href="relatorio.html">Relatório</a>
+                    <a href="../../../addProductForm.html">Adicionar item</a>
                     <a href="conta.php" style="border-bottom: 1px solid #073c05;">
                         <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>

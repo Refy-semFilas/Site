@@ -19,13 +19,13 @@ $imagemNome = null;
 
 if (isset($_FILES["foto"]) && $_FILES["foto"]["error"] === UPLOAD_ERR_OK) {
     $imagemNome = uniqid() . "-" . $_FILES["foto"]["name"]; 
-    move_uploaded_file($_FILES["foto"]["tmp_name"], "../../imgBD/" . $imagemNome);
+    move_uploaded_file($_FILES["foto"]["tmp_name"], "../../../imgBD/" . $imagemNome);
 }
 
 $check = supabaseRequest("/rest/v1/produto?codigo_de_barras=eq.$codigo&select=id");
 
 if (count($check['data']) > 0) {
-    alerta('Código de barras já cadastrado!', '../../addProductForm.html');
+    alerta('Código de barras já cadastrado!', '../../../addProductForm.html');
 }
 
 $insert = supabaseRequest("/rest/v1/produto", 'POST', [
@@ -42,6 +42,6 @@ $insert = supabaseRequest("/rest/v1/produto", 'POST', [
 if ($insert['code'] === 201) {
     alerta('Produto cadastrado com sucesso!', 'dashboard.php');
 } else {
-    alerta('Erro ao cadastrar produto!', '../../addProductForm.html');
+    alerta('Erro ao cadastrar produto!', '../../../addProductForm.html');
 }
 ?>

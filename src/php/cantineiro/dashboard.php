@@ -18,17 +18,17 @@ $produtos = $result['data'] ?? [];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
-    <link rel="icon" href="../../img/Logo png.png">
-    <link rel="stylesheet" href="../../src/styles/mainHeader.css">
-    <link rel="stylesheet" href="../../src/styles/adminProductCard.css">
-    <link rel="stylesheet" href="../../src/styles/addProduct.css">
+    <link rel="icon" href="../../../img/Logo png.png">
+    <link rel="stylesheet" href="../../../src/styles/mainHeader.css">
+    <link rel="stylesheet" href="../../../src/styles/adminProductCard.css">
+    <link rel="stylesheet" href="../../../src/styles/addProduct.css">
 </head>
 
 <body>
     <header>
         <div class="imgEpesquisa">
             <div class="imagemLogo">
-                <img class="logo" src="../../img/Logo png.png" alt="logo">
+                <img class="logo" src="../../../img/Logo png.png" alt="logo">
             </div>
 
             <div class="pesquisaOpcoes">
@@ -42,8 +42,7 @@ $produtos = $result['data'] ?? [];
                 </div>
                 <div class="opcoes">
                     <a href="dashboard.php" style="border-bottom: 1px solid #073c05;">Inicio</a>
-                    <a href="../../addProductForm.html">Adicionar item</a>
-                    <a href="relatorio.html">Relatório de venda</a>
+                    <a href="../../../addProductForm.html">Adicionar item</a>
                     <a href="conta.php" aria-label="Minha conta">
                         <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;">
@@ -62,7 +61,7 @@ $produtos = $result['data'] ?? [];
 
     <div class="card">
     <div class="imagem">
-        <img src="../../imgBD/<?php echo $p['imagem']; ?>" alt="<?php echo $p['nome']; ?>">
+        <img src="../../../imgBD/<?php echo $p['imagem']; ?>" alt="<?php echo $p['nome']; ?>">
     </div>
 
     <div class="info">

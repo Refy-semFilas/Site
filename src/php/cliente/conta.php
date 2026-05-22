@@ -26,24 +26,24 @@ $usuario = $result['data'][0];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Conta</title>
-    <link rel="icon" href="../../img/Logo png.png">
-    <link rel="stylesheet" href="../../src/styles/mainHeader.css">
-    <link rel="stylesheet" href="../../src/styles/conta.css">
+    <link rel="icon" href="../../../img/Logo png.png">
+    <link rel="stylesheet" href="../../../src/styles/mainHeader.css">
+    <link rel="stylesheet" href="../../../src/styles/conta.css">
 </head>
 <body>
     <header>
         <div class="imgEpesquisa">
             <div class="imagemLogo">
-                <img class="logo" src="../../img/Logo png.png" alt="logo">
+                <img class="logo" src="../../../img/Logo png.png" alt="logo">
             </div>
             <div class="pesquisaOpcoes">
                 <div class="opcoes">
-                    <a href="../../home.html">Inicio</a>
-                    <a href="../../desserts.html">Doces</a>
-                    <a href="../../savorySnacks.html">Salgados</a>
-                    <a href="../../beverages.html">Bebidas</a>
-                    <a href="../../addCreditCard.html">Cadastro cartão</a>
-                    <a href="../../shoppingCart.html" aria-label="Ir para o carrinho">
+                    <a href="../../../home.html">Inicio</a>
+                    <a href="../../../desserts.html">Doces</a>
+                    <a href="../../../savorySnacks.html">Salgados</a>
+                    <a href="../../../beverages.html">Bebidas</a>
+                    <a href="../../../addCreditCard.html">Cadastro cartão</a>
+                    <a href="../../../shoppingCart.html" aria-label="Ir para o carrinho">
                         <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;">
                             <path d="M3 3h2l3.6 10.59A2 2 0 0 0 10.5 15h7.88a2 2 0 0 0 1.93-1.5L23 6H6" />

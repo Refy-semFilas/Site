@@ -18,4 +18,13 @@ foreach ($idsArray as $id) {
 $filterString = 'or=(' . implode(',', $filters) . ')';
 
 $result = supabaseRequest("/rest/v1/usuarios?" . $filterString . "&select=id,username,chave_pix");
-echo json_encode($result['data'] ?? []);
+if ($result['code'] === 400) {
+    $result = supabaseRequest("/rest/v1/usuarios?" . $filterString . "&select=id,username");
+    $data = array_map(function($u) {
+        $u['chave_pix'] = null;
+        return $u;
+    }, $result['data'] ?? []);
+    echo json_encode($data);
+} else {
+    echo json_encode($result['data'] ?? []);
+}

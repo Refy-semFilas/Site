@@ -20,7 +20,7 @@ if (count($result['data']) === 1) {
         if ($_SESSION['tipo'] === 'admin') {
             header("Location: cantineiro/dashboard.php");
         } else {
-            header("Location: ../home.html");
+            header("Location: ../../home.html");
         }
         exit;
     } else {
@@ -28,7 +28,7 @@ if (count($result['data']) === 1) {
         exit;
     }
 } else {
-    alerta('Usuario não encontrado. Cadastre-se!', '../registerUserForm.html');
+    alerta('Usuario não encontrado. Cadastre-se!', '../../registerUserForm.html');
     exit;
 }
 ?>

@@ -37,20 +37,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["CODIGO_DE_BARRAS"])) 
 <head>
     <meta charset="UTF-8">
     <title>Excluir Produto</title>
-    <link rel="stylesheet" href="../../src/styles/mainHeader.css">
-    <link rel="stylesheet" href="../../src/styles/addProduct.css">
+    <link rel="stylesheet" href="../../../src/styles/mainHeader.css">
+    <link rel="stylesheet" href="../../../src/styles/addProduct.css">
 </head>
 <body>
     <header>
         <div class="imgEpesquisa">
             <div class="imagemLogo">
-                <img class="logo" src="../../img/Logo png.png" alt="logo">
+                <img class="logo" src="../../../img/Logo png.png" alt="logo">
             </div>
             <div class="pesquisaOpcoes">
                 <div class="opcoes">
                     <a href="dashboard.php">Inicio</a>
-                    <a href="../../addProductForm.html">Adicionar item</a>
-                    <a href="relatorio.html">Relatório</a>
+                    <a href="../../../addProductForm.html">Adicionar item</a>
                 </div>
             </div>
         </div>
