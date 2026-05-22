@@ -17,8 +17,49 @@ if (!is_array($data) || !isset($data['itens']) || !is_array($data['itens']) || e
     exit;
 }
 
+$action = $data['action'] ?? 'gerar';
 $vendors = [];
 $totalPorVendedor = [];
+
+if ($action === 'confirmar') {
+    foreach ($data['itens'] as $item) {
+        if (!isset($item['id'], $item['quantidade'])) {
+            echo json_encode(['success' => false, 'message' => 'Item inválido no carrinho']);
+            exit;
+        }
+
+        $produtoId = $item['id'];
+        $quantidade = (int) $item['quantidade'];
+
+        $check = supabaseRequest("/rest/v1/produto?id=eq.$produtoId&select=id,estoque");
+
+        if ($check['code'] !== 200 || count($check['data']) === 0) {
+            echo json_encode(['success' => false, 'message' => 'Produto não encontrado']);
+            exit;
+        }
+
+        $produto = $check['data'][0];
+        $estoqueAtual = (int) ($produto['estoque'] ?? 0);
+        $novoEstoque = $estoqueAtual - $quantidade;
+
+        if ($novoEstoque < 0) {
+            echo json_encode(['success' => false, 'message' => 'Estoque insuficiente para: ' . ($item['nome'] ?? 'produto')]);
+            exit;
+        }
+
+        $update = supabaseRequest("/rest/v1/produto?id=eq.$produtoId", 'PATCH', [
+            'estoque' => $novoEstoque
+        ]);
+
+        if ($update['code'] !== 200 && $update['code'] !== 201 && $update['code'] !== 204) {
+            echo json_encode(['success' => false, 'message' => 'Erro ao atualizar estoque']);
+            exit;
+        }
+    }
+
+    echo json_encode(['success' => true, 'message' => 'Pagamento confirmado com sucesso']);
+    exit;
+}
 
 foreach ($data['itens'] as $item) {
     if (!isset($item['id'], $item['quantidade'])) {
@@ -31,27 +72,17 @@ foreach ($data['itens'] as $item) {
     $usuarioId = $item['usuario_id'] ?? null;
 
     $check = supabaseRequest("/rest/v1/produto?id=eq.$produtoId&select=id,estoque");
-    
+
     if ($check['code'] !== 200 || count($check['data']) === 0) {
         echo json_encode(['success' => false, 'message' => 'Produto não encontrado']);
         exit;
     }
-    
+
     $produto = $check['data'][0];
     $estoqueAtual = (int) ($produto['estoque'] ?? 0);
-    $novoEstoque = $estoqueAtual - $quantidade;
-    
-    if ($novoEstoque < 0) {
+
+    if ($estoqueAtual - $quantidade < 0) {
         echo json_encode(['success' => false, 'message' => 'Estoque insuficiente para: ' . ($item['nome'] ?? 'produto')]);
-        exit;
-    }
-    
-    $update = supabaseRequest("/rest/v1/produto?id=eq.$produtoId", 'PATCH', [
-        'estoque' => $novoEstoque
-    ]);
-    
-    if ($update['code'] !== 200 && $update['code'] !== 201 && $update['code'] !== 204) {
-        echo json_encode(['success' => false, 'message' => 'Erro ao atualizar estoque']);
         exit;
     }
 
@@ -102,7 +133,6 @@ if (!empty($vendors)) {
 
 echo json_encode([
     'success' => true,
-    'message' => 'Compra finalizada com sucesso',
+    'message' => 'QR Code gerado',
     'pix' => $pixData
 ]);
-?>

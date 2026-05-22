@@ -1,6 +1,6 @@
 <?php
-$supabaseUrl = 'https://myojsyuijqveviwfpjqf.supabase.co';
-$supabaseKey = 'sb_secret_qizh8h_ej1sFYphJf4SOFA_VervhwEs';
+$supabaseUrl = getenv('SUPABASE_URL') ?: 'https://myojsyuijqveviwfpjqf.supabase.co';
+$supabaseKey = getenv('SUPABASE_KEY') ?: 'sb_secret_qizh8h_ej1sFYphJf4SOFA_VervhwEs';
 
 function supabaseRequest($endpoint, $method = 'GET', $data = null, $queryParams = []) {
     global $supabaseUrl, $supabaseKey;

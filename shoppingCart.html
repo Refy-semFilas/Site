@@ -67,38 +67,7 @@
             min-width: 150px;
         }
 
-        .pixSection {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 12px;
-            border: 1px solid #e0e0e0;
-        }
-        .pixSection h3 {
-            margin: 0 0 15px 0;
-            color: #333;
-            font-size: 18px;
-        }
-        .pix-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            background: #fff;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            border: 1px solid #e8e8e8;
-        }
-        .pix-vendedor {
-            font-weight: bold;
-            color: #333;
-        }
-        .pix-chave {
-            color: #ff6200;
-            font-family: monospace;
-            font-size: 14px;
-        }
+
         .pix-modal-content {
             background: #fff;
             padding: 30px;
@@ -178,6 +147,25 @@
             padding: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
+        .itemCarrinho {
+            flex-wrap: wrap;
+        }
+        .vendedor-tag {
+            font-size: 11px;
+            color: #888;
+            width: 100%;
+            order: -1;
+            padding: 4px 14px 0;
+            box-sizing: border-box;
+        }
+        .vendedor-tag-nome {
+            font-weight: 600;
+            color: #666;
+        }
+        .vendedor-tag-pix {
+            color: #999;
+            font-family: monospace;
+        }
         @media (max-width: 576px) {
             .carrinho-vazio {
                 padding: 40px 15px;
@@ -242,10 +230,6 @@
         </div>
     </header>
     <div class="listaCarrinho"></div>
-    <div class="pixSection" id="pixSection" style="display:none;">
-        <h3>Pagamento via PIX</h3>
-        <div id="pixList"></div>
-    </div>
     <div class="footerCarrinho">
         <p class="total">Total: R$ 0,00</p>
         <button class="button">Finalizar</button>
@@ -255,24 +239,14 @@
     <script>
         const lista = document.querySelector('.listaCarrinho');
         let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        let vendedoresInfo = {};
 
         const totalElement = document.querySelector('.total');
-
-        function calcularTotal() {
-            let total = 0;
-
-            carrinho.forEach(produto => {
-                total += produto.preco * produto.quantidade;
-            });
-
-            totalElement.innerText = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
-        }
-
 
         function renderCarrinho() {
             lista.innerHTML = "";
 
-if (carrinho.length === 0) {
+            if (carrinho.length === 0) {
                 lista.innerHTML = `
                     <div class="carrinho-vazio">
                         <div class="icone-vazio">
@@ -287,53 +261,45 @@ if (carrinho.length === 0) {
                         <a href="home.html" class="btn-voltar">Continuar Comprando</a>
                     </div>
                 `;
-                document.getElementById('pixSection').style.display = 'none';
                 return;
             }
 
+            let totalGeral = 0;
+
             carrinho.forEach(produto => {
+                const vInfo = produto.usuario_id ? vendedoresInfo[produto.usuario_id] : null;
+                const nomeVendedor = vInfo ? vInfo.username : '';
+                const chavePix = vInfo ? (vInfo.chave_pix || '') : '';
+
+                totalGeral += produto.preco * produto.quantidade;
+
                 lista.innerHTML += `
-            <div class="global">    
-                <div class="itemCarrinho">
-                    <img src="${produto.imagem}">
-                    <div class="nomePreco">
-                        <p class="nome">${produto.nome}</p>
-                        <p class="preco">R$ ${parseFloat(produto.preco).toFixed(2).replace('.', ',')}</p>
-                    </div>
-
-                    <div class="quantidade" data-id="${produto.id}">
-                        <button class="btn remover" aria-label="Remover item">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="27"
-                                height="27"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="#a6a6a6"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <polyline points="3 6 5 6 21 6" />
-                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                                <path d="M10 11v6" />
-                                <path d="M14 11v6" />
-                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-                            </svg>
-                        </button>
-
-
-                        <span class="qtd">${produto.quantidade}</span>
-                        <button style="color: #a6a6a6;" class="btn adicionar">+</button>
-                    </div>
-                </div>
-            </div>
-        `;
+                    <div class="global">    
+                        <div class="itemCarrinho">
+                            ${nomeVendedor ? '<div class="vendedor-tag"><span class="vendedor-tag-nome">' + nomeVendedor + '</span>' + (chavePix ? ' <span class="vendedor-tag-pix">PIX: ' + chavePix + '</span>' : '') + '</div>' : ''}
+                            <img src="${produto.imagem}">
+                            <div class="nomePreco">
+                                <p class="nome">${produto.nome}</p>
+                                <p class="preco">R$ ${parseFloat(produto.preco).toFixed(2).replace('.', ',')}</p>
+                            </div>
+                            <div class="quantidade" data-id="${produto.id}">
+                                <button class="btn remover" aria-label="Remover item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#a6a6a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6" />
+                                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                        <path d="M10 11v6" /><path d="M14 11v6" />
+                                        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                                    </svg>
+                                </button>
+                                <span class="qtd">${produto.quantidade}</span>
+                                <button style="color: #a6a6a6;" class="btn adicionar">+</button>
+                            </div>
+                        </div>
+                    </div>`;
             });
 
+            totalElement.innerText = `Total: R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
             ativarBotoes();
-            calcularTotal();
-            carregarPix();
         }
 
         function ativarBotoes() {
@@ -365,44 +331,27 @@ if (carrinho.length === 0) {
             });
         }
 
-        async function carregarPix() {
-            const pixSection = document.getElementById('pixSection');
-            const pixList = document.getElementById('pixList');
-
+        async function carregarVendedores() {
             const ids = [...new Set(carrinho.map(p => p.usuario_id).filter(Boolean))];
-
-            if (ids.length === 0) {
-                pixSection.style.display = 'none';
-                return;
-            }
+            if (ids.length === 0) return;
 
             try {
                 const response = await fetch('src/php/getPixKeys.php?ids=' + ids.join(','));
                 const vendedores = await response.json();
-
-                if (vendedores.length === 0) {
-                    pixSection.style.display = 'none';
-                    return;
-                }
-
-                pixList.innerHTML = vendedores.map(v =>
-                    `<div class="pix-item">
-                        <span class="pix-vendedor">${v.username}</span>
-                        <span class="pix-chave">${v.chave_pix || 'Não informada'}</span>
-                    </div>`
-                ).join('');
-                pixSection.style.display = 'block';
-            } catch (error) {
-                pixSection.style.display = 'none';
-            }
+                vendedores.forEach(v => {
+                    vendedoresInfo[v.id] = v;
+                });
+            } catch (error) {}
         }
 
         function salvar() {
             localStorage.setItem('carrinho', JSON.stringify(carrinho));
             renderCarrinho();
+            carregarVendedores().then(renderCarrinho);
         }
 
         renderCarrinho();
+        carregarVendedores().then(renderCarrinho);
 
         document.querySelector('.button').addEventListener('click', async function() {
             if (carrinho.length === 0) {
@@ -412,7 +361,7 @@ if (carrinho.length === 0) {
 
             const btn = this;
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-small"></span> Processando...';
+            btn.innerHTML = '<span class="spinner-small"></span> Gerando...';
 
             try {
                 const response = await fetch('src/php/finalizarCompra.php', {
@@ -420,13 +369,14 @@ if (carrinho.length === 0) {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ itens: carrinho })
+                    body: JSON.stringify({ itens: carrinho, action: 'gerar' })
                 });
 
                 const result = await response.json();
 
                 if (result.success) {
-                    localStorage.removeItem('carrinho');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Finalizar';
                     mostrarPixQRCode(result.pix);
                 } else {
                     showAlert(result.message, 'error');
@@ -460,7 +410,10 @@ if (carrinho.length === 0) {
                 <p>Faça o pagamento via PIX escaneando o QR Code abaixo</p>
             </div>
             <div id="pixQrContainer"></div>
-            <button class="btn-voltar" onclick="fecharPixModal()">Voltar ao Início</button>
+            <div style="display:flex;gap:10px;margin-top:16px;">
+                <button class="btn-voltar" style="flex:1;" onclick="fecharPixModal()">Voltar</button>
+                <button class="btn-voltar" style="flex:1;background:#28a745;" id="btnConfirmarPagamento" onclick="confirmarPagamento()">Já paguei</button>
+            </div>
         </div>
     </div>
 
@@ -561,7 +514,37 @@ if (carrinho.length === 0) {
 
     function fecharPixModal() {
         document.getElementById('pixModal').style.display = 'none';
-        renderCarrinho();
+    }
+
+    async function confirmarPagamento() {
+        const btn = document.getElementById('btnConfirmarPagamento');
+        btn.disabled = true;
+        btn.textContent = 'Confirmando...';
+
+        try {
+            const response = await fetch('src/php/finalizarCompra.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ itens: carrinho, action: 'confirmar' })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                localStorage.removeItem('carrinho');
+                document.getElementById('pixModal').style.display = 'none';
+                showAlert('Pagamento confirmado! Seu pedido foi registrado.', 'success');
+                setTimeout(() => { window.location.href = 'home.html'; }, 2000);
+            } else {
+                showAlert(result.message, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Já paguei';
+            }
+        } catch (error) {
+            showAlert('Erro ao confirmar pagamento. Tente novamente.', 'error');
+            btn.disabled = false;
+            btn.textContent = 'Já paguei';
+        }
     }
 
     function copiarBrcode(el) {

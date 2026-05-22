@@ -1,0 +1,7 @@
+.vs/
+.vscode/
+*.log
+debug.txt
+email_log.txt
+.DS_Store
+Thumbs.db

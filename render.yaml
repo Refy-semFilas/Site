@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: site-cantina
+    runtime: image
+    repo: https://github.com/SEU_USUARIO/SEU_REPOSITORIO
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SUPABASE_URL
+        value: https://myojsyuijqveviwfpjqf.supabase.co
+      - key: SUPABASE_KEY
+        value: sb_secret_qizh8h_ej1sFYphJf4SOFA_VervhwEs
