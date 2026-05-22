@@ -30,13 +30,20 @@ if (count($result['data']) > 0) {
     alerta('Nome de usuário já está em uso!', 'registerUserForm.html');
 }
 
+$chave_pix = $tipo === 'admin' ? trim($_POST["chave_pix"] ?? '') : null;
+
+if ($tipo === 'admin' && empty($chave_pix)) {
+    alerta('Vendedor deve informar uma chave PIX!', 'registerUserForm.html');
+}
+
 $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
 $insertResult = supabaseRequest("/rest/v1/usuarios", 'POST', [
     'username' => $username,
     'email' => $email,
     'senha' => $senhaHash,
-    'tipo' => $tipo
+    'tipo' => $tipo,
+    'chave_pix' => $chave_pix
 ]);
 
 if ($insertResult['code'] === 201) {

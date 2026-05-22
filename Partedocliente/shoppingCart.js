@@ -15,7 +15,8 @@ document.addEventListener('click', function (e) {
             preco: Number(botao.dataset.preco),
             imagem: botao.dataset.imagem,
             estoque: estoque,
-            quantidade: 1
+            quantidade: 1,
+            usuario_id: botao.dataset.usuarioId
         };
 
         let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];

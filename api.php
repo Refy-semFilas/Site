@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 
 $categoria = $_GET['categoria'] ?? null;
 
-$queryParams = ['select' => 'id,nome,descricao,valor,imagem,categoria,estoque'];
+$queryParams = ['select' => 'id,nome,descricao,valor,imagem,categoria,estoque,usuario_id'];
 
 if ($categoria) {
     $queryParams['categoria'] = "eq.$categoria";

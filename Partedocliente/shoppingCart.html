@@ -67,6 +67,38 @@
             min-width: 150px;
         }
 
+        .pixSection {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+        }
+        .pixSection h3 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 18px;
+        }
+        .pix-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: #fff;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #e8e8e8;
+        }
+        .pix-vendedor {
+            font-weight: bold;
+            color: #333;
+        }
+        .pix-chave {
+            color: #ff6200;
+            font-family: monospace;
+            font-size: 14px;
+        }
         @media (max-width: 576px) {
             .carrinho-vazio {
                 padding: 40px 15px;
@@ -131,6 +163,10 @@
         </div>
     </header>
     <div class="listaCarrinho"></div>
+    <div class="pixSection" id="pixSection" style="display:none;">
+        <h3>Pagamento via PIX</h3>
+        <div id="pixList"></div>
+    </div>
     <div class="footerCarrinho">
         <p class="total">Total: R$ 0,00</p>
         <button class="button">Finalizar</button>
@@ -172,6 +208,7 @@ if (carrinho.length === 0) {
                         <a href="home.html" class="btn-voltar">Continuar Comprando</a>
                     </div>
                 `;
+                document.getElementById('pixSection').style.display = 'none';
                 return;
             }
 
@@ -217,6 +254,7 @@ if (carrinho.length === 0) {
 
             ativarBotoes();
             calcularTotal();
+            carregarPix();
         }
 
         function ativarBotoes() {
@@ -246,6 +284,38 @@ if (carrinho.length === 0) {
                     salvar();
                 });
             });
+        }
+
+        async function carregarPix() {
+            const pixSection = document.getElementById('pixSection');
+            const pixList = document.getElementById('pixList');
+
+            const ids = [...new Set(carrinho.map(p => p.usuario_id).filter(Boolean))];
+
+            if (ids.length === 0) {
+                pixSection.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch('getPixKeys.php?ids=' + ids.join(','));
+                const vendedores = await response.json();
+
+                if (vendedores.length === 0) {
+                    pixSection.style.display = 'none';
+                    return;
+                }
+
+                pixList.innerHTML = vendedores.map(v =>
+                    `<div class="pix-item">
+                        <span class="pix-vendedor">${v.username}</span>
+                        <span class="pix-chave">${v.chave_pix || 'Não informada'}</span>
+                    </div>`
+                ).join('');
+                pixSection.style.display = 'block';
+            } catch (error) {
+                pixSection.style.display = 'none';
+            }
         }
 
         function salvar() {
