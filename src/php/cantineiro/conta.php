@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['tipo'] !== 'admin') {
-    header("Location: ../../loginForm.html");
+    header("Location: ../../../loginForm.html");
     exit;
 }
 
@@ -13,7 +13,7 @@ $result = supabaseRequest("/rest/v1/usuarios?id=eq.$user_id&select=email,usernam
 
 if (count($result['data']) === 0) {
     session_destroy();
-    header("Location: ../../loginForm.html");
+    header("Location: ../../../loginForm.html");
     exit;
 }
 

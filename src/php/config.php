@@ -95,15 +95,4 @@ function createRecoveryEmailBody($username, $resetLink) {
     </html>";
 }
 
-function logEmail($to, $subject, $sent) {
-    $logEntry = sprintf(
-        "[%s] Para: %s | Assunto: %s | Status: %s\n",
-        date('Y-m-d H:i:s'),
-        $to,
-        $subject,
-        $sent ? 'ENVIADO' : 'FALHOU'
-    );
-    
-    file_put_contents(__DIR__ . '/email_log.txt', $logEntry, FILE_APPEND | LOCK_EX);
-}
 ?>

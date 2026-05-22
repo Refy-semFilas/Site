@@ -53,8 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $emailSubject = "🔐 Recuperação de Senha - Cantina System";
     $emailSent = sendEmail($email, $emailSubject, $emailBody, true);
     
-    // Registrar log para debug
-    logEmail($email, $emailSubject, $emailSent);
     
     // Para este exemplo, vamos salvar o token em uma tabela temporária
     // Se você não tiver tabela, pode salvar em arquivo ou sessão
@@ -74,8 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'success' => true,
                 'message' => '📧 Email enviado com sucesso!\\n\\nVerifique sua caixa de entrada (e a pasta de spam) e clique no link para redefinir sua senha.\\n\\n⚠️ O link expirará em 1 hora.',
                 'redirect' => true,
-                'redirect_url' => '../resetPasswordForm.html?token=' . $token,
-                'debug_token' => $token // Remover em produção!
+                'redirect_url' => '../resetPasswordForm.html?token=' . $token
             ]);
         } else {
             echo json_encode([

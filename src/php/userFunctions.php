@@ -14,7 +14,7 @@ function getTipoUsuario() {
 
 function requiresTipo($tipoPermitido) {
     if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== $tipoPermitido) {
-        header("Location: ../../loginForm.html");
+        header("Location: ../../../loginForm.html");
         exit;
     }
 }

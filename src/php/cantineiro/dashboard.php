@@ -5,7 +5,7 @@ require "../supabaseConnection.php";
 require "../userFunctions.php";
 
 if (!isAdmin()) {
-    header("Location: ../../loginForm.html");
+    header("Location: ../../../loginForm.html");
     exit;
 }
 
