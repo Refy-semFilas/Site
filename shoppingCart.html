@@ -419,6 +419,7 @@
             </div>
             <div style="display:flex;gap:10px;margin-top:16px;">
                 <button class="btn-voltar" style="flex:1;" onclick="fecharPixModal()">Cancelar</button>
+                <button class="btn-voltar" style="flex:1;background:#28a745;display:none;" id="btnConfirmarPagamento" onclick="confirmarPagamentoManual()">Já paguei</button>
             </div>
         </div>
     </div>
@@ -456,14 +457,17 @@
     });
 
     let pollingInterval = null;
+    let vendaIdAtual = null;
 
     function mostrarPixQRCodeMP(pixData, vendaId) {
+        vendaIdAtual = vendaId;
         const modal = document.getElementById('pixModal');
         const container = document.getElementById('pixQrContainer');
         container.innerHTML = '';
 
         document.getElementById('pixStatusPolling').style.display = 'none';
         document.getElementById('pixAprovado').style.display = 'none';
+        document.getElementById('btnConfirmarPagamento').style.display = 'none';
 
         if (!pixData || pixData.length === 0) {
             container.innerHTML = '<p style="text-align:center;color:#666;padding:20px;">Nenhum pagamento disponível.</p>';
@@ -472,14 +476,14 @@
         }
 
         const paymentIds = [];
+        let temManual = false;
 
         pixData.forEach(p => {
-            if (p.erro) {
-                container.innerHTML += '<p style="color:#999;text-align:center;">' + p.vendedor + ': ' + p.erro + '</p>';
-                return;
+            if (p.mode === 'manual') {
+                temManual = true;
+            } else {
+                paymentIds.push(p.mp_payment_id);
             }
-
-            paymentIds.push(p.mp_payment_id);
 
             const div = document.createElement('div');
             div.className = 'pix-qr-item';
@@ -498,6 +502,13 @@
                 img.alt = 'QR Code PIX';
                 qrWrapper.appendChild(img);
                 div.appendChild(qrWrapper);
+            }
+
+            if (!p.qr_code_base64 && !p.qr_code) {
+                const noPix = document.createElement('p');
+                noPix.style.cssText = 'color:#999;';
+                noPix.textContent = p.vendedor + ': sem chave PIX configurada';
+                div.appendChild(noPix);
             }
 
             if (p.valor > 0) {
@@ -525,11 +536,15 @@
 
         if (paymentIds.length > 0) {
             document.getElementById('pixStatusPolling').style.display = 'block';
-            iniciarPolling(paymentIds, vendaId);
+            iniciarPolling(paymentIds);
+        }
+
+        if (temManual) {
+            document.getElementById('btnConfirmarPagamento').style.display = 'block';
         }
     }
 
-    function iniciarPolling(paymentIds, vendaId) {
+    function iniciarPolling(paymentIds) {
         if (pollingInterval) clearInterval(pollingInterval);
 
         pollingInterval = setInterval(async () => {
@@ -548,6 +563,7 @@
 
                     document.getElementById('pixStatusPolling').style.display = 'none';
                     document.getElementById('pixAprovado').style.display = 'block';
+                    document.getElementById('btnConfirmarPagamento').style.display = 'none';
 
                     localStorage.removeItem('carrinho');
                     showAlert('Pagamento confirmado! Pedido registrado com sucesso.', 'success');
@@ -560,6 +576,44 @@
                 }
             } catch (error) {}
         }, 5000);
+    }
+
+    async function confirmarPagamentoManual() {
+        const btn = document.getElementById('btnConfirmarPagamento');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-small"></span> Confirmando...';
+
+        try {
+            const response = await fetch('src/php/finalizarCompra.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ itens: carrinho, action: 'confirmar' })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                if (pollingInterval) {
+                    clearInterval(pollingInterval);
+                    pollingInterval = null;
+                }
+                document.getElementById('pixStatusPolling').style.display = 'none';
+                document.getElementById('pixAprovado').style.display = 'block';
+                document.getElementById('btnConfirmarPagamento').style.display = 'none';
+
+                localStorage.removeItem('carrinho');
+                showAlert('Pagamento confirmado! Pedido registrado com sucesso.', 'success');
+                setTimeout(() => { window.location.href = 'home.html'; }, 3000);
+            } else {
+                showAlert(result.message, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Já paguei';
+            }
+        } catch (error) {
+            showAlert('Erro ao confirmar pagamento.', 'error');
+            btn.disabled = false;
+            btn.textContent = 'Já paguei';
+        }
     }
 
     function fecharPixModal() {

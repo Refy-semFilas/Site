@@ -109,7 +109,8 @@ $siteUrl = getenv('SITE_URL') ?: 'http://localhost/Site';
 $notificationUrl = rtrim($siteUrl, '/') . '/src/php/webhook.php';
 
 $pixData = [];
-$pagamentosCriados = 0;
+$temMP = false;
+$temManual = false;
 
 if (!empty($vendors)) {
     $ids = array_keys($vendors);
@@ -126,63 +127,89 @@ if (!empty($vendors)) {
         foreach ($result['data'] as $v) {
             $total = $totalPorVendedor[$v['id']] ?? 0;
             $accessToken = $v['mp_access_token'] ?: $defaultToken;
+            $usouMP = false;
 
-            if (empty($accessToken)) {
-                $pixData[] = [
-                    'vendedor' => $v['username'],
-                    'erro' => 'Vendedor sem token MP configurado',
-                    'valor' => $total
-                ];
-                continue;
+            if (!empty($accessToken)) {
+                $mpResult = criarPagamentoMP(
+                    $accessToken,
+                    $total,
+                    'Pedido #' . $vendaId . ' - ' . $v['username'],
+                    $emailCliente,
+                    $notificationUrl
+                );
+
+                if ($mpResult['success']) {
+                    supabaseRequest("/rest/v1/pagamento", 'POST', [
+                        'venda_id' => $vendaId,
+                        'mp_payment_id' => $mpResult['mp_payment_id'],
+                        'mp_status' => $mpResult['mp_status'],
+                        'valor' => $total,
+                        'vendedor_id' => $v['id'],
+                        'qr_code' => $mpResult['qr_code'],
+                        'qr_code_base64' => $mpResult['qr_code_base64']
+                    ]);
+
+                    $pixData[] = [
+                        'vendedor' => $v['username'],
+                        'valor' => $total,
+                        'qr_code' => $mpResult['qr_code'],
+                        'qr_code_base64' => $mpResult['qr_code_base64'],
+                        'mp_payment_id' => $mpResult['mp_payment_id'],
+                        'mode' => 'mp'
+                    ];
+                    $temMP = true;
+                    $usouMP = true;
+                }
             }
 
-            $mpResult = criarPagamentoMP(
-                $accessToken,
-                $total,
-                'Pedido #' . $vendaId . ' - ' . $v['username'],
-                $emailCliente,
-                $notificationUrl
-            );
+            if (!$usouMP) {
+                $chavePix = $v['chave_pix'] ?? '';
+                $brCode = '';
+                $qrBase64 = '';
+                $pagamentoId = null;
 
-            if ($mpResult['success']) {
-                supabaseRequest("/rest/v1/pagamento", 'POST', [
+                if (!empty($chavePix)) {
+                    $brCode = gerarPixCopiaECola($chavePix, $v['username'], 'Cidade', $total);
+                    $qrImage = @file_get_contents('https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($brCode));
+                    if ($qrImage !== false) {
+                        $qrBase64 = base64_encode($qrImage);
+                    }
+                }
+
+                $pagInsert = supabaseRequest("/rest/v1/pagamento", 'POST', [
                     'venda_id' => $vendaId,
-                    'mp_payment_id' => $mpResult['mp_payment_id'],
-                    'mp_status' => $mpResult['mp_status'],
+                    'mp_payment_id' => null,
+                    'mp_status' => 'pending',
                     'valor' => $total,
                     'vendedor_id' => $v['id'],
-                    'qr_code' => $mpResult['qr_code'],
-                    'qr_code_base64' => $mpResult['qr_code_base64']
+                    'qr_code' => $brCode,
+                    'qr_code_base64' => $qrBase64
                 ]);
+
+                if ($pagInsert['code'] === 201 && !empty($pagInsert['data'])) {
+                    $pagamentoId = $pagInsert['data'][0]['id'] ?? null;
+                }
 
                 $pixData[] = [
                     'vendedor' => $v['username'],
                     'valor' => $total,
-                    'qr_code' => $mpResult['qr_code'],
-                    'qr_code_base64' => $mpResult['qr_code_base64'],
-                    'mp_payment_id' => $mpResult['mp_payment_id']
+                    'qr_code' => $brCode,
+                    'qr_code_base64' => $qrBase64,
+                    'chave_pix' => $chavePix,
+                    'mode' => 'manual',
+                    'pagamento_id' => $pagamentoId
                 ];
-                $pagamentosCriados++;
-            } else {
-                $pixData[] = [
-                    'vendedor' => $v['username'],
-                    'erro' => $mpResult['error'],
-                    'valor' => $total
-                ];
+                $temManual = true;
             }
         }
     }
-}
-
-if ($pagamentosCriados === 0) {
-    supabaseRequest("/rest/v1/venda?id=eq.$vendaId", 'PATCH', ['status' => 'erro']);
-    echo json_encode(['success' => false, 'message' => 'Nenhum pagamento pôde ser criado. Verifique os tokens MP dos vendedores.']);
-    exit;
 }
 
 echo json_encode([
     'success' => true,
     'venda_id' => $vendaId,
     'pix' => $pixData,
-    'total' => $totalGeral
+    'total' => $totalGeral,
+    'tem_mp' => $temMP,
+    'tem_manual' => $temManual
 ]);
