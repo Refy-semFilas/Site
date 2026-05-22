@@ -10,6 +10,8 @@ RUN { \
     echo '</FilesMatch>'; \
 } >> /etc/apache2/apache2.conf
 
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 RUN chown -R www-data:www-data /var/www/html/imgBD && \
     chmod -R 755 /var/www/html/imgBD
 

@@ -364,12 +364,12 @@
             btn.innerHTML = '<span class="spinner-small"></span> Gerando...';
 
             try {
-                const response = await fetch('src/php/finalizarCompra.php', {
+                const response = await fetch('src/php/criarPagamentoMP.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ itens: carrinho, action: 'gerar' })
+                    body: JSON.stringify({ itens: carrinho })
                 });
 
                 const result = await response.json();
@@ -377,7 +377,7 @@
                 if (result.success) {
                     btn.disabled = false;
                     btn.innerHTML = 'Finalizar';
-                    mostrarPixQRCode(result.pix);
+                    mostrarPixQRCodeMP(result.pix, result.venda_id);
                 } else {
                     showAlert(result.message, 'error');
                     btn.disabled = false;
@@ -402,17 +402,23 @@
     <div id="pixModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:10000;">
         <div class="pix-modal-content">
             <div class="pix-modal-header">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                    <polyline points="22 4 12 14.01 9 11.01"/>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ff6200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="M8 12h8"/><path d="M12 8v8"/>
                 </svg>
-                <h2>Pedido Confirmado!</h2>
-                <p>Faça o pagamento via PIX escaneando o QR Code abaixo</p>
+                <h2>Pagamento via PIX</h2>
+                <p>Escaneie o QR Code abaixo para pagar</p>
             </div>
             <div id="pixQrContainer"></div>
+            <div id="pixStatusPolling" style="margin-top:16px;padding:12px;background:#fff3cd;border-radius:8px;display:none;">
+                <span class="spinner-small" style="border-color:rgba(255,152,0,0.3);border-top-color:#ff9800;"></span>
+                <span style="color:#856404;font-size:14px;" id="pixStatusText">Aguardando pagamento...</span>
+            </div>
+            <div id="pixAprovado" style="margin-top:16px;padding:12px;background:#d4edda;border-radius:8px;display:none;">
+                <span style="color:#155724;font-size:14px;font-weight:bold;">Pagamento confirmado!</span>
+            </div>
             <div style="display:flex;gap:10px;margin-top:16px;">
-                <button class="btn-voltar" style="flex:1;" onclick="fecharPixModal()">Voltar</button>
-                <button class="btn-voltar" style="flex:1;background:#28a745;" id="btnConfirmarPagamento" onclick="confirmarPagamento()">Já paguei</button>
+                <button class="btn-voltar" style="flex:1;" onclick="fecharPixModal()">Cancelar</button>
             </div>
         </div>
     </div>
@@ -449,102 +455,119 @@
         }
     });
 
-    function mostrarPixQRCode(pixData) {
+    let pollingInterval = null;
+
+    function mostrarPixQRCodeMP(pixData, vendaId) {
         const modal = document.getElementById('pixModal');
         const container = document.getElementById('pixQrContainer');
         container.innerHTML = '';
 
+        document.getElementById('pixStatusPolling').style.display = 'none';
+        document.getElementById('pixAprovado').style.display = 'none';
+
         if (!pixData || pixData.length === 0) {
-            container.innerHTML = '<p style="text-align:center;color:#666;padding:20px;">Nenhuma chave PIX disponível para os vendedores.</p>';
-        } else {
-            pixData.forEach(p => {
-                const div = document.createElement('div');
-                div.className = 'pix-qr-item';
-
-                const vendedorDiv = document.createElement('div');
-                vendedorDiv.className = 'pix-qr-vendedor';
-                vendedorDiv.textContent = p.vendedor;
-                div.appendChild(vendedorDiv);
-
-                if (p.qr_base64) {
-                    const qrWrapper = document.createElement('div');
-                    qrWrapper.style.textAlign = 'center';
-                    const img = document.createElement('img');
-                    img.className = 'pix-qr-img';
-                    img.src = p.qr_base64;
-                    img.alt = 'QR Code PIX';
-                    qrWrapper.appendChild(img);
-                    div.appendChild(qrWrapper);
-                } else if (p.chave_pix) {
-                    const chaveP = document.createElement('p');
-                    chaveP.className = 'pix-chave';
-                    chaveP.textContent = 'Chave: ' + p.chave_pix;
-                    div.appendChild(chaveP);
-                } else {
-                    const noPix = document.createElement('p');
-                    noPix.style.cssText = 'color:#999;';
-                    noPix.textContent = 'Vendedor sem chave PIX';
-                    div.appendChild(noPix);
-                }
-
-                if (p.valor > 0) {
-                    const valorDiv = document.createElement('div');
-                    valorDiv.className = 'pix-qr-valor';
-                    valorDiv.textContent = 'Valor: R$ ' + p.valor.toFixed(2).replace('.', ',');
-                    div.appendChild(valorDiv);
-                }
-
-                if (p.brcode) {
-                    const copiaDiv = document.createElement('div');
-                    copiaDiv.className = 'pix-qr-copiaypega';
-                    copiaDiv.innerHTML = '<small>Ou copie o código:</small><br>';
-                    const codeEl = document.createElement('code');
-                    codeEl.textContent = p.brcode;
-                    codeEl.onclick = function() { copiarBrcode(this); };
-                    copiaDiv.appendChild(codeEl);
-                    div.appendChild(copiaDiv);
-                }
-
-                container.appendChild(div);
-            });
+            container.innerHTML = '<p style="text-align:center;color:#666;padding:20px;">Nenhum pagamento disponível.</p>';
+            modal.style.display = 'flex';
+            return;
         }
 
+        const paymentIds = [];
+
+        pixData.forEach(p => {
+            if (p.erro) {
+                container.innerHTML += '<p style="color:#999;text-align:center;">' + p.vendedor + ': ' + p.erro + '</p>';
+                return;
+            }
+
+            paymentIds.push(p.mp_payment_id);
+
+            const div = document.createElement('div');
+            div.className = 'pix-qr-item';
+
+            const vendedorDiv = document.createElement('div');
+            vendedorDiv.className = 'pix-qr-vendedor';
+            vendedorDiv.textContent = p.vendedor;
+            div.appendChild(vendedorDiv);
+
+            if (p.qr_code_base64) {
+                const qrWrapper = document.createElement('div');
+                qrWrapper.style.textAlign = 'center';
+                const img = document.createElement('img');
+                img.className = 'pix-qr-img';
+                img.src = 'data:image/png;base64,' + p.qr_code_base64;
+                img.alt = 'QR Code PIX';
+                qrWrapper.appendChild(img);
+                div.appendChild(qrWrapper);
+            }
+
+            if (p.valor > 0) {
+                const valorDiv = document.createElement('div');
+                valorDiv.className = 'pix-qr-valor';
+                valorDiv.textContent = 'Valor: R$ ' + p.valor.toFixed(2).replace('.', ',');
+                div.appendChild(valorDiv);
+            }
+
+            if (p.qr_code) {
+                const copiaDiv = document.createElement('div');
+                copiaDiv.className = 'pix-qr-copiaypega';
+                copiaDiv.innerHTML = '<small>Ou copie o código:</small><br>';
+                const codeEl = document.createElement('code');
+                codeEl.textContent = p.qr_code;
+                codeEl.onclick = function() { copiarBrcode(this); };
+                copiaDiv.appendChild(codeEl);
+                div.appendChild(copiaDiv);
+            }
+
+            container.appendChild(div);
+        });
+
         modal.style.display = 'flex';
+
+        if (paymentIds.length > 0) {
+            document.getElementById('pixStatusPolling').style.display = 'block';
+            iniciarPolling(paymentIds, vendaId);
+        }
+    }
+
+    function iniciarPolling(paymentIds, vendaId) {
+        if (pollingInterval) clearInterval(pollingInterval);
+
+        pollingInterval = setInterval(async () => {
+            try {
+                const response = await fetch('src/php/verificarPagamento.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ payment_ids: paymentIds })
+                });
+
+                const result = await response.json();
+
+                if (result.success && result.all_approved) {
+                    clearInterval(pollingInterval);
+                    pollingInterval = null;
+
+                    document.getElementById('pixStatusPolling').style.display = 'none';
+                    document.getElementById('pixAprovado').style.display = 'block';
+
+                    localStorage.removeItem('carrinho');
+                    showAlert('Pagamento confirmado! Pedido registrado com sucesso.', 'success');
+                    setTimeout(() => { window.location.href = 'home.html'; }, 3000);
+                } else if (result.success) {
+                    const pendentes = result.payments.filter(p => p.status === 'approved').length;
+                    const total = result.payments.length;
+                    document.getElementById('pixStatusText').textContent =
+                        'Aguardando pagamento... (' + pendentes + '/' + total + ' confirmados)';
+                }
+            } catch (error) {}
+        }, 5000);
     }
 
     function fecharPixModal() {
-        document.getElementById('pixModal').style.display = 'none';
-    }
-
-    async function confirmarPagamento() {
-        const btn = document.getElementById('btnConfirmarPagamento');
-        btn.disabled = true;
-        btn.textContent = 'Confirmando...';
-
-        try {
-            const response = await fetch('src/php/finalizarCompra.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ itens: carrinho, action: 'confirmar' })
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                localStorage.removeItem('carrinho');
-                document.getElementById('pixModal').style.display = 'none';
-                showAlert('Pagamento confirmado! Seu pedido foi registrado.', 'success');
-                setTimeout(() => { window.location.href = 'home.html'; }, 2000);
-            } else {
-                showAlert(result.message, 'error');
-                btn.disabled = false;
-                btn.textContent = 'Já paguei';
-            }
-        } catch (error) {
-            showAlert('Erro ao confirmar pagamento. Tente novamente.', 'error');
-            btn.disabled = false;
-            btn.textContent = 'Já paguei';
+        if (pollingInterval) {
+            clearInterval(pollingInterval);
+            pollingInterval = null;
         }
+        document.getElementById('pixModal').style.display = 'none';
     }
 
     function copiarBrcode(el) {
