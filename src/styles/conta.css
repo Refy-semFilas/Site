@@ -55,6 +55,22 @@
     font-weight: 500;
 }
 
+.config-btn {
+    display: inline-block;
+    background-color: #009ee3;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.config-btn:hover {
+    background-color: #007bbd;
+}
+
 .sair-btn {
     display: inline-block;
     background-color: #ff6200;

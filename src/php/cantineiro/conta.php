@@ -73,6 +73,7 @@ $usuario = $result['data'][0];
                     <span class="value"><?php echo htmlspecialchars($usuario['email']); ?></span>
                 </div>
             </div>
+            <a href="configPagamento.php" class="config-btn">Configurar Pagamento</a>
             <a href="logout.php" class="sair-btn">Sair da conta</a>
         </div>
     </div>

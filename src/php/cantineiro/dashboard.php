@@ -43,6 +43,7 @@ $produtos = $result['data'] ?? [];
                 <div class="opcoes">
                     <a href="dashboard.php" style="border-bottom: 1px solid #073c05;">Inicio</a>
                     <a href="../../../addProductForm.html">Adicionar item</a>
+                    <a href="configPagamento.php">Pagamento</a>
                     <a href="conta.php" aria-label="Minha conta">
                         <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;">
