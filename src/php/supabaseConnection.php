@@ -114,39 +114,40 @@ function crc16Checksum($data) {
 
 function alerta($mensagem, $redirect = null, $voltar = false)
 {
+    $bg = '#ff6200';
+    if (strpos($mensagem, 'sucesso') !== false) $bg = '#46CF6E';
+    elseif (strpos($mensagem, 'Erro') !== false || strpos($mensagem, 'erro') !== false) $bg = '#e74c3c';
+
     echo "
     <html>
     <head>
     <style>
         body {
-            margin:0;
-            font-family: Arial, sans-serif;
-            background: transparent;
-            display: flex;
-            justify-content: center;
-            margin-top: 30px
-        }
-
-        .alert-box {
-            background: linear-gradient(135deg, #ff9100, #ff5e00);
-            color: white;
-            padding: 20px 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            font-size: 16px;
-            animation: slide 0.4s ease;
-            height: 40px;
-            width:200px;
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
             display: flex;
             justify-content: center;
             align-items: center;
-
+            min-height: 100vh;
         }
 
-        @keyframes slide {
+        .alert-box {
+            background: $bg;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 14px;
+            max-width: 300px;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateX(50px);
+                transform: translateX(100%);
             }
             to {
                 opacity: 1;

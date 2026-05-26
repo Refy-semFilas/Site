@@ -1,39 +1,47 @@
 <?php
+header('Content-Type: application/json');
 require "supabaseConnection.php";
 
-if (empty($_POST["user"]) || empty($_POST["email"]) || empty($_POST["senha"])) {
-    alerta('Por favor, preencha todos os campos!', '../../registerUserForm.html');
+function jsonError($message) {
+    echo json_encode(['success' => false, 'message' => $message]);
+    exit;
 }
 
-$username = trim($_POST["user"]);
-$email = trim($_POST["email"]);
-$senha = $_POST["senha"];
-$tipo = $_POST["tipo"] ?? 'cliente';
+$input = $_POST;
+
+if (empty($input["user"]) || empty($input["email"]) || empty($input["senha"])) {
+    jsonError('Por favor, preencha todos os campos!');
+}
+
+$username = trim($input["user"]);
+$email = trim($input["email"]);
+$senha = $input["senha"];
+$tipo = $input["tipo"] ?? 'cliente';
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    alerta('Por favor, digite um email válido!', '../../registerUserForm.html');
+    jsonError('Por favor, digite um email válido!');
 }
 
 if (strlen($senha) < 6) {
-    alerta('A senha deve ter pelo menos 6 caracteres!', '../../registerUserForm.html');
+    jsonError('A senha deve ter pelo menos 6 caracteres!');
 }
 
 $result = supabaseRequest("/rest/v1/usuarios?email=eq." . urlencode($email) . "&select=id");
 
 if (count($result['data']) > 0) {
-    alerta('Este email já está em uso!', '../../registerUserForm.html');
+    jsonError('Este email já está em uso!');
 }
 
 $result = supabaseRequest("/rest/v1/usuarios?username=eq." . urlencode($username) . "&select=id");
 
 if (count($result['data']) > 0) {
-    alerta('Nome de usuário já está em uso!', '../../registerUserForm.html');
+    jsonError('Nome de usuário já está em uso!');
 }
 
-$chave_pix = $tipo === 'admin' ? trim($_POST["chave_pix"] ?? '') : null;
+$chave_pix = $tipo === 'admin' ? trim($input["chave_pix"] ?? '') : null;
 
 if ($tipo === 'admin' && empty($chave_pix)) {
-    alerta('Vendedor deve informar uma chave PIX!', '../../registerUserForm.html');
+    jsonError('Vendedor deve informar uma chave PIX!');
 }
 
 $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
@@ -51,8 +59,12 @@ if ($chave_pix) {
 $insertResult = supabaseRequest("/rest/v1/usuarios", 'POST', $data);
 
 if ($insertResult['code'] === 201) {
-    alerta('Cadastro realizado com sucesso!', '../../loginForm.html');
+    echo json_encode([
+        'success' => true,
+        'message' => 'Cadastro realizado com sucesso!',
+        'redirect' => 'loginForm.html'
+    ]);
 } else {
-    alerta('Erro ao cadastrar usuário!', '../../registerUserForm.html');
+    jsonError('Erro ao cadastrar usuário!');
 }
 ?>
