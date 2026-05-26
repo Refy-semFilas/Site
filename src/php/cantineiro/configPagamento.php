@@ -39,7 +39,7 @@ $username = $result['data'][0]['username'] ?? '';
     <style>
         body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; margin: 0; }
         header .logo { width: 90px; }
-        header .opcoes { padding: 8px 0; gap: 80px; }
+        header .opcoes { padding: 8px 0; gap: 130px; }
         .container { max-width: 600px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
         h1 { color: #333; font-size: 24px; margin: 0 0 8px; }
         p { color: #666; font-size: 14px; margin: 0 0 24px; }

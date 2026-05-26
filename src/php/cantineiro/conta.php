@@ -30,7 +30,7 @@ $usuario = $result['data'][0];
     <link rel="stylesheet" href="../../../src/styles/conta.css">
     <style>
         header .logo { width: 90px; }
-        header .opcoes { padding: 8px 0; gap: 80px; }
+        header .opcoes { padding: 8px 0; gap: 130px; }
     </style>
 </head>
 <body>
