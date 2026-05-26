@@ -143,10 +143,20 @@ input {
 
 .logo {
     width: 130px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05) rotate(-3deg);
+    filter: brightness(1.1);
 }
 
 header {
-    background-color: #ff6200;
+    background: linear-gradient(135deg, #ff6200 0%, #ff8c38 100%);
+    box-shadow: 0 2px 15px rgba(255, 98, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 
