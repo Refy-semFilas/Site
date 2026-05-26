@@ -11,44 +11,48 @@
     <style>
         .carrinho-vazio {
             text-align: center;
-            padding: 60px 20px;
-            max-width: 400px;
+            padding: 80px 20px;
+            max-width: 420px;
             margin: 0 auto;
         }
         
         .icone-vazio {
-            margin-bottom: 20px;
-            opacity: 0.7;
+            margin-bottom: 24px;
+        }
+        
+        .icone-vazio svg {
+            opacity: 0.6;
         }
         
         .carrinho-vazio h2 {
-            color: #333;
+            color: #2d2d2d;
             font-size: 24px;
             margin-bottom: 10px;
-            font-weight: bold;
+            font-weight: 700;
         }
         
         .carrinho-vazio p {
-            color: #666;
+            color: #999;
             font-size: 16px;
-            margin-bottom: 30px;
+            margin-bottom: 32px;
         }
         
         .btn-voltar {
             display: inline-block;
-            background-color: #ff6200;
+            background: linear-gradient(135deg, #ff6200 0%, #ff8533 100%);
             color: white;
-            padding: 12px 30px;
+            padding: 14px 36px;
             text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
+            border-radius: 12px;
+            font-weight: 700;
             font-size: 16px;
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(255, 98, 0, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         
         .btn-voltar:hover {
-            background-color: #e55500;
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 98, 0, 0.4);
         }
 
         .spinner-small {
@@ -63,16 +67,11 @@
             margin-right: 8px;
         }
 
-        .button {
-            min-width: 150px;
-        }
-
-
         .pix-modal-content {
             background: #fff;
-            padding: 30px;
-            border-radius: 16px;
-            max-width: 400px;
+            padding: 32px;
+            border-radius: 20px;
+            max-width: 420px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
@@ -80,91 +79,95 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         .pix-modal-header h2 {
-            margin: 10px 0 5px;
-            color: #333;
+            margin: 12px 0 6px;
+            color: #2d2d2d;
+            font-size: 22px;
         }
         .pix-modal-header p {
-            color: #666;
+            color: #999;
             font-size: 14px;
-            margin: 0 0 20px;
+            margin: 0 0 24px;
         }
         .pix-qr-item {
-            background: #f9f9f9;
-            border-radius: 12px;
-            padding: 20px;
+            background: #fafafa;
+            border-radius: 14px;
+            padding: 24px;
             margin-bottom: 16px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #f0e8e4;
         }
         .pix-qr-vendedor {
-            font-weight: bold;
+            font-weight: 700;
             font-size: 16px;
-            color: #333;
-            margin-bottom: 12px;
+            color: #2d2d2d;
+            margin-bottom: 14px;
         }
         .pix-qr-img {
-            width: 200px;
-            height: 200px;
-            border-radius: 8px;
+            width: 240px;
+            height: 240px;
+            border-radius: 12px;
             background: #fff;
-            padding: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #f0e8e4;
         }
         .pix-qr-valor {
             font-size: 18px;
             color: #28a745;
-            font-weight: bold;
-            margin-top: 12px;
+            font-weight: 700;
+            margin-top: 14px;
         }
         .pix-qr-copiaypega {
-            margin-top: 12px;
+            margin-top: 14px;
         }
         .pix-qr-copiaypega code {
             display: inline-block;
-            background: #fff;
-            padding: 8px 12px;
-            border-radius: 6px;
+            background: #fafafa;
+            padding: 10px 14px;
+            border-radius: 8px;
             font-size: 11px;
             word-break: break-all;
             cursor: pointer;
-            border: 1px dashed #ccc;
-            color: #333;
+            border: 1.5px dashed #ddd;
+            color: #555;
             max-width: 100%;
+            transition: border-color 0.2s;
         }
         .pix-qr-copiaypega code:hover {
-            background: #f0f0f0;
             border-color: #ff6200;
+            background: #fff8f5;
         }
         #pixModal .btn-voltar {
             margin-top: 16px;
             width: 100%;
             box-sizing: border-box;
         }
-        .pix-qr-img {
-            width: 260px;
-            height: 260px;
-            border-radius: 0;
-            background: #fff;
-            padding: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
         .itemCarrinho {
             flex-wrap: wrap;
+            padding: 12px 20px;
         }
         .vendedor-tag {
-            font-size: 11px;
-            color: #888;
+            font-size: 12px;
+            color: #999;
             width: 100%;
             order: -1;
-            padding: 4px 14px 0;
+            padding: 0 0 8px 0;
             box-sizing: border-box;
+            border-bottom: 1px solid #f0e8e4;
+            margin-bottom: 8px;
         }
         .vendedor-tag-nome {
-            font-weight: 600;
-            color: #666;
+            font-weight: 700;
+            color: #ff6200;
         }
         .vendedor-tag-pix {
-            color: #999;
+            color: #aaa;
             font-family: monospace;
+            font-size: 11px;
+        }
+        .listaCarrinho {
+            max-width: 800px;
+            margin: 24px auto;
+            padding: 0 20px;
         }
         @media (max-width: 576px) {
             .carrinho-vazio {
