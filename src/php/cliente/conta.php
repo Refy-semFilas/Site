@@ -29,6 +29,10 @@ $usuario = $result['data'][0];
     <link rel="icon" href="../../../img/Logo png.png">
     <link rel="stylesheet" href="../../../src/styles/mainHeader.css">
     <link rel="stylesheet" href="../../../src/styles/conta.css">
+    <style>
+        header .logo { width: 90px; }
+        header .opcoes { padding: 8px 0; gap: 130px; }
+    </style>
 </head>
 <body>
     <header>
