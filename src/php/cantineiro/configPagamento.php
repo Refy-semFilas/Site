@@ -5,28 +5,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['tipo'] !== 'admin') {
     header("Location: ../../../loginForm.html");
     exit;
 }
-
-require "../supabaseConnection.php";
-
-$user_id = $_SESSION['user_id'];
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $token = trim($_POST['mp_token'] ?? '');
-    $update = supabaseRequest("/rest/v1/usuarios?id=eq.$user_id", 'PATCH', [
-        'mp_access_token' => $token
-    ]);
-
-    if ($update['code'] === 200 || $update['code'] === 201 || $update['code'] === 204) {
-        echo json_encode(['success' => true, 'message' => 'Token salvo com sucesso!']);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Erro ao salvar token.']);
-    }
-    exit;
-}
-
-$result = supabaseRequest("/rest/v1/usuarios?id=eq.$user_id&select=mp_access_token,username");
-$tokenAtual = $result['data'][0]['mp_access_token'] ?? '';
-$username = $result['data'][0]['username'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -40,20 +18,12 @@ $username = $result['data'][0]['username'] ?? '';
         body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; margin: 0; }
         header .logo { width: 90px; }
         header .opcoes { padding: 8px 0; gap: 130px; }
-        .container { max-width: 600px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        h1 { color: #333; font-size: 24px; margin: 0 0 8px; }
-        p { color: #666; font-size: 14px; margin: 0 0 24px; }
-        label { display: block; font-weight: 600; color: #333; margin-bottom: 6px; font-size: 14px; }
-        input[type="text"] { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
-        input[type="text"]:focus { outline: none; border-color: #ff6200; }
-        button { background: #ff6200; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 16px; width: 100%; }
-        button:hover { background: #e55500; }
-        .info { background: #fff3cd; color: #856404; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; }
-        .info a { color: #ff6200; }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #ff6200; color: white; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10000; animation: slideIn 0.3s ease; max-width: 300px; }
-        .toast.success { background: #46CF6E; }
-        .toast.error { background: #e74c3c; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .container { max-width: 480px; margin: 80px auto; background: #fff; padding: 48px 32px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; }
+        .beta-icon { margin-bottom: 20px; }
+        h1 { color: #2d2d2d; font-size: 24px; margin: 0 0 8px; }
+        p { color: #999; font-size: 15px; margin: 0 0 28px; line-height: 1.6; }
+        .btn-voltar { display: inline-block; background: linear-gradient(135deg, #ff6200 0%, #ff8533 100%); color: white; padding: 12px 36px; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 14px rgba(255,98,0,0.3); transition: transform 0.2s, box-shadow 0.2s; border: none; cursor: pointer; }
+        .btn-voltar:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,98,0,0.4); }
     </style>
 </head>
 <body>
@@ -80,55 +50,15 @@ $username = $result['data'][0]['username'] ?? '';
     </header>
 
     <div class="container">
-        <h1>Configurar Mercado Pago</h1>
-        <p>Olá, <strong><?php echo htmlspecialchars($username); ?></strong>. Configure seu token de acesso para receber pagamentos via PIX.</p>
-
-        <div class="info">
-            <strong>Como obter seu token:</strong>
-            <ol style="margin:8px 0 0;padding-left:20px;">
-                <li>Crie uma conta em <a href="https://www.mercadopago.com.br" target="_blank">mercadopago.com.br</a></li>
-                <li>Vá em <strong>Suas Integrações → Credenciais</strong></li>
-                <li>Copie o <strong>Access Token</strong> (production, não o de teste)</li>
-                <li>Cole no campo abaixo e salve</li>
-            </ol>
+        <div class="beta-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ff6200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/>
+            </svg>
         </div>
-
-        <form id="mpForm">
-            <label for="mp_token">Access Token do Mercado Pago</label>
-            <input type="text" id="mp_token" name="mp_token" value="<?php echo htmlspecialchars($tokenAtual); ?>" placeholder="APP_USR-...">
-            <button type="submit">Salvar Token</button>
-        </form>
+        <h1>Beta</h1>
+        <p>Pagamentos online estarão disponíveis em breve! Fique ligado.</p>
+        <a href="dashboard.php" class="btn-voltar">Voltar</a>
     </div>
-
-    <script>
-    document.getElementById('mpForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const btn = this.querySelector('button');
-        btn.disabled = true;
-        btn.textContent = 'Salvando...';
-
-        const token = document.getElementById('mp_token').value.trim();
-        const formData = new FormData();
-        formData.append('mp_token', token);
-
-        const response = await fetch('configPagamento.php', { method: 'POST', body: formData });
-        const result = await response.json();
-
-        btn.disabled = false;
-        btn.textContent = 'Salvar Token';
-
-        showAlert(result.message, result.success ? 'success' : 'error');
-    });
-
-    function showAlert(message, type) {
-        const existing = document.querySelector('.toast');
-        if (existing) existing.remove();
-        const toast = document.createElement('div');
-        toast.className = 'toast' + (type !== 'info' ? ' ' + type : '');
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-    }
-    </script>
 </body>
 </html>

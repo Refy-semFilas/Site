@@ -55,114 +55,9 @@
             box-shadow: 0 6px 20px rgba(255, 98, 0, 0.4);
         }
 
-        .spinner-small {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            vertical-align: middle;
-            margin-right: 8px;
-        }
-
-        .pix-modal-content {
-            background: #fff;
-            padding: 32px;
-            border-radius: 20px;
-            max-width: 420px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        .pix-modal-header h2 {
-            margin: 12px 0 6px;
-            color: #2d2d2d;
-            font-size: 22px;
-        }
-        .pix-modal-header p {
-            color: #999;
-            font-size: 14px;
-            margin: 0 0 24px;
-        }
-        .pix-qr-item {
-            background: #fafafa;
-            border-radius: 14px;
-            padding: 24px;
-            margin-bottom: 16px;
-            border: 1px solid #f0e8e4;
-        }
-        .pix-qr-vendedor {
-            font-weight: 700;
-            font-size: 16px;
-            color: #2d2d2d;
-            margin-bottom: 14px;
-        }
-        .pix-qr-img {
-            width: 240px;
-            height: 240px;
-            border-radius: 12px;
-            background: #fff;
-            padding: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border: 1px solid #f0e8e4;
-        }
-        .pix-qr-valor {
-            font-size: 18px;
-            color: #28a745;
-            font-weight: 700;
-            margin-top: 14px;
-        }
-        .pix-qr-copiaypega {
-            margin-top: 14px;
-        }
-        .pix-qr-copiaypega code {
-            display: inline-block;
-            background: #fafafa;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 11px;
-            word-break: break-all;
-            cursor: pointer;
-            border: 1.5px dashed #ddd;
-            color: #555;
-            max-width: 100%;
-            transition: border-color 0.2s;
-        }
-        .pix-qr-copiaypega code:hover {
-            border-color: #ff6200;
-            background: #fff8f5;
-        }
-        #pixModal .btn-voltar {
-            margin-top: 16px;
-            width: 100%;
-            box-sizing: border-box;
-        }
         .itemCarrinho {
             flex-wrap: wrap;
             padding: 12px 20px;
-        }
-        .vendedor-tag {
-            font-size: 12px;
-            color: #999;
-            width: 100%;
-            order: -1;
-            padding: 0 0 8px 0;
-            box-sizing: border-box;
-            border-bottom: 1px solid #f0e8e4;
-            margin-bottom: 8px;
-        }
-        .vendedor-tag-nome {
-            font-weight: 700;
-            color: #ff6200;
-        }
-        .vendedor-tag-pix {
-            color: #aaa;
-            font-family: monospace;
-            font-size: 11px;
         }
         .listaCarrinho {
             max-width: 800px;
@@ -241,7 +136,6 @@
     <script>
         const lista = document.querySelector('.listaCarrinho');
         let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-        let vendedoresInfo = {};
 
         const totalElement = document.querySelector('.total');
 
@@ -269,16 +163,11 @@
             let totalGeral = 0;
 
             carrinho.forEach(produto => {
-                const vInfo = produto.usuario_id ? vendedoresInfo[produto.usuario_id] : null;
-                const nomeVendedor = vInfo ? vInfo.username : '';
-                const chavePix = vInfo ? (vInfo.chave_pix || '') : '';
-
                 totalGeral += produto.preco * produto.quantidade;
 
                 lista.innerHTML += `
                     <div class="global">    
                         <div class="itemCarrinho">
-                            ${nomeVendedor ? '<div class="vendedor-tag"><span class="vendedor-tag-nome">' + nomeVendedor + '</span>' + (chavePix ? ' <span class="vendedor-tag-pix">PIX: ' + chavePix + '</span>' : '') + '</div>' : ''}
                             <img src="${produto.imagem}">
                             <div class="nomePreco">
                                 <p class="nome">${produto.nome}</p>
@@ -333,285 +222,49 @@
             });
         }
 
-        async function carregarVendedores() {
-            const ids = [...new Set(carrinho.map(p => p.usuario_id).filter(Boolean))];
-            if (ids.length === 0) return;
-
-            try {
-                const response = await fetch('src/php/getPixKeys.php?ids=' + ids.join(','));
-                const vendedores = await response.json();
-                vendedores.forEach(v => {
-                    vendedoresInfo[v.id] = v;
-                });
-            } catch (error) {}
-        }
-
         function salvar() {
             localStorage.setItem('carrinho', JSON.stringify(carrinho));
             renderCarrinho();
-            carregarVendedores().then(renderCarrinho);
         }
 
         renderCarrinho();
-        carregarVendedores().then(renderCarrinho);
 
-        document.querySelector('.button').addEventListener('click', async function() {
+        document.querySelector('.button').addEventListener('click', function() {
             if (carrinho.length === 0) {
                 showAlert('Seu carrinho está vazio!', 'warning');
                 return;
             }
-
-            const btn = this;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-small"></span> Gerando...';
-
-            try {
-                const response = await fetch('src/php/criarPagamentoMP.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ itens: carrinho })
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    btn.disabled = false;
-                    btn.innerHTML = 'Finalizar';
-                    mostrarPixQRCodeMP(result.pix, result.venda_id);
-                } else {
-                    showAlert(result.message, 'error');
-                    btn.disabled = false;
-                    btn.innerHTML = 'Finalizar';
-                }
-            } catch (error) {
-                showAlert('Erro ao processar compra. Tente novamente.', 'error');
-                btn.disabled = false;
-                btn.innerHTML = 'Finalizar';
-            }
+            mostrarBetaModal();
         });
     </script>
 
-    <div id="pixModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:10000;">
-        <div class="pix-modal-content">
-            <div class="pix-modal-header">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ff6200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="4" width="20" height="16" rx="2"/>
-                    <path d="M8 12h8"/><path d="M12 8v8"/>
+    <div id="betaModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:10000;">
+        <div style="background:#fff;border-radius:20px;padding:40px 32px 28px;max-width:360px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation:betaIn 0.25s ease;">
+            <div style="margin-bottom:16px;">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#ff6200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/>
                 </svg>
-                <h2>Pagamento via PIX</h2>
-                <p>Escaneie o QR Code abaixo para pagar</p>
             </div>
-            <div id="pixQrContainer"></div>
-            <div id="pixStatusPolling" style="margin-top:16px;padding:12px;background:#fff3cd;border-radius:8px;display:none;">
-                <span class="spinner-small" style="border-color:rgba(255,152,0,0.3);border-top-color:#ff9800;"></span>
-                <span style="color:#856404;font-size:14px;" id="pixStatusText">Aguardando pagamento...</span>
-            </div>
-            <div id="pixAprovado" style="margin-top:16px;padding:12px;background:#d4edda;border-radius:8px;display:none;">
-                <span style="color:#155724;font-size:14px;font-weight:bold;">Pagamento confirmado!</span>
-            </div>
-            <div style="display:flex;gap:10px;margin-top:16px;">
-                <button class="btn-voltar" style="flex:1;" onclick="fecharPixModal()">Cancelar</button>
-                <button class="btn-voltar" style="flex:1;background:#28a745;display:none;" id="btnConfirmarPagamento" onclick="confirmarPagamentoManual()">Já paguei</button>
-            </div>
+            <h2 style="color:#2d2d2d;font-size:22px;margin:0 0 8px;">Beta</h2>
+            <p style="color:#999;font-size:15px;margin:0 0 24px;line-height:1.5;">Pagamentos online estarão disponíveis em breve! Fique ligado.</p>
+            <button class="btn-voltar" onclick="document.getElementById('betaModal').style.display='none'">OK</button>
         </div>
     </div>
 
+    <script src="toast.js"></script>
     <script>
-    function showAlert(message, type = 'info') {
-        const existing = document.querySelector('.toast');
-        if (existing) existing.remove();
-
-        const toast = document.createElement('div');
-        toast.className = 'toast' + (type !== 'info' ? ' ' + type : '');
-        toast.textContent = message;
-        document.body.appendChild(toast);
-
-        setTimeout(() => toast.remove(), 3000);
-    }
-
-    let pollingInterval = null;
-    let vendaIdAtual = null;
-
-    function mostrarPixQRCodeMP(pixData, vendaId) {
-        vendaIdAtual = vendaId;
-        const modal = document.getElementById('pixModal');
-        const container = document.getElementById('pixQrContainer');
-        container.innerHTML = '';
-
-        document.getElementById('pixStatusPolling').style.display = 'none';
-        document.getElementById('pixAprovado').style.display = 'none';
-        document.getElementById('btnConfirmarPagamento').style.display = 'none';
-
-        if (!pixData || pixData.length === 0) {
-            container.innerHTML = '<p style="text-align:center;color:#666;padding:20px;">Nenhum pagamento disponível.</p>';
-            modal.style.display = 'flex';
-            return;
-        }
-
-        const paymentIds = [];
-        let temManual = false;
-
-        pixData.forEach(p => {
-            if (p.mode === 'manual') {
-                temManual = true;
-            } else {
-                paymentIds.push(p.mp_payment_id);
-            }
-
-            const div = document.createElement('div');
-            div.className = 'pix-qr-item';
-
-            const vendedorDiv = document.createElement('div');
-            vendedorDiv.className = 'pix-qr-vendedor';
-            vendedorDiv.textContent = p.vendedor;
-            div.appendChild(vendedorDiv);
-
-            if (p.qr_code_base64) {
-                const qrWrapper = document.createElement('div');
-                qrWrapper.style.textAlign = 'center';
-                const img = document.createElement('img');
-                img.className = 'pix-qr-img';
-                img.src = 'data:image/png;base64,' + p.qr_code_base64;
-                img.alt = 'QR Code PIX';
-                qrWrapper.appendChild(img);
-                div.appendChild(qrWrapper);
-            }
-
-            if (!p.qr_code_base64 && !p.qr_code) {
-                const noPix = document.createElement('p');
-                noPix.style.cssText = 'color:#999;';
-                noPix.textContent = p.vendedor + ': sem chave PIX configurada';
-                div.appendChild(noPix);
-            }
-
-            if (p.valor > 0) {
-                const valorDiv = document.createElement('div');
-                valorDiv.className = 'pix-qr-valor';
-                valorDiv.textContent = 'Valor: R$ ' + p.valor.toFixed(2).replace('.', ',');
-                div.appendChild(valorDiv);
-            }
-
-            if (p.qr_code) {
-                const copiaDiv = document.createElement('div');
-                copiaDiv.className = 'pix-qr-copiaypega';
-                copiaDiv.innerHTML = '<small>Ou copie o código:</small><br>';
-                const codeEl = document.createElement('code');
-                codeEl.textContent = p.qr_code;
-                codeEl.onclick = function() { copiarBrcode(this); };
-                copiaDiv.appendChild(codeEl);
-                div.appendChild(copiaDiv);
-            }
-
-            container.appendChild(div);
-        });
-
-        modal.style.display = 'flex';
-
-        if (paymentIds.length > 0) {
-            document.getElementById('pixStatusPolling').style.display = 'block';
-            iniciarPolling(paymentIds);
-        }
-
-        if (temManual) {
-            document.getElementById('btnConfirmarPagamento').style.display = 'block';
-        }
-    }
-
-    function iniciarPolling(paymentIds) {
-        if (pollingInterval) clearInterval(pollingInterval);
-
-        pollingInterval = setInterval(async () => {
-            try {
-                const response = await fetch('src/php/verificarPagamento.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ payment_ids: paymentIds })
-                });
-
-                const result = await response.json();
-
-                if (result.success && result.all_approved) {
-                    clearInterval(pollingInterval);
-                    pollingInterval = null;
-
-                    document.getElementById('pixStatusPolling').style.display = 'none';
-                    document.getElementById('pixAprovado').style.display = 'block';
-                    document.getElementById('btnConfirmarPagamento').style.display = 'none';
-
-                    localStorage.removeItem('carrinho');
-                    showAlert('Pagamento confirmado! Pedido registrado com sucesso.', 'success');
-                    setTimeout(() => { window.location.href = 'home.html'; }, 3000);
-                } else if (result.success) {
-                    const pendentes = result.payments.filter(p => p.status === 'approved').length;
-                    const total = result.payments.length;
-                    document.getElementById('pixStatusText').textContent =
-                        'Aguardando pagamento... (' + pendentes + '/' + total + ' confirmados)';
-                }
-            } catch (error) {}
-        }, 5000);
-    }
-
-    async function confirmarPagamentoManual() {
-        const btn = document.getElementById('btnConfirmarPagamento');
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-small"></span> Confirmando...';
-
-        try {
-            const response = await fetch('src/php/finalizarCompra.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ itens: carrinho, action: 'confirmar' })
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                if (pollingInterval) {
-                    clearInterval(pollingInterval);
-                    pollingInterval = null;
-                }
-                document.getElementById('pixStatusPolling').style.display = 'none';
-                document.getElementById('pixAprovado').style.display = 'block';
-                document.getElementById('btnConfirmarPagamento').style.display = 'none';
-
-                localStorage.removeItem('carrinho');
-                showAlert('Pagamento confirmado! Pedido registrado com sucesso.', 'success');
-                setTimeout(() => { window.location.href = 'home.html'; }, 3000);
-            } else {
-                showAlert(result.message, 'error');
-                btn.disabled = false;
-                btn.textContent = 'Já paguei';
-            }
-        } catch (error) {
-            showAlert('Erro ao confirmar pagamento.', 'error');
-            btn.disabled = false;
-            btn.textContent = 'Já paguei';
-        }
-    }
-
-    function fecharPixModal() {
-        if (pollingInterval) {
-            clearInterval(pollingInterval);
-            pollingInterval = null;
-        }
-        document.getElementById('pixModal').style.display = 'none';
-    }
-
-    function copiarBrcode(el) {
-        navigator.clipboard.writeText(el.textContent).then(() => {
-            showAlert('Código copiado!', 'success');
-        }).catch(() => {
-            const range = document.createRange();
-            range.selectNode(el);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand('copy');
-            showAlert('Código copiado!', 'success');
-        });
+    function mostrarBetaModal() {
+        document.getElementById('betaModal').style.display = 'flex';
     }
     </script>
+
+    <style>
+    @keyframes betaIn {
+        from { transform: scale(0.85); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+    </style>
 
 </body>
 

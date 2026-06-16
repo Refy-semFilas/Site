@@ -34,11 +34,10 @@ html {
     gap: 16px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
     border: 1px solid #f0e8e4;
-    transition: transform 0.25s ease, box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease;
 }
 
 .card:hover {
-    transform: translateY(-3px);
     box-shadow: 0 8px 24px rgba(255, 98, 0, 0.12);
 }
 
@@ -54,11 +53,6 @@ html {
     height: 80px;
     border-radius: 12px;
     object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.card:hover .imagem img {
-    transform: scale(1.05);
 }
 
 .info {
