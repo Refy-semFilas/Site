@@ -1,5 +1,5 @@
 <?php
-require "supabaseConnection.php";
+require "src/php/supabaseConnection.php";
 
 echo "<h2>Teste de conexão com Supabase</h2>";
 

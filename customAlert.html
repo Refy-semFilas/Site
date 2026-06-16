@@ -1,40 +1,52 @@
-<div id="customAlert" class="custom-alert">
-    <div class="alert-content">
-        <h3 id="alertTitle">Aviso</h3>
-        <p id="alertMessage"></p>
-        <button class="alert-btn" onclick="closeAlert()">OK</button>
-    </div>
-</div>
+<style>
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ff6200;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+    max-width: 300px;
+}
 
+.toast.success {
+    background: #46CF6E;
+}
+
+.toast.error {
+    background: #e74c3c;
+}
+
+.toast.warning {
+    background: #ffc107;
+    color: #333;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+</style>
 <script>
 function showAlert(message, type = 'info') {
-    const alert = document.getElementById('customAlert');
-    const content = alert.querySelector('.alert-content');
-    
-    content.className = 'alert-content alert-' + type;
-    
-    const title = document.getElementById('alertTitle');
-    if (type === 'success') {
-        title.textContent = 'Sucesso!';
-    } else if (type === 'error') {
-        title.textContent = 'Erro';
-    } else if (type === 'warning') {
-        title.textContent = 'Atenção';
-    } else {
-        title.textContent = 'Aviso';
-    }
-    
-    document.getElementById('alertMessage').textContent = message;
-    alert.classList.add('show');
-}
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
 
-function closeAlert() {
-    document.getElementById('customAlert').classList.remove('show');
-}
+    const toast = document.createElement('div');
+    toast.className = 'toast' + (type !== 'info' ? ' ' + type : '');
+    toast.textContent = message;
+    document.body.appendChild(toast);
 
-document.getElementById('customAlert').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeAlert();
-    }
-});
+    setTimeout(() => toast.remove(), 3000);
+}
 </script>

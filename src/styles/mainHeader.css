@@ -1,0 +1,244 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.imgEpesquisa {
+    display: flex;
+
+}
+
+.imagemLogo {
+    width: 10%;
+}
+
+.pesquisaOpcoes {
+    width: 80%;
+}
+
+.opcoes {
+    display: flex;
+    justify-content: center;
+    gap: 130px;
+    padding: 20px 0;
+}
+
+.opcoes a {
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    font-size: 16px;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+    padding: 0;
+    line-height: 1.1;
+    
+}
+
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+}
+
+.spinner {
+    width: 35px;
+    height: 35px;
+    border: 4px solid rgba(255, 98, 0, 0.2);
+    border-top-color: #ff6200;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ff6200;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+    max-width: 300px;
+}
+
+.toast.success {
+    background: #46CF6E;
+}
+
+.toast.error {
+    background: #e74c3c;
+}
+
+.toast.warning {
+    background: #ffc107;
+    color: #333;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.opcoes a:hover {
+    border-bottom: 1px solid #073c05;
+}
+
+
+.barraPesquisa {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 5px 12px;
+    gap: 8px;
+    margin-top: 3%;
+}
+
+.barraPesquisa input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: transparent;
+}
+
+
+.imgEpesquisa {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+input {
+    width: 80%;
+    height: 20%;
+    border-radius: 20px;
+    border: none;
+    padding: 7px;
+}
+
+.logo {
+    width: 130px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05) rotate(-3deg);
+    filter: brightness(1.1);
+}
+
+header {
+    background: linear-gradient(135deg, #ff6200 0%, #ff8c38 100%);
+    box-shadow: 0 2px 15px rgba(255, 98, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+
+/* Tela até 1200px */
+@media (max-width: 1200px) {
+    .opcoes {
+        gap: 60px;
+    }
+}
+
+/* Tela até 992px (tablet) */
+@media (max-width: 992px) {
+
+    .imgEpesquisa {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .imagemLogo {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .logo {
+        width: 110px;
+    }
+
+    .pesquisaOpcoes {
+        width: 100%;
+    }
+
+    .opcoes {
+        gap: 40px;
+        padding: 10px 0;
+        flex-wrap: wrap;
+    }
+}
+
+/* Tela até 768px (tablet pequeno / celular grande) */
+@media (max-width: 768px) {
+
+    .barraPesquisa {
+        margin-top: 0;
+        padding: 8px 10px;
+    }
+
+    .opcoes {
+        gap: 25px;
+        font-size: 14px;
+    }
+
+    .opcoes a {
+        font-size: 14px;
+    }
+}
+
+/* Tela até 576px (celular) */
+@media (max-width: 576px) {
+
+    .imgEpesquisa {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .logo {
+        width: 90px;
+    }
+
+    .barraPesquisa {
+        width: 90%;
+        border-radius: 15px;
+    }
+
+    .opcoes {
+        flex-direction: column;
+        gap: 12px;
+        padding-bottom: 15px;
+    }
+
+    .opcoes a {
+        font-size: 15px;
+    }
+}

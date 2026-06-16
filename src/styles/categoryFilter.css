@@ -1,0 +1,163 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    overflow-x: hidden;
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(180deg, #fff8f5 0%, #fff0e8 100%);
+}
+
+.listaCarrinho {
+    max-width: 800px;
+    margin: 24px auto;
+    padding: 0 20px;
+}
+
+.global {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.itemCarrinho {
+    width: 100%;
+    max-width: 720px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    border: 1px solid #f0e8e4;
+    transition: transform 0.25s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.itemCarrinho:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(255, 98, 0, 0.12);
+}
+
+.itemCarrinho img {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.nomePreco {
+    flex: 1;
+    min-width: 0;
+}
+
+.nome {
+    font-size: 17px;
+    font-weight: 700;
+    color: #2d2d2d;
+    margin: 0 0 4px;
+}
+
+.preco {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ff6200;
+    margin: 0;
+}
+
+.quantidade {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #e0d8d4;
+    border-radius: 10px;
+    height: 36px;
+    background: #fafafa;
+    flex-shrink: 0;
+}
+
+.quantidade .btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #ff6200;
+    font-size: 20px;
+    font-weight: 700;
+    transition: background 0.2s ease;
+    border-radius: 0;
+}
+
+.quantidade .btn:hover {
+    background: #fff0e8;
+}
+
+.quantidade .remover {
+    border-radius: 10px 0 0 10px;
+}
+
+.quantidade .adicionar {
+    border-radius: 0 10px 10px 0;
+}
+
+.quantidade .qtd {
+    width: 36px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    color: #2d2d2d;
+    border-left: 1.5px solid #e0d8d4;
+    border-right: 1.5px solid #e0d8d4;
+    padding: 0;
+    line-height: 36px;
+}
+
+.footerCarrinho {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    background: #fff;
+    padding: 20px 28px;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f0e8e4;
+}
+
+.footerCarrinho .total {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ff6200;
+    margin: 0;
+}
+
+.button {
+    min-width: 200px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff6200 0%, #ff8533 100%);
+    border: none;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 18px;
+    box-shadow: 0 4px 14px rgba(255, 98, 0, 0.35);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 98, 0, 0.45);
+}
+
+.button:active {
+    transform: translateY(0);
+}

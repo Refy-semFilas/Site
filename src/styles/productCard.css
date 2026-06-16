@@ -1,0 +1,177 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    overflow-x: hidden;
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(180deg, #fff8f5 0%, #fff0e8 100%);
+}
+
+.containerCard {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    margin: 30px auto;
+    flex-wrap: wrap;
+    padding: 24px;
+    max-width: 1400px;
+}
+
+.card {
+    width: 275px;
+    padding: 0 0 18px;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #f0e8e4;
+    background: #fff;
+    transition: transform 0.25s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #ff6200, #ffb380);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(255, 98, 0, 0.15);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.imagem {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0;
+}
+
+.imagem img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.card:hover .imagem img {
+    transform: scale(1.08);
+}
+
+.descricao {
+    text-align: center;
+    width: 100%;
+    font-weight: 700;
+    font-size: 18px;
+    color: #2d2d2d;
+    padding: 12px 12px 4px;
+    box-sizing: border-box;
+}
+
+.preco {
+    font-weight: 700;
+    color: #ff6200;
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    padding: 0 12px 12px;
+    box-sizing: border-box;
+}
+
+.button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+.button button {
+    width: 100%;
+    max-width: 180px;
+    height: 42px;
+    background: linear-gradient(135deg, #ff6200 0%, #ff8533 100%);
+    color: white;
+    border: none;
+    font-weight: 700;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 12px rgba(255, 98, 0, 0.3);
+}
+
+.button button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 98, 0, 0.4);
+}
+
+.button button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.button button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+/* Telas até 1200px */
+@media (max-width: 1200px) {
+    .containerCard {
+        gap: 60px;
+    }
+}
+
+/* Telas até 992px */
+@media (max-width: 992px) {
+    .card {
+        width: 40%;
+    }
+
+    .imagem img {
+        width: 180px;
+    }
+}
+
+/* Telas até 768px */
+@media (max-width: 768px) {
+    .card {
+        width: 45%;
+    }
+
+    .imagem img {
+        width: 165px;
+    }
+
+    .descricao {
+        font-size: 18px;
+    }
+}
+
+/* Celulares */
+@media (max-width: 576px) {
+    .card {
+        width: 85%;
+    }
+
+    .imagem img {
+        width: 70%;
+    }
+}
