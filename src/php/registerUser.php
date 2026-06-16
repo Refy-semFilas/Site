@@ -38,12 +38,6 @@ if (count($result['data']) > 0) {
     jsonError('Nome de usuário já está em uso!');
 }
 
-$chave_pix = $tipo === 'admin' ? trim($input["chave_pix"] ?? '') : null;
-
-if ($tipo === 'admin' && empty($chave_pix)) {
-    jsonError('Vendedor deve informar uma chave PIX!');
-}
-
 $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
 $data = [
@@ -52,9 +46,6 @@ $data = [
     'senha' => $senhaHash,
     'tipo' => $tipo,
 ];
-if ($chave_pix) {
-    $data['chave_pix'] = $chave_pix;
-}
 
 $insertResult = supabaseRequest("/rest/v1/usuarios", 'POST', $data);
 

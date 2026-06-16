@@ -72,13 +72,6 @@
                     </div>
                 </div>
 
-                <div class="boxPix" id="boxPix" style="display:none;">
-                    <label class="pix">Chave PIX</label>
-                    <div class="inputBox">
-                        <input type="text" name="chave_pix" id="chave_pix" placeholder="Digite sua chave PIX">
-                    </div>
-                </div>
-
                 <button class="button" style="margin-bottom: 7%;" type="submit" id="btnCadastrar">Cadastrar</button>
             </div>
         </div>
@@ -87,18 +80,6 @@
     </form>
 
     <script>
-        document.getElementById('tipo').addEventListener('change', function() {
-            const boxPix = document.getElementById('boxPix');
-            const pixInput = document.getElementById('chave_pix');
-            if (this.value === 'admin') {
-                boxPix.style.display = 'block';
-                pixInput.required = true;
-            } else {
-                boxPix.style.display = 'none';
-                pixInput.required = false;
-            }
-        });
-
         const senhaInput = document.getElementById('senha');
         const olho = document.getElementById('svgOlho');
         const emailInput = document.getElementById('email');
@@ -193,20 +174,26 @@
             btn.disabled = true;
             btn.textContent = 'Cadastrando...';
 
-            const formData = new FormData(this);
-            const response = await fetch('src/php/registerUser.php', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
+            try {
+                const formData = new FormData(this);
+                const response = await fetch('src/php/registerUser.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
 
-            if (result.success) {
-                showAlert('Cadastro realizado com sucesso!', 'success');
-                setTimeout(() => {
-                    window.location.href = result.redirect;
-                }, 2500);
-            } else {
-                showAlert(result.message, 'error');
+                if (result.success) {
+                    showAlert('Cadastro realizado com sucesso!', 'success');
+                    setTimeout(() => {
+                        window.location.href = result.redirect;
+                    }, 2500);
+                } else {
+                    showAlert(result.message, 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'Cadastrar';
+                }
+            } catch (error) {
+                showAlert('Erro de conexão. Tente novamente.', 'error');
                 btn.disabled = false;
                 btn.textContent = 'Cadastrar';
             }
@@ -232,26 +219,6 @@
     <script src="toast.js"></script>
     
     <style>
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #ff6200;
-            color: white;
-            padding: 16px 24px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 10000;
-            animation: slideIn 0.3s ease;
-            max-width: 300px;
-        }
-        .toast.success { background: #46CF6E; }
-        .toast.error { background: #e74c3c; }
-        .toast.warning { background: #ffc107; color: #333; }
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
         input.error {
             border-color: #ff6200 !important;
             box-shadow: 0 0 5px rgba(255, 98, 0, 0.3) !important;
