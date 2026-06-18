@@ -21,7 +21,6 @@ $produtos = $result['data'] ?? [];
     <link rel="icon" href="../../../img/Logo png.png">
     <link rel="stylesheet" href="../../../src/styles/mainHeader.css">
     <link rel="stylesheet" href="../../../src/styles/adminProductCard.css">
-    <link rel="stylesheet" href="../../../src/styles/addProduct.css">
 </head>
 
 <body>
