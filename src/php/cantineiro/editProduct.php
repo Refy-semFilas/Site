@@ -32,7 +32,7 @@ if ((int)$produto['usuario_id'] !== (int)$_SESSION['user_id']) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome  = $_POST['nome'];
     $descricao = $_POST['descricao'];
-    $valor = str_replace(',', '.', str_replace('.', '', $_POST['valor']));
+    $valor = str_replace(',', '.', $_POST['valor']);
     $CODIGO_DE_BARRAS = $_POST['CODIGO_DE_BARRAS'];
     $imagem = $_POST['imagem_atual'];
 

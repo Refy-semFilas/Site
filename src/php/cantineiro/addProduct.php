@@ -10,7 +10,7 @@ if (!isAdmin()) {
 
 $nome = $_POST["nome"];
 $descricao = $_POST["descricao"];
-$valor = str_replace(',', '.', str_replace('.', '', $_POST["valor"]));
+$valor = str_replace(',', '.', $_POST["valor"]);
 $estoque = $_POST["estoque"];
 $codigo = $_POST["codigoBarras"];
 $categoria = $_POST['categoria'];
