@@ -11,8 +11,8 @@ html {
 .conteudo {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    margin: 24px auto;
+    gap: 50px;
+    margin: 40px auto;
     max-width: 1100px;
     padding: 0 20px;
 }
