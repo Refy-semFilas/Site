@@ -45,13 +45,10 @@
 .campo input {
     border: none;
     border-bottom: 1px solid #999;
-    padding: 8px;
+    padding: 8px 5px;
     font-size: 14px;
     outline: none;
-}
-
-.campo input:focus {
-    border-bottom: 2px solid #ff6200;
+    background: transparent;
 }
 
 .imagem-produto {
@@ -79,36 +76,45 @@
 
 .botoes {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 30px;
     margin-top: 30px;
 }
 
 .btn {
     width: 160px;
     padding: 12px;
-    border-radius: 25px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 700;
     font-size: 14px;
     text-align: center;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: inline-block;
+    box-sizing: border-box;
 }
 
 .cancelar {
-    background: #ff9500;
-    color: #000;
-    box-shadow: 5px 5px 2px #ff6200;
-    text-decoration: none;
+    background: #e8e8e8;
+    color: #555;
+}
+
+.cancelar:hover {
+    background: #ddd;
+    transform: translateY(-1px);
 }
 
 .adicionar {
-    background: #ff9500;
-    color: #000;
-    box-shadow: 5px 5px 2px #ff6200;
+    background: linear-gradient(135deg, #ff6200 0%, #ff8533 100%);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(255, 98, 0, 0.3);
 }
 
-.btn:hover {
-    transform: scale(1.05);
+.adicionar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 98, 0, 0.4);
 }
 
 /* RESPONSIVO */

@@ -35,14 +35,13 @@ html {
     overflow: hidden;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
     border: 1px solid #f0e8e4;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: box-shadow 0.25s ease;
     display: flex;
     flex-direction: column;
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(255, 98, 0, 0.18);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
 }
 
 .imagem {
