@@ -104,7 +104,7 @@
                 container.innerHTML += `
                     <div class="card" style="animation-delay: ${index * 0.1}s">
                         <div class="imagem">
-                            <img src="imgBD/${p.imagem}">
+                            <img src="${p.imagem}">
                         </div>
                         <div class="descricao">
                             <p>${p.nome}</p>
@@ -119,7 +119,7 @@
                                 data-nome="${p.nome}"
                                 data-preco="${p.valor}"
                                 data-estoque="${estoque}"
-                                data-imagem="imgBD/${p.imagem}"
+                                data-imagem="${p.imagem}"
                                 data-usuario-id="${p.usuario_id}"
                                 ${estoque <= 0 ? 'disabled' : ''}>
                                 ${estoque <= 0 ? 'Indisponível' : 'Comprar'}

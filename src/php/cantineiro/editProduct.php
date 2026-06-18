@@ -38,9 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($_FILES['imagem']['name'])) {
         $nomeImagem = uniqid() . "-" . $_FILES['imagem']['name'];
-        $destino = "../../../imgBD/" . $nomeImagem;
-        move_uploaded_file($_FILES['imagem']['tmp_name'], $destino);
-        $imagem = $nomeImagem;
+        $ext = strtolower(pathinfo($nomeImagem, PATHINFO_EXTENSION));
+        $contentType = $ext === 'png' ? 'image/png' : ($ext === 'gif' ? 'image/gif' : 'image/jpeg');
+        $upload = supabaseStorageUpload('produtos', $_FILES['imagem']['tmp_name'], $nomeImagem, $contentType);
+        if (!isset($upload['error'])) {
+            $imagem = $nomeImagem;
+        }
     }
 
     $updateData = [
@@ -175,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>Imagem atual</p>
             <img 
                 id="previewImagem"
-                src="../../imgBD/<?= htmlspecialchars($produto['imagem']) ?>"
+                src="<?= SUPABASE_STORAGE_URL ?>produtos/<?= htmlspecialchars($produto['imagem']) ?>"
                 alt="Imagem do produto"
             >
             <label class="add-img">

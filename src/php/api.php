@@ -15,4 +15,10 @@ $result = supabaseRequest("/rest/v1/produto", 'GET', null, $queryParams);
 
 $produtos = $result['data'] ?? [];
 
+foreach ($produtos as &$p) {
+    if (!empty($p['imagem'])) {
+        $p['imagem'] = SUPABASE_STORAGE_URL . 'produtos/' . $p['imagem'];
+    }
+}
+
 echo json_encode($produtos);

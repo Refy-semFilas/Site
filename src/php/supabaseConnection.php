@@ -1,6 +1,7 @@
 <?php
 $supabaseUrl = getenv('SUPABASE_URL') ?: 'https://myojsyuijqveviwfpjqf.supabase.co';
 $supabaseKey = getenv('SUPABASE_KEY') ?: 'sb_publishable_i1B4kDjelQULBUfro9G-pg_-RhFWkss';
+$supabaseServiceKey = getenv('SUPABASE_SERVICE_KEY') ?: 'sb_secret_qizh8h_ej1sFYphJf4SOFA_VervhwEs';
 
 function supabaseRequest($endpoint, $method = 'GET', $data = null, $queryParams = []) {
     global $supabaseUrl, $supabaseKey;
@@ -110,6 +111,66 @@ function crc16Checksum($data) {
         }
     }
     return $crc ^ 0xFFFF;
+}
+
+define('SUPABASE_STORAGE_URL', $supabaseUrl . '/storage/v1/object/public/');
+
+function supabaseStorageUpload($bucket, $filePath, $fileName, $contentType) {
+    global $supabaseUrl, $supabaseKey, $supabaseServiceKey;
+
+    $url = $supabaseUrl . "/storage/v1/object/$bucket/$fileName";
+
+    $fileData = file_get_contents($filePath);
+    if ($fileData === false) {
+        return ['error' => 'Erro ao ler o arquivo'];
+    }
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $fileData);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'apikey: ' . $supabaseServiceKey,
+        'Authorization: Bearer ' . $supabaseServiceKey,
+        'Content-Type: ' . $contentType
+    ]);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+
+    if ($curlError) {
+        return ['error' => $curlError];
+    }
+
+    $decoded = json_decode($response, true);
+    return [
+        'code' => $httpCode,
+        'data' => $decoded ?? [],
+        'path' => "$bucket/$fileName"
+    ];
+}
+
+function supabaseStorageDelete($bucket, $fileName) {
+    global $supabaseUrl, $supabaseKey;
+
+    $url = $supabaseUrl . "/storage/v1/object/$bucket/$fileName";
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Authorization: Bearer ' . $supabaseKey
+    ]);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    return ['code' => $httpCode];
 }
 
 function alerta($mensagem, $redirect = null, $voltar = false)

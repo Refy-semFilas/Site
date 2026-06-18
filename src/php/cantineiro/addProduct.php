@@ -18,8 +18,13 @@ $categoria = $_POST['categoria'];
 $imagemNome = null;
 
 if (isset($_FILES["foto"]) && $_FILES["foto"]["error"] === UPLOAD_ERR_OK) {
-    $imagemNome = uniqid() . "-" . $_FILES["foto"]["name"]; 
-    move_uploaded_file($_FILES["foto"]["tmp_name"], "../../../imgBD/" . $imagemNome);
+    $imagemNome = uniqid() . "-" . $_FILES["foto"]["name"];
+    $ext = strtolower(pathinfo($imagemNome, PATHINFO_EXTENSION));
+    $contentType = $ext === 'png' ? 'image/png' : ($ext === 'gif' ? 'image/gif' : 'image/jpeg');
+    $upload = supabaseStorageUpload('produtos', $_FILES["foto"]["tmp_name"], $imagemNome, $contentType);
+    if (isset($upload['error'])) {
+        $imagemNome = null;
+    }
 }
 
 $check = supabaseRequest("/rest/v1/produto?codigo_de_barras=eq.$codigo&select=id");

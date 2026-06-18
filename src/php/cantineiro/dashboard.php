@@ -62,7 +62,7 @@ $produtos = $result['data'] ?? [];
 
     <div class="card">
     <div class="imagem">
-        <img src="../../../imgBD/<?php echo $p['imagem']; ?>" alt="<?php echo $p['nome']; ?>">
+        <img src="<?= SUPABASE_STORAGE_URL ?>produtos/<?php echo $p['imagem']; ?>" alt="<?php echo $p['nome']; ?>">
     </div>
 
     <div class="info">
