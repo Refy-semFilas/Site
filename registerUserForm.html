@@ -144,6 +144,40 @@
             }
         }
         
+        // Requisitos de senha
+        const requisitos = [
+            { label: '6 caracteres',         test: (s) => s.length >= 6 },
+            { label: 'Letra maiúscula (A-Z)', test: (s) => /[A-Z]/.test(s) },
+            { label: 'Letra minúscula (a-z)', test: (s) => /[a-z]/.test(s) },
+            { label: 'Número (0-9)',          test: (s) => /[0-9]/.test(s) },
+            { label: 'Caractere especial',    test: (s) => /[!@#$%^&*()\-_=+{};:,<.>]/.test(s) },
+        ];
+
+        const senhaReqs = document.createElement('div');
+        senhaReqs.id = 'senha-requisitos';
+        senhaReqs.style.cssText = 'margin-top:6px;font-size:11px;display:flex;flex-wrap:wrap;gap:4px 12px';
+        requisitos.forEach((r, i) => {
+            const item = document.createElement('span');
+            item.id = 'req-' + i;
+            item.style.color = '#999';
+            item.textContent = '○ ' + r.label;
+            senhaReqs.appendChild(item);
+        });
+        senhaInput.parentNode.parentNode.appendChild(senhaReqs);
+
+        senhaInput.addEventListener('input', function() {
+            requisitos.forEach((r, i) => {
+                const item = document.getElementById('req-' + i);
+                if (r.test(this.value)) {
+                    item.style.color = '#ff6200';
+                    item.textContent = '● ' + r.label;
+                } else {
+                    item.style.color = '#999';
+                    item.textContent = '○ ' + r.label;
+                }
+            });
+        });
+
         // Validação e envio do formulário via fetch
         document.querySelector('form').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -151,6 +185,7 @@
             const tipoSelect = document.getElementById('tipo');
             const email = emailInput.value.trim();
             const username = userInput.value.trim();
+            const senha = senhaInput.value;
             
             if (!tipoSelect.value) {
                 showAlert('Por favor, selecione o tipo de conta!', 'warning');
@@ -167,6 +202,13 @@
             if (emailInput.setCustomValidity && emailInput.setCustomValidity.toString().includes('em uso')) {
                 showAlert('Por favor, use outro email! Este já está cadastrado.', 'error');
                 emailInput.focus();
+                return;
+            }
+
+            const errosSenha = validarSenha(senha);
+            if (errosSenha.length > 0) {
+                showAlert('Senha deve conter: ' + errosSenha.join(', '), 'error');
+                senhaInput.focus();
                 return;
             }
 

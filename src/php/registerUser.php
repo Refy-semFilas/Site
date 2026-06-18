@@ -26,6 +26,22 @@ if (strlen($senha) < 6) {
     jsonError('A senha deve ter pelo menos 6 caracteres!');
 }
 
+if (!preg_match('/[A-Z]/', $senha)) {
+    jsonError('A senha deve conter pelo menos uma letra maiúscula!');
+}
+
+if (!preg_match('/[a-z]/', $senha)) {
+    jsonError('A senha deve conter pelo menos uma letra minúscula!');
+}
+
+if (!preg_match('/[0-9]/', $senha)) {
+    jsonError('A senha deve conter pelo menos um número!');
+}
+
+if (!preg_match('/[!@#$%^&*()\-_=+{};:,<.>]/', $senha)) {
+    jsonError('A senha deve conter pelo menos um caractere especial!');
+}
+
 $result = supabaseRequest("/rest/v1/usuarios?email=eq." . urlencode($email) . "&select=id");
 
 if (count($result['data']) > 0) {
