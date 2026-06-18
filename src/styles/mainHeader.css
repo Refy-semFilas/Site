@@ -146,10 +146,7 @@ input {
     transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-.logo:hover {
-    transform: scale(1.05) rotate(-3deg);
-    filter: brightness(1.1);
-}
+
 
 header {
     background: linear-gradient(135deg, #ff6200 0%, #ff8c38 100%);
