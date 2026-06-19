@@ -13,6 +13,7 @@
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.5s ease forwards;
+            cursor: pointer;
         }
         
         @keyframes fadeInUp {
@@ -20,6 +21,87 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        .modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-detalhe {
+            background: #fff;
+            border-radius: 20px;
+            max-width: 480px;
+            width: 90%;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            animation: zoomIn 0.2s ease;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .btn-fechar {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-fechar:hover { background: rgba(0,0,0,0.7); }
+        .detalhe-imagem {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .detalhe-imagem img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .detalhe-info {
+            padding: 24px;
+        }
+        .detalhe-info h2 {
+            margin: 0 0 8px;
+            font-size: 22px;
+            color: #2d2d2d;
+        }
+        .detalhe-preco {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff6200;
+            margin: 0 0 12px;
+        }
+        .detalhe-descricao {
+            font-size: 15px;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+        .detalhe-estoque {
+            font-size: 13px;
+            color: #999;
+            margin: 8px 0 0;
         }
     </style>
 </head>
@@ -102,7 +184,13 @@
             produtos.forEach((p, index) => {
                 const estoque = p.estoque || 0;
                 container.innerHTML += `
-                    <div class="card" style="animation-delay: ${index * 0.1}s">
+                    <div class="card" style="animation-delay: ${index * 0.1}s"
+                         onclick="abrirDetalhe(this)"
+                         data-nome="${p.nome}"
+                         data-preco="${p.valor}"
+                         data-descricao="${(p.descricao || '').replace(/"/g, '&quot;')}"
+                         data-estoque="${estoque}"
+                         data-imagem="${p.imagem}">
                         <div class="imagem">
                             <img src="${p.imagem}">
                         </div>
@@ -115,6 +203,7 @@
                         <div class="button">
                             <button 
                                 class="comprar"
+                                onclick="event.stopPropagation()"
                                 data-id="${p.id}"
                                 data-nome="${p.nome}"
                                 data-preco="${p.valor}"
@@ -144,6 +233,39 @@
             
             renderProdutos(produtosFiltrados);
         }
+    </script>
+    <div id="modalDetalhe" class="modal" style="display:none;" onclick="fecharDetalhe()">
+        <div class="modal-detalhe" onclick="event.stopPropagation()">
+            <button class="btn-fechar" onclick="fecharDetalhe()">&times;</button>
+            <div class="detalhe-imagem">
+                <img id="detImagem" src="">
+            </div>
+            <div class="detalhe-info">
+                <h2 id="detNome"></h2>
+                <p class="detalhe-preco" id="detPreco"></p>
+                <p class="detalhe-descricao" id="detDescricao"></p>
+                <p class="detalhe-estoque" id="detEstoque"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function abrirDetalhe(card) {
+            document.getElementById('detImagem').src = card.dataset.imagem;
+            document.getElementById('detNome').textContent = card.dataset.nome;
+            document.getElementById('detPreco').textContent = 'R$ ' + parseFloat(card.dataset.preco).toFixed(2).replace('.', ',');
+            document.getElementById('detDescricao').textContent = card.dataset.descricao || 'Sem descrição';
+            document.getElementById('detEstoque').textContent = 'Estoque: ' + card.dataset.estoque + ' unidades';
+            document.getElementById('modalDetalhe').style.display = 'flex';
+        }
+
+        function fecharDetalhe() {
+            document.getElementById('modalDetalhe').style.display = 'none';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') fecharDetalhe();
+        });
     </script>
 </body>
 
