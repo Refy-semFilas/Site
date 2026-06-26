@@ -200,8 +200,7 @@
                                 data-estoque="${estoque}"
                                 data-imagem="${p.imagem}"
                                 data-usuario-id="${p.usuario_id}"
-                                ${estoque <= 0 ? 'disabled' : ''}
-                                onclick="event.stopPropagation()">
+                                ${estoque <= 0 ? 'disabled' : ''}>
                                 ${estoque <= 0 ? 'Indisponível' : 'Comprar'}
                             </button>
                         </div>

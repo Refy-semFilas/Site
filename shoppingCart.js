@@ -1,5 +1,6 @@
 document.addEventListener('click', function (e) {
     if (e.target.classList.contains('comprar')) {
+        e.stopPropagation();
         const botao = e.target;
         const estoque = parseInt(botao.dataset.estoque);
         const produtoId = botao.dataset.id;
